@@ -248,9 +248,8 @@ describe('Welten und Stationen', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it.each(tasks.map(({ station, task }) => [task.id, station, task] as const))(
-    '%s: ID-Schema, Stufe und Teile',
-    (_id, station, task) => {
+  it.each(stations)('$id: ID-Schema, Stufe und Teile', (station) => {
+    for (const task of station.tasks) {
       const prefix = station.world === 'schatzinsel' ? 's' : 'b';
       expect(task.id).toBe(
         `${prefix}${String(station.number)}-t${String(station.tasks.indexOf(task) + 1)}`,
@@ -262,20 +261,18 @@ describe('Welten und Stationen', () => {
         expect(part.id).toBe(`${task.id}-${'abc'.charAt(i)}`);
         if (i === 0) expect(part.lead).toBeUndefined();
       });
-    },
-  );
+    }
+  });
 });
 
 describe('Texte', () => {
-  const texts = stations.flatMap((station) =>
-    stationTexts(station).map((text) => [station.id, text] as const),
-  );
-
-  it.each(texts)('%s: „%s“ ist sauber', (_station, text) => {
-    const shown = renderText(text);
-    expect(text.trim()).not.toBe('');
-    expect(shown).not.toMatch(/\{\{|\}\}|undefined|NaN/);
-    expect(shown.toLowerCase()).not.toContain('falsch');
+  it.each(stations)('$id: alle Kindertexte sind sauber', (station) => {
+    for (const text of stationTexts(station)) {
+      const shown = renderText(text);
+      expect(text.trim(), text).not.toBe('');
+      expect(shown, text).not.toMatch(/\{\{|\}\}|undefined|NaN/);
+      expect(shown.toLowerCase(), text).not.toContain('falsch');
+    }
   });
 
   it('Rückmeldungs-Pools enthalten nie „falsch“', () => {
@@ -290,108 +287,116 @@ describe('Texte', () => {
 });
 
 describe('Aufgaben-Invarianten', () => {
-  it.each(tasks.map(({ task }) => [task.id, task] as const))('%s: Szene', (_id, task) => {
-    for (const cents of sceneCents(task.scene)) {
-      expect(Number.isInteger(cents) && cents >= 0).toBe(true);
-    }
-    if (task.scene.kind === 'coins') {
-      for (const piece of [...task.scene.pieces, ...(task.scene.groups ?? []).flat()]) {
-        expect(MONEY_PIECES.has(piece)).toBe(true);
+  it.each(stations)('$id: Szenen', (station) => {
+    for (const task of station.tasks) {
+      for (const cents of sceneCents(task.scene)) {
+        expect(Number.isInteger(cents) && cents >= 0).toBe(true);
       }
-      if (task.scene.groups) expect(task.scene.pieces).toEqual([]);
-    }
-    if (task.scene.kind === 'items') {
-      const missing = task.scene.items.filter((item) => item.price === undefined);
-      expect(missing.length > 0).toBe(TASKS_WITH_HIDDEN_PRICE.has(task.id));
+      if (task.scene.kind === 'coins') {
+        for (const piece of [...task.scene.pieces, ...(task.scene.groups ?? []).flat()]) {
+          expect(MONEY_PIECES.has(piece)).toBe(true);
+        }
+        if (task.scene.groups) expect(task.scene.pieces).toEqual([]);
+      }
+      if (task.scene.kind === 'items') {
+        const missing = task.scene.items.filter((item) => item.price === undefined);
+        expect(missing.length > 0, task.id).toBe(TASKS_WITH_HIDDEN_PRICE.has(task.id));
+      }
     }
   });
 
-  it.each(parts.map(({ task, part }) => [part.id, task, part] as const))(
-    '%s: Antwort ist gültig und wird als richtig erkannt',
-    (_id, task, part) => {
-      const answer = part.answer;
-      const max = STUFEN[task.authoredFor].numbers.max;
-      expect(part.hints).toHaveLength(2);
-      if (part.mistakes) {
-        expect(['money', 'number']).toContain(answer.type);
-        const values = part.mistakes.map((m) => m.value);
-        expect(new Set(values).size).toBe(values.length);
-        if (answer.type === 'money' || answer.type === 'number') {
-          expect(values).not.toContain(answer.correct);
-        }
-      }
-
-      switch (answer.type) {
-        case 'choice': {
-          expect(answer.options.length).toBeGreaterThanOrEqual(2);
-          expect(answer.options.length).toBeLessThanOrEqual(4);
-          expect(answer.options.filter((o) => o.correct)).toHaveLength(1);
-          expect(new Set(answer.options.map((o) => o.label)).size).toBe(answer.options.length);
-          expect(new Set(answer.options.map((o) => o.id)).size).toBe(answer.options.length);
-          for (const piece of answer.options.flatMap((o) => o.pieces ?? [])) {
-            expect(MONEY_PIECES.has(piece)).toBe(true);
-          }
-          if (answer.layout === 'coins') {
-            for (const o of answer.options) expect(o.pieces?.length).toBeGreaterThan(0);
-          }
-          break;
-        }
-        case 'money':
-          expect(Number.isInteger(answer.correct) && answer.correct >= 0).toBe(true);
-          break;
-        case 'number':
-          expect(Number.isInteger(answer.correct)).toBe(true);
-          expect(answer.correct).toBeGreaterThanOrEqual(0);
-          expect(answer.correct).toBeLessThanOrEqual(max);
-          break;
-        case 'pay':
-          expect(minPieces(answer.target, answer.palette)).not.toBeNull();
-          if (answer.exactCount !== undefined) {
-            const count = answer.exactCount;
-            expect(
-              payCombinations(answer.target, answer.palette).some((c) => c.length === count),
-            ).toBe(true);
-          }
-          break;
-        case 'pay-variants':
-          expect(payCombinations(answer.target, answer.palette).length).toBeGreaterThanOrEqual(
-            answer.required,
-          );
-          break;
-        case 'order': {
-          const values = answer.entries.map((e) => e.value);
+  it.each(stations)('$id: Antworten sind gültig und werden als richtig erkannt', (station) => {
+    for (const task of station.tasks) {
+      for (const part of task.parts) {
+        const answer = part.answer;
+        const max = STUFEN[task.authoredFor].numbers.max;
+        expect(part.hints).toHaveLength(2);
+        if (part.mistakes) {
+          expect(['money', 'number']).toContain(answer.type);
+          const values = part.mistakes.map((m) => m.value);
           expect(new Set(values).size).toBe(values.length);
-          break;
+          if (answer.type === 'money' || answer.type === 'number') {
+            expect(values).not.toContain(answer.correct);
+          }
         }
-        case 'select':
-          for (const item of answer.items) expect(item.price).toBeDefined();
-          expect(selectSolutions(answer).length).toBeGreaterThan(0);
-          expect(selectSolutions(answer)[0]?.length).toBeGreaterThan(0);
-          break;
-        case 'grid': {
-          const solved = solveGrid(
-            answer.shape,
-            answer.cells.map((c) => (c.given ? { id: c.id, value: c.value } : { id: c.id })),
-          );
-          expect(solved).toEqual(Object.fromEntries(answer.cells.map((c) => [c.id, c.value])));
-          break;
-        }
-        case 'code':
-          expect(answer.digits.length).toBeGreaterThanOrEqual(3);
-          expect(answer.digits.length).toBeLessThanOrEqual(4);
-          for (const d of answer.digits) expect(Number.isInteger(d) && d >= 0 && d <= 9).toBe(true);
-          expect(answer.digits[0]).not.toBe(0);
-          expect(task.scene.kind === 'clues' && task.scene.clues.length).toBe(answer.digits.length);
-          break;
-      }
 
-      const inputs = correctInputs(task, part);
-      expect(inputs.length).toBeGreaterThan(0);
-      for (const input of inputs) {
-        expect(checkAnswer(answer, input, CHECK_TEXTS, part.mistakes).status).toBe('correct');
+        switch (answer.type) {
+          case 'choice': {
+            expect(answer.options.length).toBeGreaterThanOrEqual(2);
+            expect(answer.options.length).toBeLessThanOrEqual(4);
+            expect(answer.options.filter((o) => o.correct)).toHaveLength(1);
+            expect(new Set(answer.options.map((o) => o.label)).size).toBe(answer.options.length);
+            expect(new Set(answer.options.map((o) => o.id)).size).toBe(answer.options.length);
+            for (const piece of answer.options.flatMap((o) => o.pieces ?? [])) {
+              expect(MONEY_PIECES.has(piece)).toBe(true);
+            }
+            if (answer.layout === 'coins') {
+              for (const o of answer.options) expect(o.pieces?.length).toBeGreaterThan(0);
+            }
+            break;
+          }
+          case 'money':
+            expect(Number.isInteger(answer.correct) && answer.correct >= 0).toBe(true);
+            break;
+          case 'number':
+            expect(Number.isInteger(answer.correct)).toBe(true);
+            expect(answer.correct).toBeGreaterThanOrEqual(0);
+            expect(answer.correct).toBeLessThanOrEqual(max);
+            break;
+          case 'pay':
+            expect(minPieces(answer.target, answer.palette)).not.toBeNull();
+            if (answer.exactCount !== undefined) {
+              const count = answer.exactCount;
+              expect(
+                payCombinations(answer.target, answer.palette).some((c) => c.length === count),
+              ).toBe(true);
+            }
+            break;
+          case 'pay-variants':
+            expect(payCombinations(answer.target, answer.palette).length).toBeGreaterThanOrEqual(
+              answer.required,
+            );
+            break;
+          case 'order': {
+            const values = answer.entries.map((e) => e.value);
+            expect(new Set(values).size).toBe(values.length);
+            break;
+          }
+          case 'select':
+            for (const item of answer.items) expect(item.price).toBeDefined();
+            expect(selectSolutions(answer).length).toBeGreaterThan(0);
+            expect(selectSolutions(answer)[0]?.length).toBeGreaterThan(0);
+            break;
+          case 'grid': {
+            const solved = solveGrid(
+              answer.shape,
+              answer.cells.map((c) => (c.given ? { id: c.id, value: c.value } : { id: c.id })),
+            );
+            expect(solved).toEqual(Object.fromEntries(answer.cells.map((c) => [c.id, c.value])));
+            break;
+          }
+          case 'code':
+            expect(answer.digits.length).toBeGreaterThanOrEqual(3);
+            expect(answer.digits.length).toBeLessThanOrEqual(4);
+            for (const d of answer.digits)
+              expect(Number.isInteger(d) && d >= 0 && d <= 9).toBe(true);
+            expect(answer.digits[0]).not.toBe(0);
+            expect(task.scene.kind === 'clues' && task.scene.clues.length).toBe(
+              answer.digits.length,
+            );
+            break;
+        }
+
+        const inputs = correctInputs(task, part);
+        expect(inputs.length, part.id).toBeGreaterThan(0);
+        for (const input of inputs) {
+          expect(checkAnswer(answer, input, CHECK_TEXTS, part.mistakes).status, part.id).toBe(
+            'correct',
+          );
+        }
       }
-    },
-  );
+    }
+  });
 });
 
 describe('Varianten (docs/09, 5.1)', () => {

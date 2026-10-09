@@ -38,6 +38,8 @@ export default defineConfig(
   // Projektregeln: setzen die goldenen Regeln aus CLAUDE.md technisch durch (docs/08, 2.1)
   {
     rules: {
+      // Felder per Rest-Destrukturierung weglassen ({ resume, ...rest }) ist erlaubt
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
       // Geld nur in ganzen Cent: keine Gleitkomma-Helfer
       'no-restricted-properties': [
         'error',

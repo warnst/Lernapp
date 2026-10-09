@@ -91,7 +91,6 @@ export interface Profile {
   stats: Record<string, { wrong: number; hints: number; stufe: Stufe }>;
 }
 
-/** @public Wird ab Phase 3 vom App-State genutzt. */
 export interface AppStateV2 {
   version: 2;
   profiles: Profile[]; // 1–6 Profile

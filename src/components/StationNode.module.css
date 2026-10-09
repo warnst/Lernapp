@@ -1,0 +1,85 @@
+.node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  border: 3px solid var(--ink-900);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+  cursor: pointer;
+}
+
+.number {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  min-width: 28px;
+  padding: 0 6px;
+  border: 2px solid var(--ink-900);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  transform: translateX(-50%);
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--ink-900);
+  border-radius: var(--radius-full);
+}
+
+.done .badge {
+  background: var(--sun-400);
+  color: var(--ink-900);
+}
+
+.current {
+  border-color: var(--sea-700);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.locked {
+  background: var(--sand-100);
+  border-color: var(--ink-600);
+  box-shadow: none;
+}
+
+.locked .icon {
+  opacity: 0.35;
+  filter: grayscale(1);
+}
+
+.locked .badge {
+  background: var(--sand-100);
+  color: var(--ink-600);
+}
+
+.fog {
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .current {
+    animation: none;
+  }
+}

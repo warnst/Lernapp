@@ -1,0 +1,20 @@
+.wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.wrap > :first-child {
+  flex-shrink: 0;
+}
+
+.bubble {
+  position: relative;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+  font-size: calc(18px * var(--text-scale));
+  line-height: 1.35;
+}

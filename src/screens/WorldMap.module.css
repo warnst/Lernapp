@@ -1,0 +1,96 @@
+.page {
+  position: relative;
+  padding-bottom: calc(180px + env(safe-area-inset-bottom));
+}
+
+.greeting {
+  position: sticky;
+  top: calc(64px + env(safe-area-inset-top));
+  z-index: 4;
+  padding: 0 var(--space-4);
+  animation: fade 300ms ease-out;
+}
+
+.map {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius-l);
+}
+
+.schatzinsel {
+  height: 1530px;
+}
+
+.bucht {
+  height: min(64dvh, 600px);
+  min-height: 460px;
+}
+
+.background,
+.path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.path {
+  fill: none;
+  stroke: var(--sand-300);
+  stroke-width: 14px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 2 22;
+}
+
+.spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.kiko {
+  position: absolute;
+  top: -20px;
+  left: 56px;
+  pointer-events: none;
+}
+
+.notice {
+  position: fixed;
+  right: var(--space-4);
+  bottom: calc(160px + env(safe-area-inset-bottom));
+  left: var(--space-4);
+  z-index: 6;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.next {
+  position: fixed;
+  right: var(--space-4);
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  left: var(--space-4);
+  z-index: 6;
+  max-width: 528px;
+  margin: 0 auto;
+}
+
+@media (width >= 900px) {
+  .page {
+    padding-left: 112px;
+  }
+
+  .next,
+  .notice {
+    bottom: var(--space-5);
+    left: calc(112px + var(--space-4));
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}

@@ -69,4 +69,88 @@
   --fill-shade: var(--sand-300);
   --fill-accent: var(--sun-400);
   --stroke: var(--ink-900);
+
+  /* Illustrationen (docs/02, Abschnitt 6): Farben der SVG-Zeichnungen in src/illustrations */
+  --kiko-body: #2bb5a0;
+  --kiko-wing: #1f9483;
+  --kiko-belly: #ffe9a8;
+  --kiko-beak: #ff9e3d;
+  --ill-sea: #9fd9d6; /* Meer auf der Karte */
+  --ill-wave: #7cc4c2; /* Wellenlinien im Meer */
+  --ill-surf: #e9f7f5; /* heller Brandungssaum */
+  --ill-water: #6fc3cf; /* Wasser in Icons */
+  --ill-sand: #f6e1b5;
+  --ill-grass: #a8d58a;
+  --ill-hill: #86c06c;
+  --ill-leaf: #4fa66a;
+  --ill-trunk: #b98552;
+  --ill-wood: var(--wood-100);
+  --ill-wood-dark: var(--wood-500);
+  --ill-rock: #c4bdb1;
+  --ill-cave: #6e655c;
+  --ill-shell: #ffd3c2;
+  --ill-coconut: #9a6a42;
+  --ill-gold: var(--coin-gold);
+  --ill-coral: var(--coral-400);
+  --ill-sun: var(--sun-400);
+  --ill-white: var(--white);
+  --ill-purse: #7fb6d9;
+  --ill-dolphin: #8fb9dc;
+  --ill-turtle: #9ccc7a;
+  --ill-turtle-shell: #5e9e5a;
+  --ill-seahorse: #ffbe5c;
+  --ill-penguin: #3f4f5e;
+  --ill-seal: #b3aca3;
+  --ill-flamingo: #f7a3b8;
+  --ill-octopus: #c7a0e0;
+  --ill-starfish: #ffad5c;
+  --ill-bg-sea: var(--lagoon-100); /* Avatar-Hintergründe */
+  --ill-bg-sand: #fbe7c6;
+  --ill-bg-sun: #fff0c4;
+  --ill-bg-pink: #fde3e8;
+  --ill-fog: #fff;
+  --ill-fog-shade: #e2e7ea;
+}
+
+/* Im Druck nur Konturen: alle Illustrationsflächen werden weiß (docs/06) */
+@media print {
+  :root {
+    --kiko-body: var(--fill-main);
+    --kiko-wing: var(--fill-main);
+    --kiko-belly: var(--fill-main);
+    --kiko-beak: var(--fill-main);
+    --ill-sea: var(--fill-main);
+    --ill-wave: var(--fill-main);
+    --ill-surf: var(--fill-main);
+    --ill-water: var(--fill-main);
+    --ill-sand: var(--fill-main);
+    --ill-grass: var(--fill-main);
+    --ill-hill: var(--fill-main);
+    --ill-leaf: var(--fill-main);
+    --ill-trunk: var(--fill-main);
+    --ill-wood: var(--fill-main);
+    --ill-wood-dark: var(--fill-main);
+    --ill-rock: var(--fill-main);
+    --ill-cave: var(--fill-main);
+    --ill-shell: var(--fill-main);
+    --ill-coconut: var(--fill-main);
+    --ill-gold: var(--fill-main);
+    --ill-coral: var(--fill-main);
+    --ill-sun: var(--fill-main);
+    --ill-purse: var(--fill-main);
+    --ill-dolphin: var(--fill-main);
+    --ill-turtle: var(--fill-main);
+    --ill-turtle-shell: var(--fill-main);
+    --ill-seahorse: var(--fill-main);
+    --ill-penguin: var(--fill-main);
+    --ill-seal: var(--fill-main);
+    --ill-flamingo: var(--fill-main);
+    --ill-octopus: var(--fill-main);
+    --ill-starfish: var(--fill-main);
+    --ill-bg-sea: var(--fill-main);
+    --ill-bg-sand: var(--fill-main);
+    --ill-bg-sun: var(--fill-main);
+    --ill-bg-pink: var(--fill-main);
+    --ill-fog-shade: var(--fill-main);
+  }
 }

@@ -1,0 +1,30 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: calc(64px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) var(--space-2) 0;
+  background: var(--sand-50);
+}
+
+.iconLink {
+  display: grid;
+  place-items: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: var(--radius-full);
+  color: var(--ink-600);
+}
+
+.spacer {
+  flex: 1;
+}
+
+@media (width >= 900px) {
+  .header {
+    padding-left: calc(112px + var(--space-2));
+  }
+}

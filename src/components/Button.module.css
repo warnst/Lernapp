@@ -1,0 +1,57 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: var(--space-3) var(--space-5);
+  border: 2px solid transparent;
+  border-bottom-width: 6px;
+  border-radius: var(--radius-m);
+  font-family: var(--font-body);
+  font-size: calc(20px * var(--text-scale));
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 80ms ease-out,
+    border-bottom-width 80ms ease-out;
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* „Tiefe“-Effekt: beim Drücken rutscht der Knopf 2 px nach unten (docs/02, 4) */
+.button:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 4px;
+}
+
+.primary {
+  background: var(--sea-500);
+  border-color: var(--sea-500);
+  border-bottom-color: var(--sea-700);
+  color: var(--white);
+}
+
+.secondary {
+  background: var(--white);
+  border-color: var(--sea-700);
+  color: var(--sea-700);
+}
+
+.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--sea-700);
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}

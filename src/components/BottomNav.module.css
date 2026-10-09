@@ -1,0 +1,50 @@
+.nav {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 2px solid var(--sand-300);
+  background: var(--sand-100);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 64px;
+  color: var(--ink-600);
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.tab[aria-current='page'] {
+  color: var(--sea-700);
+  font-weight: 700;
+}
+
+.tab[aria-current='page'] .icon {
+  padding: 2px 16px;
+  border-radius: var(--radius-full);
+  background: var(--lagoon-100);
+}
+
+/* ab 900 px: linke Seitenleiste (docs/01, Abschnitt 8) */
+@media (width >= 900px) {
+  .nav {
+    top: 0;
+    right: auto;
+    grid-template-columns: none;
+    grid-auto-rows: min-content;
+    align-content: center;
+    gap: var(--space-4);
+    width: 112px;
+    border-top: 0;
+    border-right: 2px solid var(--sand-300);
+  }
+}

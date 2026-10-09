@@ -1,0 +1,26 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 560px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-4) calc(var(--space-6) + env(safe-area-inset-bottom));
+}
+
+.withNav {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
+
+@media (width >= 900px) {
+  .withNav {
+    padding-bottom: var(--space-6);
+    padding-left: calc(112px + var(--space-4));
+    max-width: calc(560px + 112px);
+  }
+}
+
+.title {
+  font-size: calc(28px * var(--text-scale));
+}

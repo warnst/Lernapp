@@ -1,0 +1,52 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: var(--space-2);
+  font-weight: 700;
+}
+
+.input {
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-s);
+  background: var(--white);
+}
+
+.recommend {
+  padding: var(--space-3);
+  border-radius: var(--radius-s);
+  background: var(--lagoon-100);
+}
+
+.explain {
+  align-self: flex-start;
+  border: 0;
+  background: none;
+  color: var(--sea-700);
+  font-size: 16px;
+  text-decoration: underline;
+  min-height: 44px;
+}
+
+.levels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-4);
+  font-size: 16px;
+}
