@@ -1,0 +1,72 @@
+/* Design-Tokens aus docs/02. Komponenten verwenden nur diese Variablen, keine Hex-Werte. */
+:root {
+  color-scheme: light;
+
+  /* Flächen */
+  --sand-50: #fff9ef; /* App-Hintergrund */
+  --sand-100: #fcefd9; /* Karten, Sheets */
+  --sand-300: #f2d7a6; /* Ränder, Wege auf der Karte */
+  --white: #fff;
+
+  /* Text */
+  --ink-900: #1f2d3a; /* Haupttext – 13,4:1 auf sand-50 */
+  --ink-600: #4a5a68; /* Nebentext – 6,8:1 auf sand-50 */
+
+  /* Hauptfarbe Meer */
+  --sea-500: #0f7f88; /* Hauptknöpfe – Weiß darauf 4,8:1 */
+  --sea-700: #0c6870; /* Gedrückt, Links, Fokus – 6,2:1 auf sand-50 */
+  --lagoon-100: #ddf3f1; /* Tipp-Flächen, Kiko-Sheet */
+
+  /* Bedeutungen */
+  --palm-600: #23824f; /* Richtig (immer mit ✓) – Weiß darauf 4,8:1 */
+  --sun-400: #ffc94a; /* Sterne, Belohnung (Text darauf: ink-900) */
+  --coral-400: #ff8a65; /* Deko-Akzent. NIE für Fehler verwenden. */
+  --wood-100: #e8c39a; /* Fläche der Preisschilder – wood-900 darauf 6,1:1 */
+  --wood-500: #a9713f; /* nur Rahmen und Schnur, nie als Texthintergrund */
+  --wood-900: #5b3a1e; /* Text auf Holzschildern */
+
+  /* Münzen */
+  --coin-copper: #c9753d; /* 1, 2, 5 Cent */
+  --coin-copper-rim: #9a5328;
+  --coin-gold: #e2b53b; /* 10, 20, 50 Cent */
+  --coin-gold-rim: #b98e1f;
+  --coin-silver: #c9ced3; /* Ringe bei 1 € / 2 € */
+  --coin-silver-rim: #969da4;
+
+  /* Fokus */
+  --focus-ring: 0 0 0 4px var(--white), 0 0 0 7px var(--sea-700);
+
+  /* Abstände */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Radien */
+  --radius-s: 12px;
+  --radius-m: 20px;
+  --radius-l: 28px;
+  --radius-full: 999px;
+
+  /* weiche „Papier“-Schatten, keine harten */
+  --shadow-1: 0 2px 0 rgb(31 45 58 / 10%), 0 4px 12px rgb(31 45 58 / 6%);
+  --shadow-2: 0 4px 0 rgb(31 45 58 / 12%), 0 10px 24px rgb(31 45 58 / 10%);
+  --tap-min: 56px;
+
+  /* Schrift */
+  --font-fallback: ui-rounded, 'Nunito', system-ui, sans-serif;
+  --font-body: 'Andika', var(--font-fallback);
+  --font-heading: 'Fredoka Variable', var(--font-fallback);
+
+  /* Schriftgröße je Stufe (docs/02, 6.4): wird am <body> überschrieben */
+  --text-scale: 1;
+
+  /* Flächen der Illustrationen, im Druck weiß (docs/06) */
+  --fill-main: var(--sand-100);
+  --fill-shade: var(--sand-300);
+  --fill-accent: var(--sun-400);
+  --stroke: var(--ink-900);
+}

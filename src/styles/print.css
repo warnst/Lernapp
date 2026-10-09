@@ -1,0 +1,48 @@
+/* Druck-CSS aus docs/06, Abschnitt 2 */
+@page {
+  size: a4 portrait;
+  margin: 14mm 14mm 16mm;
+}
+
+@media print {
+  :root {
+    /* Illustrationen ohne Flächen */
+    --fill-main: #fff;
+    --fill-shade: #fff;
+    --fill-accent: #fff;
+    --stroke: #000;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000;
+  }
+
+  .no-print,
+  nav,
+  header,
+  .bottom-nav,
+  .kiko-sheet,
+  button {
+    display: none !important;
+  }
+
+  .print-page {
+    break-after: page;
+  }
+
+  .print-task {
+    break-inside: avoid;
+  }
+
+  * {
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  body {
+    font-size: 13pt;
+  }
+}

@@ -1,0 +1,36 @@
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: '*.{ts,tsx,js,json,css,md,yml}'
+      run: npx prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+    lint:
+      glob: '*.{ts,tsx}'
+      run: npx eslint --fix --max-warnings=0 {staged_files}
+      stage_fixed: true
+    css:
+      glob: '*.css'
+      run: npx stylelint --fix {staged_files}
+      stage_fixed: true
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit {1}
+
+pre-push:
+  parallel: true
+  commands:
+    typecheck:
+      run: npm run typecheck
+    test:
+      run: npm run test
+    knip:
+      run: npm run knip
+
+post-merge:
+  commands:
+    deps:
+      glob: 'package-lock.json'
+      run: npm ci

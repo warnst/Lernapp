@@ -1,0 +1,10 @@
+dist
+dev-dist
+coverage
+playwright-report
+test-results
+package-lock.json
+# Spezifikation bleibt wörtlich wie geliefert (CLAUDE.md, Regel 3)
+CLAUDE.md
+docs/0*.md
+docs/1*.md
