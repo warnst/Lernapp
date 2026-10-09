@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   formatMoney,
   minPieces,
+  payCombinations,
   moneyFromFields,
   parseMoney,
   sameMultiset,
@@ -171,5 +172,25 @@ describe('sameMultiset', () => {
     expect(sameMultiset([50, 50], [50])).toBe(false);
     expect(sameMultiset([50, 20], [50, 10])).toBe(false);
     expect(sameMultiset([20, 20, 10], [20, 10, 10])).toBe(false);
+  });
+});
+
+describe('payCombinations', () => {
+  it('findet alle Möglichkeiten ohne Reihenfolge', () => {
+    expect(payCombinations(100, [50, 20, 10])).toHaveLength(10);
+    expect(payCombinations(5, [2, 1])).toEqual([
+      [2, 2, 1],
+      [2, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+    ]);
+  });
+
+  it('ignoriert doppelte Palettenwerte und findet bei 0 genau eine leere Lösung', () => {
+    expect(payCombinations(4, [2, 2, 1])).toHaveLength(3);
+    expect(payCombinations(0, [1])).toEqual([[]]);
+  });
+
+  it('liefert nichts, wenn der Betrag nicht legbar ist', () => {
+    expect(payCombinations(3, [2])).toEqual([]);
   });
 });

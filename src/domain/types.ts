@@ -101,7 +101,6 @@ export interface AppStateV2 {
 
 // ---------- Stationen und Aufgaben (docs/03, Abschnitt 4) ----------
 
-/** @public Wird ab Phase 2 von den Stationsdaten genutzt. */
 export interface Station {
   id: string; // 'muschelstrand'
   world: WorldId;

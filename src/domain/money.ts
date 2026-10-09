@@ -102,3 +102,21 @@ export function sameMultiset(a: readonly MoneyPiece[], b: readonly MoneyPiece[])
   const sortedB = [...b].sort((x, y) => x - y);
   return sortedA.every((piece, i) => piece === sortedB[i]);
 }
+
+/** Alle verschiedenen Möglichkeiten (als Mengen, ohne Reihenfolge), den Betrag mit der Palette zu legen. */
+export function payCombinations(target: Cents, palette: readonly MoneyPiece[]): MoneyPiece[][] {
+  assertCents(target);
+  const pieces = [...new Set(palette)].sort((a, b) => b - a);
+  const results: MoneyPiece[][] = [];
+  const walk = (rest: number, from: number, chosen: MoneyPiece[]): void => {
+    if (rest === 0) {
+      results.push(chosen);
+      return;
+    }
+    pieces.slice(from).forEach((piece, offset) => {
+      if (piece <= rest) walk(rest - piece, from + offset, [...chosen, piece]);
+    });
+  };
+  walk(target, 0, []);
+  return results;
+}
