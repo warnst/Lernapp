@@ -150,4 +150,57 @@ describe('appReducer', () => {
     const next = makeState({ profiles: [makeProfile({ id: 'neu' })] });
     expect(appReducer(makeState(), { type: 'replace', state: next })).toBe(next);
   });
+
+  it('merkt sich die Fortsetzungsstelle und die Statistik eines Teils', () => {
+    const resume = {
+      world: 'schatzinsel' as const,
+      stationId: 'markt',
+      taskIndex: 2,
+      partIndex: 1,
+      seed: 0,
+    };
+    let state = makeState({ profiles: [makeProfile({ stufe: 4 })] });
+    state = appReducer(state, { type: 'save-resume', id: 'p1', resume });
+    state = appReducer(state, {
+      type: 'record-part',
+      id: 'p1',
+      partId: 's2-t3-a',
+      wrong: 2,
+      hints: 1,
+    });
+    expect(state.profiles[0]).toMatchObject({
+      resume,
+      stats: { 's2-t3-a': { wrong: 2, hints: 1, stufe: 4 } },
+    });
+  });
+
+  it('schließt eine Station ab, zählt Durchgänge und löscht die Fortsetzungsstelle', () => {
+    const resume = {
+      world: 'schatzinsel' as const,
+      stationId: 'markt',
+      taskIndex: 4,
+      partIndex: 1,
+      seed: 0,
+    };
+    let state = makeState({ profiles: [makeProfile({ resume })] });
+    const done = {
+      type: 'complete-station',
+      id: 'p1',
+      world: 'schatzinsel',
+      stationId: 'markt',
+      at: 't1',
+    } as const;
+    state = appReducer(state, done);
+    expect(state.profiles[0]).not.toHaveProperty('resume');
+    expect(state.profiles[0]?.worlds.schatzinsel).toEqual({
+      stations: { markt: { completed: true, completedAt: 't1', plays: 1, stufe: 3 } },
+      unlockAll: false,
+      bonusSolved: [],
+    });
+    state = appReducer(state, { ...done, at: 't2' });
+    expect(state.profiles[0]?.worlds.schatzinsel?.stations.markt).toMatchObject({
+      plays: 2,
+      completedAt: 't2',
+    });
+  });
 });

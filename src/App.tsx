@@ -5,6 +5,7 @@ import { AdultProfile } from '@/screens/AdultProfile';
 import { Adults } from '@/screens/Adults';
 import { ChildLayout } from '@/screens/ChildLayout';
 import { Placeholder } from '@/screens/Placeholder';
+import { Play } from '@/screens/Play';
 import { Setup } from '@/screens/Setup';
 import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
@@ -39,9 +40,7 @@ export function Routes() {
       <Route path="/station/:stationId/bonus">
         <Placeholder title={UI.nav.adventure} />
       </Route>
-      <Route path="/station/:stationId">
-        <Placeholder title={UI.nav.adventure} />
-      </Route>
+      <Route path="/station/:stationId">{(params) => <Play stationId={params.stationId} />}</Route>
       <Route path="/ueben/spiel">
         <Placeholder title={UI.nav.practice} />
       </Route>

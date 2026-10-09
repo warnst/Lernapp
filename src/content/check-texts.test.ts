@@ -10,6 +10,7 @@ describe('CHECK_TEXTS (wörtlich aus docs/03, Abschnitt 6)', () => {
       `Richtig, das sind 75${NB}Cent! Geht es auch mit weniger Münzen?`,
     );
     expect(T.payExactCount(2)).toBe('Es müssen genau 2 Münzen sein.');
+    expect(T.payExactCount(1)).toBe('Es muss genau eine Münze sein.');
     expect(T.variantDuplicate).toBe('Diese Möglichkeit hast du schon. Findest du eine andere?');
     expect(T.orderWrongPlace('Die 5-Cent-Münze')).toBe(
       'Die 5-Cent-Münze steht noch nicht an der richtigen Stelle.',

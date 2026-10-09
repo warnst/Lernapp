@@ -53,3 +53,13 @@ Kurze Notizen zu Abweichungen und offenen Punkten der Spezifikation. Format: Dat
 - 2026-10-09 – Platzhalter für alle Routen späterer Phasen (Spiel, Abschluss, Bonus, Üben, Schätze, Urkunde, Drucken). – Abnahme Phase 3: alle Routen aus `docs/03` 3 vorhanden.
 - 2026-10-09 – Die Inhaltstests prüfen pro Station in einem Test statt pro Text und Aufgabenteil (389 statt 1466 Testfälle, gleiche Prüfungen). Fehlermeldungen nennen die betroffene Aufgabe. – Übersichtlicher, Wunsch des Projektinhabers.
 - 2026-10-09 – Dependabot schlägt für npm nur noch Minor- und Patch-Updates vor; Hauptversionen werden bewusst von Hand gehoben. Die ersten Major-PRs (ESLint 10, @eslint/js 10, TypeScript 7, jsdom 30, @types/node 26) wurden geschlossen. – ESLint 10 passt noch nicht zu `eslint-plugin-jsx-a11y`, @types/node 26 nicht zu Node 24; da die CI nur auf `main` läuft, würden kaputte Updates erst dort auffallen.
+
+## Phase 4
+
+- 2026-10-09 – „Es müssen genau {n} Münzen sein.“ (`docs/03` 6) lautet bei n = 1 „Es muss genau eine Münze sein.“ – Sonst entstünde bei B3.2 der falsche Satz „Es müssen genau 1 Münzen sein.“
+- 2026-10-09 – Bis zu den Generatoren (Phase 6) werden auf allen Stufen die Originalaufgaben gespielt (`playableTasks`); der Varianten-Seed ist so lange 0. – Sonst wären die Stationen auf Stufe 2 und 4 leer.
+- 2026-10-09 – Das Kiko-Sheet ist kein modaler Dialog, sondern ein Bereich mit `aria-live`, der den Aufgabenbereich sichtbar lässt; ab 900 px rechts unten. Der Tipp-Knopf zeigt seinen Tipp im selben Sheet mit dem Knopf „Nochmal versuchen“. – `docs/01` 5.5.
+- 2026-10-09 – Fortsetzen: Die Stelle wird nach jedem gelösten Teil gespeichert, die Statistik (`stats`) pro Teil mit Fehlversuchen und geöffneten Tipps. Nach der letzten Aufgabe wird die Station abgeschlossen und es geht zu `/station/:id/geschafft` (Abschluss-Bildschirm in Phase 5). – `docs/03` 8.
+- 2026-10-09 – Antworttypen `grid` und `code` sowie die Szenen `sequence`, `balance` und `clues` sind bis Phase 7 nur einfach dargestellt (Zahlen- und Symbolkarten). – Laut `docs/07` gehören sie zu Phase 7; Bucht-Station 4 und 5 werden dann vollständig.
+- 2026-10-09 – Neue Oberflächentexte ohne Wortlaut in den Docs: „Bezahlt mit“, „Geld“ (Szenen-Beschriftungen), „Zählen: n“ (Vorlesename der Zählhilfe), „Aufgabe n von m“ (Fortschritt für Screenreader). – Sachliche, kurze Beschriftungen.
+- 2026-10-09 – Der Zahlenstrahl steht unter 700 px in zwei Reihen (0–5, 6–10). Bei 360 px Breite sind die Felder etwa 50 px breit statt 56 px. – Sechs Felder à 56 px plus Abstände passen nicht in 328 px; die Höhe bleibt 56 px.

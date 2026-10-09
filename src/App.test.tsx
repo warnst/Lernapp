@@ -210,7 +210,7 @@ describe('Karte', () => {
   });
 
   it('Platzhalter für Spiel-Routen führen zurück zur Karte', () => {
-    renderApp('/station/muschelstrand', makeState({ profiles: [makeProfile()] }));
+    renderApp('/station/muschelstrand/geschafft', makeState({ profiles: [makeProfile()] }));
     expect(screen.getByText('Hier wird noch gebaut.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Zur Karte' })).toHaveAttribute('href', '/');
   });

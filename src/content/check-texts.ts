@@ -36,7 +36,10 @@ function gridFeedback(correct: number, wrong: number, shape: GridAnswer['shape']
 export const CHECK_TEXTS: CheckTexts = {
   centNote: (cents, euroText) => `${String(cents)}\u00A0Cent sind übrigens ${euroText}.`,
   payNotMinimal: (target) => `Richtig, das sind ${target}! Geht es auch mit weniger Münzen?`,
-  payExactCount: (count) => `Es müssen genau ${String(count)} Münzen sein.`,
+  payExactCount: (count) =>
+    count === 1
+      ? 'Es muss genau eine Münze sein.'
+      : `Es müssen genau ${String(count)} Münzen sein.`,
   variantDuplicate: 'Diese Möglichkeit hast du schon. Findest du eine andere?',
   orderWrongPlace: (label) => `${label} steht noch nicht an der richtigen Stelle.`,
   selectCount: (count) => `Wähle genau ${String(count)} Sachen.`,

@@ -1,0 +1,254 @@
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.two,
+.four,
+.pieces {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 72px;
+  padding: var(--space-3);
+  border: 3px solid var(--sand-300);
+  border-bottom-width: 6px;
+  border-radius: var(--radius-m);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: calc(26px * var(--text-scale));
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.card:disabled {
+  cursor: default;
+}
+
+.textCard {
+  font-size: calc(20px * var(--text-scale));
+}
+
+/* probiert: gestrichelt, blass, ↺ – nie rot (docs/02 2) */
+.tried {
+  border-style: dashed;
+  border-color: var(--ink-600);
+  opacity: 0.55;
+  animation: wiggle 300ms ease-in-out;
+}
+
+.correct {
+  border-color: var(--palm-600);
+  animation: hop 300ms ease-out;
+}
+
+.mark {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.correct .mark {
+  color: var(--palm-600);
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+/* Geldeingabe */
+.fields {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.box {
+  min-width: 88px;
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-s);
+  background: var(--white);
+  font-size: 32px;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.active {
+  border: 3px solid var(--sea-700);
+}
+
+.preview {
+  color: var(--ink-600);
+  font-size: 16px;
+  text-align: center;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.key {
+  min-height: var(--tap-min);
+  border: 2px solid var(--sand-300);
+  border-bottom-width: 5px;
+  border-radius: var(--radius-s);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: 26px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.key:active {
+  transform: translateY(2px);
+}
+
+/* Zahlenstrahl 0–10, unter 700 px zweizeilig (docs/09 7) */
+.line {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-1);
+}
+
+.line .key {
+  min-width: 0;
+  padding: 0;
+}
+
+@media (width >= 700px) {
+  .line {
+    grid-template-columns: repeat(11, 1fr);
+  }
+}
+
+.big {
+  min-height: 72px;
+  font-size: 44px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Münzen legen */
+.tray {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 140px;
+  padding: var(--space-3);
+  border: 3px solid var(--wood-500);
+  border-radius: var(--radius-l);
+  background: var(--wood-100);
+}
+
+.trayCoins {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.coinButton {
+  display: grid;
+  place-items: center;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: 2px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  cursor: pointer;
+}
+
+.palette {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.trayText {
+  color: var(--wood-900);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.variants {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.variant {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 2px dashed var(--sand-300);
+  border-radius: var(--radius-m);
+}
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+@keyframes hop {
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes wiggle {
+  25% {
+    transform: rotate(-3deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.mini {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+}

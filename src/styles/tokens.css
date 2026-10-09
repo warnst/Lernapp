@@ -110,6 +110,14 @@
   --ill-bg-pink: #fde3e8;
   --ill-fog: #fff;
   --ill-fog-shade: #e2e7ea;
+  --ill-honey: #f0a830; /* Honig, Käse-Schatten */
+  --ill-jam: #d9668a; /* Marmelade, Erdbeere */
+  --ill-glass: #d6eef2; /* Glas, Flaschen, Seifenblasen */
+  --ill-dark: #4a5a68; /* Piratenhut, Fernglas, Laternendach */
+  --ill-note-5: #b9c9b5; /* Spielgeld-Scheine (docs/02, 6.2) */
+  --ill-note-10: #e9b3a6;
+  --ill-note-20: #afc6e3;
+  --ill-note-50: #ebc79a;
 }
 
 /* Im Druck nur Konturen: alle Illustrationsflächen werden weiß (docs/06) */
@@ -152,5 +160,21 @@
     --ill-bg-sun: var(--fill-main);
     --ill-bg-pink: var(--fill-main);
     --ill-fog-shade: var(--fill-main);
+    --ill-honey: var(--fill-main);
+    --ill-jam: var(--fill-main);
+    --ill-glass: var(--fill-main);
+    --ill-dark: var(--fill-main);
+    --ill-note-5: var(--fill-main);
+    --ill-note-10: var(--fill-main);
+    --ill-note-20: var(--fill-main);
+    --ill-note-50: var(--fill-main);
+
+    /* Münzen auf Arbeitsblättern nur als Kontur (docs/06) */
+    --coin-copper: var(--fill-main);
+    --coin-copper-rim: var(--ink-900);
+    --coin-gold: var(--fill-main);
+    --coin-gold-rim: var(--ink-900);
+    --coin-silver: var(--fill-main);
+    --coin-silver-rim: var(--ink-900);
   }
 }

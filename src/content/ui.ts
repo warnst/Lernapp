@@ -103,4 +103,59 @@ export const UI = {
     unknownChild: 'Dieses Kind gibt es nicht mehr.',
   },
   placeholder: { text: 'Hier wird noch gebaut.', back: 'Zur Karte' },
+  /** Spiel-Bildschirm (docs/01 5.4, 5.5, 6.2) */
+  play: {
+    pause: 'Pause',
+    pauseQuestion: 'Pause machen? Ich merke mir, wo wir waren.',
+    resume: 'Weiterspielen',
+    toMap: 'Zur Karte',
+    read: 'Vorlesen',
+    progress: (done: number, total: number) => `Aufgabe ${String(done + 1)} von ${String(total)}`,
+    check: 'Prüfen',
+    open: 'Öffnen',
+    hint: 'Tipp',
+    solution: "So geht's",
+    howTo: "So geht's: ",
+    next: 'Weiter',
+    retry: 'Nochmal versuchen',
+    myTurn: 'Jetzt ich!',
+    tried: 'probiert',
+    solvedChip: (letter: string, answer: string) => `${letter}) ${answer}`,
+    kikoSays: 'Kiko sagt',
+  },
+  money: {
+    euro: '€',
+    cent: 'Cent',
+    euroField: 'Euro',
+    centField: 'Cent',
+    preview: (amount: string) => `Deine Antwort: ${amount}`,
+    delete: 'Löschen',
+    toCent: 'Zum Cent-Feld',
+    number: 'Deine Zahl',
+  },
+  coins: {
+    trayEmpty: 'Tippe unten auf eine Münze',
+    trayTotal: (amount: string) => `Auf dem Tablett: ${amount}`,
+    trayFull: 'Das Tablett ist voll! Nimm ein paar Münzen weg.',
+    trayLabel: (count: number, amount: string) =>
+      `Tablett: ${String(count)} ${count === 1 ? 'Münze' : 'Münzen'}, zusammen ${amount}`,
+    palette: 'Münzen zum Hinlegen',
+    remember: 'Diese Möglichkeit merken',
+    variant: (n: number) => `${String(n)}. Möglichkeit`,
+  },
+  scene: {
+    paidWith: 'Bezahlt mit',
+    hand: 'Geld',
+    unknownPrice: '? €',
+    blot: 'Fleck',
+    countHelp: (n: number) => `Zählen: ${String(n)}`,
+    price: (amount: string) => `Preis: ${amount}`,
+  },
 } as const;
+
+/** „20-Cent-Münze“, „2-Euro-Münze“, „5-Euro-Schein“ – für aria-label und Vorlesen (docs/01 9). */
+export function pieceLabel(value: number): string {
+  if (value < 100) return `${String(value)}-Cent-Münze`;
+  if (value <= 200) return `${String(value / 100)}-Euro-Münze`;
+  return `${String(value / 100)}-Euro-Schein`;
+}

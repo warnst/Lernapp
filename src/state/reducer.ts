@@ -19,6 +19,9 @@ export type AppAction =
   | { type: 'set-unlock-all'; id: string; world: WorldId; value: boolean }
   | { type: 'reset-progress'; id: string }
   | { type: 'mark-celebrated'; id: string; key: string }
+  | { type: 'save-resume'; id: string; resume: NonNullable<Profile['resume']> }
+  | { type: 'record-part'; id: string; partId: string; wrong: number; hints: number }
+  | { type: 'complete-station'; id: string; world: WorldId; stationId: string; at: string }
   | { type: 'replace'; state: AppStateV2 };
 
 function cleanName(name: string | undefined): string | undefined {
@@ -98,6 +101,44 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
           ? profile
           : { ...profile, celebrated: [...profile.celebrated, action.key] },
       );
+    case 'save-resume':
+      return updateProfile(state, action.id, (profile) => ({ ...profile, resume: action.resume }));
+    case 'record-part':
+      return updateProfile(state, action.id, (profile) => ({
+        ...profile,
+        stats: {
+          ...profile.stats,
+          [action.partId]: { wrong: action.wrong, hints: action.hints, stufe: profile.stufe },
+        },
+      }));
+    case 'complete-station':
+      return updateProfile(state, action.id, (profile) => {
+        const { resume: _resume, ...rest } = profile;
+        const world = profile.worlds[action.world] ?? {
+          stations: {},
+          unlockAll: false,
+          bonusSolved: [],
+        };
+        const before = world.stations[action.stationId];
+        return {
+          ...rest,
+          worlds: {
+            ...profile.worlds,
+            [action.world]: {
+              ...world,
+              stations: {
+                ...world.stations,
+                [action.stationId]: {
+                  completed: true,
+                  completedAt: action.at,
+                  plays: (before?.plays ?? 0) + 1,
+                  stufe: profile.stufe,
+                },
+              },
+            },
+          },
+        };
+      });
     case 'replace':
       return action.state;
   }

@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { Link } from 'wouter';
 import styles from './Button.module.css';
 import { cx } from './cx';
@@ -9,7 +9,7 @@ function classes(variant: Variant, block: boolean, extra?: string): string {
   return cx(styles.button, styles[variant], block && styles.block, extra);
 }
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ComponentProps<'button'> {
   variant?: Variant;
   block?: boolean;
 }
