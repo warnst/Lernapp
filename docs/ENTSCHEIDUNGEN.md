@@ -63,3 +63,12 @@ Kurze Notizen zu Abweichungen und offenen Punkten der Spezifikation. Format: Dat
 - 2026-10-09 – Antworttypen `grid` und `code` sowie die Szenen `sequence`, `balance` und `clues` sind bis Phase 7 nur einfach dargestellt (Zahlen- und Symbolkarten). – Laut `docs/07` gehören sie zu Phase 7; Bucht-Station 4 und 5 werden dann vollständig.
 - 2026-10-09 – Neue Oberflächentexte ohne Wortlaut in den Docs: „Bezahlt mit“, „Geld“ (Szenen-Beschriftungen), „Zählen: n“ (Vorlesename der Zählhilfe), „Aufgabe n von m“ (Fortschritt für Screenreader). – Sachliche, kurze Beschriftungen.
 - 2026-10-09 – Der Zahlenstrahl steht unter 700 px in zwei Reihen (0–5, 6–10). Bei 360 px Breite sind die Felder etwa 50 px breit statt 56 px. – Sechs Felder à 56 px plus Abstände passen nicht in 328 px; die Höhe bleibt 56 px.
+
+## Phase 5
+
+- 2026-10-09 – Im Fundstück-Detail steht „Fundort: {Station}“ statt „Gefunden am {Station}“ (`docs/01` 5.8). – Viele Stationsnamen haben einen Artikel („Die Rätselbrücke“, „Das Muschelufer“); „Gefunden am Die Rätselbrücke“ wäre falsch.
+- 2026-10-09 – Das Angebot „Bonus-Rätsel“ auf dem Abschluss-Bildschirm und in der Stationskarte kommt mit Phase 7; die Glitzersteine in den Schätzen zählen schon `bonusSolved`. – Die Bonus-Rätsel selbst gehören zu Phase 7.
+- 2026-10-09 – Die Urkunden-Vorschau (`/schaetze/urkunde`) zeigt bis Phase 8 nur den Hinweis „Frag einen Erwachsenen, ob ihr sie ausdruckt.“ – Die Urkunde wird in Phase 8 (Druck) gestaltet.
+- 2026-10-09 – Der Nebel zieht einmalig über jeder neu freigeschalteten Station ab (`celebrated` mit „fog:<id>“), auch wenn Erwachsene alle Stationen freischalten. – Einfachste Regel ohne Sonderfälle.
+- 2026-10-09 – Neue Texte ohne Wortlaut in den Docs: Überschriften „Sterne“, „Fundstücke“, „Perlenkette“, „Glitzersteine“, „1 Perle / n Perlen“, „Noch nicht gefunden“ (Screenreader-Name nicht gefundener Fundstücke), „Ein neuer Stern“. – Die Docs nennen die Inhalte, aber keine Beschriftungen.
+- 2026-10-09 – Ein Test spielt jede Station über die Oberfläche mit richtigen Antworten durch (alle 9 Insel-Stationen, Bucht 1–4; Bucht 5 braucht das Zahlenschloss aus Phase 7). – Abnahme Phase 5.

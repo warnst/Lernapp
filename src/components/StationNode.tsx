@@ -13,12 +13,15 @@ export function StationNode({
   title,
   icon,
   state,
+  revealing = false,
   onSelect,
 }: {
   number: number;
   title: string;
   icon: string;
   state: StationNodeState;
+  /** Nebel zieht einmalig ab (docs/02 7) */
+  revealing?: boolean;
   onSelect: () => void;
 }) {
   return (
@@ -37,6 +40,7 @@ export function StationNode({
           <UiIcon name="stern" size={18} />
         </span>
       )}
+      {revealing && <Fog size={120} className={cx(styles.fog, styles.fogLeaving)} />}
       {state === 'locked' && (
         <>
           <Fog size={120} className={styles.fog} />

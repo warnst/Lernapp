@@ -103,6 +103,36 @@ export const UI = {
     unknownChild: 'Dieses Kind gibt es nicht mehr.',
   },
   placeholder: { text: 'Hier wird noch gebaut.', back: 'Zur Karte' },
+  /** Stationsabschluss und Finale (docs/01 5.6, docs/11) */
+  complete: {
+    toMap: 'Zurück zur Karte',
+    nextStation: 'Nächste Station',
+    starLabel: 'Ein neuer Stern',
+    finale: {
+      schatzinsel: 'Du hast die geheime Schatzinsel erkundet! Ich bin so stolz auf dich.',
+      'kleine-bucht': 'Du hast die kleine Bucht erkundet! Ich bin so stolz auf dich.',
+    } satisfies Record<WorldId, string>,
+    myTreasures: 'Meine Schätze ansehen',
+    finaleMap: 'Zur Karte',
+  },
+  /** Schätze (docs/01 5.8) */
+  treasures: {
+    title: 'Schätze',
+    worldTabs: { 'kleine-bucht': 'Kleine Bucht', schatzinsel: 'Schatzinsel' } satisfies Record<
+      WorldId,
+      string
+    >,
+    stars: 'Sterne',
+    findlings: 'Fundstücke',
+    unknown: 'Noch nicht gefunden',
+    foundAt: (title: string) => `Fundort: ${title}`,
+    pearls: 'Perlenkette',
+    pearlCount: (n: number) => (n === 1 ? '1 Perle' : `${String(n)} Perlen`),
+    gems: 'Glitzersteine',
+    gemCount: (n: number, total: number) => `Bonus-Rätsel: ${String(n)} von ${String(total)}`,
+    certificate: 'Meine Urkunde',
+    certificateHint: 'Frag einen Erwachsenen, ob ihr sie ausdruckt.',
+  },
   /** Spiel-Bildschirm (docs/01 5.4, 5.5, 6.2) */
   play: {
     pause: 'Pause',

@@ -7,6 +7,9 @@ import { ChildLayout } from '@/screens/ChildLayout';
 import { Placeholder } from '@/screens/Placeholder';
 import { Play } from '@/screens/Play';
 import { Setup } from '@/screens/Setup';
+import { StationComplete } from '@/screens/StationComplete';
+import { Treasures } from '@/screens/Treasures';
+import { CertificatePreview } from '@/screens/CertificatePreview';
 import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
 import { AppStateProvider } from '@/state/app-state';
@@ -26,7 +29,9 @@ function withNav(title: string) {
 }
 
 const PracticePage = withNav(UI.nav.practice);
-const TreasuresPage = withNav(UI.nav.treasures);
+function TreasuresPage() {
+  return <ChildLayout>{(profile) => <Treasures key={profile.id} profile={profile} />}</ChildLayout>;
+}
 
 /** Alle Routen aus docs/03, Abschnitt 3. Noch fehlende Seiten sind Platzhalter. */
 export function Routes() {
@@ -35,7 +40,7 @@ export function Routes() {
       <Route path="/" component={Home} />
       <Route path="/wer-spielt" component={WhoPlays} />
       <Route path="/station/:stationId/geschafft">
-        <Placeholder title={UI.nav.adventure} />
+        {(params) => <StationComplete stationId={params.stationId} />}
       </Route>
       <Route path="/station/:stationId/bonus">
         <Placeholder title={UI.nav.adventure} />
@@ -45,9 +50,7 @@ export function Routes() {
         <Placeholder title={UI.nav.practice} />
       </Route>
       <Route path="/ueben" component={PracticePage} />
-      <Route path="/schaetze/urkunde">
-        <Placeholder title={UI.nav.treasures} />
-      </Route>
+      <Route path="/schaetze/urkunde" component={CertificatePreview} />
       <Route path="/schaetze" component={TreasuresPage} />
       <Route path="/erwachsene/kind/:profileId">
         {(params) => (

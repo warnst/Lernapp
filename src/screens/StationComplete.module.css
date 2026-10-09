@@ -1,0 +1,132 @@
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 560px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4) calc(var(--space-6) + env(safe-area-inset-bottom));
+  overflow: hidden;
+  text-align: center;
+}
+
+.top {
+  display: flex;
+  align-self: stretch;
+  justify-content: flex-end;
+}
+
+.findling {
+  animation: pop 500ms cubic-bezier(0.2, 0.8, 0.2, 1.4) 300ms both;
+}
+
+.name {
+  font-size: calc(28px * var(--text-scale));
+}
+
+.text {
+  font-size: calc(20px * var(--text-scale));
+}
+
+.recap {
+  color: var(--ink-600);
+}
+
+.star {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  animation: fly 900ms ease-in-out 900ms both;
+  pointer-events: none;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-self: stretch;
+  margin-top: auto;
+}
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.piece {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation: fall 1.2s ease-in both;
+}
+
+.chest {
+  margin-top: var(--space-4);
+}
+
+.lid {
+  animation: open-lid 800ms cubic-bezier(0.3, 1.6, 0.5, 1) 300ms both;
+}
+
+.treasures {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.appear {
+  animation: pop 400ms ease-out both;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes fly {
+  from {
+    transform: translate(-50%, 0) scale(1.4);
+  }
+
+  to {
+    transform: translate(calc(50vw - 80px), -40vh) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes fall {
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100dvh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+@keyframes open-lid {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(-12deg) translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti,
+  .star {
+    display: none;
+  }
+}

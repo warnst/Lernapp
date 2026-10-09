@@ -78,9 +78,28 @@ export function WorldMap({ profile }: { profile: Profile }) {
     greetingText(profile, world.id, !profile.celebrated.includes(welcomeKey)),
   );
   const [showGreeting, setShowGreeting] = useState(true);
+  // Stationen, deren Nebel noch nicht abgezogen ist: einmalig animieren (celebrated „fog:<id>“)
+  const [revealing] = useState(
+    () =>
+      new Set(
+        stations
+          .filter(
+            (s, i) =>
+              i > 0 &&
+              isUnlocked(profile, stations, i) &&
+              !profile.celebrated.includes(`fog:${s.id}`),
+          )
+          .map((s) => s.id),
+      ),
+  );
   const [notice, showNotice] = useTimedFlag(NOTICE_MS);
   const [open, setOpen] = useState<Station | undefined>();
   const currentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    for (const id of revealing)
+      dispatch({ type: 'mark-celebrated', id: profile.id, key: `fog:${id}` });
+  }, [dispatch, profile.id, revealing]);
 
   useEffect(() => {
     dispatch({ type: 'mark-celebrated', id: profile.id, key: welcomeKey });
@@ -144,6 +163,7 @@ export function WorldMap({ profile }: { profile: Profile }) {
                 title={station.title}
                 icon={station.icon}
                 state={nodeState}
+                revealing={revealing.has(station.id)}
                 onSelect={() => {
                   if (nodeState === 'locked') showNotice();
                   else setOpen(station);

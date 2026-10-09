@@ -72,6 +72,17 @@
   pointer-events: none;
 }
 
+.fogLeaving {
+  animation: fog-away 1.2s ease-out 400ms both;
+}
+
+@keyframes fog-away {
+  to {
+    opacity: 0;
+    transform: scale(1.6) translateX(30px);
+  }
+}
+
 @keyframes pulse {
   50% {
     transform: scale(1.06);

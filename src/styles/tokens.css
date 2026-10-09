@@ -118,6 +118,13 @@
   --ill-note-10: #e9b3a6;
   --ill-note-20: #afc6e3;
   --ill-note-50: #ebc79a;
+  --ill-silhouette: #d5dade; /* noch nicht gefundene Fundstücke (docs/01, 5.8) */
+  --ill-pearl: #ece4d4; /* Perle, Perlmutt */
+  --ill-gem: #3cc4b4; /* Glitzerstein */
+  --ill-gem-dark: #1f948a;
+  --ill-gold-dark: #c99a22; /* Schattenfläche goldener Dinge (Krone, Schlösser) */
+  --ill-straw: #f2d27a; /* Strohhut */
+  --ill-bamboo: #b8d27a; /* Bambusflöte */
 }
 
 /* Im Druck nur Konturen: alle Illustrationsflächen werden weiß (docs/06) */
@@ -168,6 +175,13 @@
     --ill-note-10: var(--fill-main);
     --ill-note-20: var(--fill-main);
     --ill-note-50: var(--fill-main);
+    --ill-silhouette: var(--fill-main);
+    --ill-pearl: var(--fill-main);
+    --ill-gem: var(--fill-main);
+    --ill-gem-dark: var(--fill-main);
+    --ill-gold-dark: var(--fill-main);
+    --ill-straw: var(--fill-main);
+    --ill-bamboo: var(--fill-main);
 
     /* Münzen auf Arbeitsblättern nur als Kontur (docs/06) */
     --coin-copper: var(--fill-main);
