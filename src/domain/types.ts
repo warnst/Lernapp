@@ -49,7 +49,7 @@ export interface StufeConfig {
   maxStoryWords: number; // Generatoren verwerfen längere Texte
   practiceTopics: PracticeTopicId[];
   /** Rätselarten im Rätselturm (docs/12) */
-  tower: { types: TowerType[] };
+  tower: { types: TowerType[]; sudoku: SudokuConfig };
   riddles: {
     types: RiddleType[];
     moneyShare: number; // 0..1 Anteil Geld-Rätsel
@@ -113,6 +113,29 @@ export type TowerType =
   | 'quiz'
   | 'riddles';
 
+/** Sudoku-Arten (docs/12 3.1): Bilder, Zahlen 4×4, Münzen, Zahlen 6×6, Rechen-Sudoku */
+export type SudokuKind = 'bilder' | 'zahlen4' | 'muenzen' | 'zahlen6' | 'rechnen';
+
+export interface SudokuConfig {
+  /** Arten der Stufe mit leeren Feldern für leicht, mittel, knifflig */
+  kinds: { kind: SudokuKind; empties: [number, number, number] }[];
+  /** zuschaltbare Merkzahlen */
+  notes: boolean;
+}
+
+/** Ein angefangenes Sudoku; bleibt, bis es gelöst ist oder ein neues gewählt wird. */
+export interface SudokuSave {
+  kind: SudokuKind;
+  stars: 1 | 2 | 3;
+  seed: number;
+  /** Einträge des Kindes je Feld, 0 = leer (vorgegebene Felder bleiben 0) */
+  entries: number[];
+  /** Felder, die beim Prüfen stimmten (fest) */
+  locked: number[];
+  /** Merkzahlen je Feld als Bitmaske (Bit v-1 für Wert v) */
+  notes: number[];
+}
+
 export interface TowerProgress {
   /** gelöste Rätsel bzw. Runden insgesamt (je eine Lampe) */
   lamps: number;
@@ -124,6 +147,8 @@ export interface TowerProgress {
   favorites: string[];
   /** Kikos Kleiderschrank und Nest (docs/12 4.1); fehlt, bis die erste Truhe geöffnet wurde */
   wardrobe?: Wardrobe;
+  /** angefangenes Sudoku */
+  sudoku?: SudokuSave;
 }
 
 /** Plätze an Kiko (docs/12 4.1) */

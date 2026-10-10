@@ -189,6 +189,74 @@ export const UI = {
     nestLabel: 'Kikos Nest im Turm',
     special: 'Ein besonderes Teil!',
   },
+  /** Sudoku im Rätselturm (docs/12 3.1, 5) */
+  sudoku: {
+    title: 'Sudoku',
+    /** Regel je Art: „jedes Bild“, „jede Zahl“, „jede Münze“ */
+    rule: (each: string) =>
+      `In jeder Reihe, jeder Spalte und jedem Kasten kommt ${each} genau einmal vor.`,
+    each: { bilder: 'jedes Bild', zahlen: 'jede Zahl', muenzen: 'jede Münze' },
+    cages: 'Die kleine Zahl in der Ecke ist die Summe aller Zahlen in ihrem Kasten.',
+    first: (one: string) => `Tipp hier und such ${one} aus!`,
+    one: { bilder: 'ein Bild', zahlen: 'eine Zahl', muenzen: 'eine Münze' },
+    kinds: {
+      bilder: 'Bilder',
+      zahlen4: 'Zahlen',
+      muenzen: 'Münzen',
+      zahlen6: 'Großes Sudoku',
+      rechnen: 'Rechen-Sudoku',
+    },
+    chooseKind: 'Welches Sudoku?',
+    chooseStars: 'Wie knifflig?',
+    stars: ['leicht', 'mittel', 'knifflig'],
+    starsLabel: (name: string, n: number) =>
+      `${name}, ${String(n)} ${n === 1 ? 'Stern' : 'Sterne'}`,
+    resume: 'Dein Sudoku wartet auf dich!',
+    resumeButton: 'Weiterspielen',
+    newPuzzle: 'Neues Rätsel',
+    board: 'Sudoku-Feld',
+    pad: 'Auswahl',
+    erase: 'Radiergummi',
+    notes: 'Notizen',
+    check: 'Prüfen',
+    pickCell: 'Tippe zuerst ein leeres Feld an.',
+    partly: 'Die Felder mit ✓ stimmen schon. Schau dir die anderen noch einmal an.',
+    cell: (row: number, col: number, value: string | null) =>
+      `Reihe ${String(row)}, Feld ${String(col)}: ${value ?? 'leer'}`,
+    cellFixed: (row: number, col: number, value: string) =>
+      `Reihe ${String(row)}, Feld ${String(col)}: ${value}, fest`,
+    cage: (sum: number) => `Summe ${String(sum)}`,
+    /** Tipp 2: ein Feld, das sich sicher füllen lässt */
+    safe: {
+      last: {
+        row: (one: string) => `In dieser Reihe fehlt nur noch ${one}.`,
+        col: (one: string) => `In dieser Spalte fehlt nur noch ${one}.`,
+        box: (one: string) => `In diesem Kasten fehlt nur noch ${one}.`,
+      },
+      cage: 'Schau auf die kleine Zahl in der Ecke. Was fehlt noch bis dahin?',
+      single: 'Schau auf die Reihe, die Spalte und den Kasten. Hier passt nur noch eins.',
+      hidden: {
+        row: (name: string) => `In dieser Reihe passt ${name} nur in dieses Feld.`,
+        col: (name: string) => `In dieser Spalte passt ${name} nur in dieses Feld.`,
+        box: (name: string) => `In diesem Kasten passt ${name} nur in dieses Feld.`,
+      },
+    },
+    /** Namen mit Artikel für die Tipps */
+    names: {
+      bilder: ['die Muschel', 'der Stern', 'der Fisch', 'der Krebs'],
+      muenzen: ['die 1-Cent-Münze', 'die 2-Cent-Münze', 'die 5-Cent-Münze', 'die 10-Cent-Münze'],
+      number: (n: number) => `die ${String(n)}`,
+    },
+    /** Namen ohne Artikel für Felder und Knöpfe */
+    labels: {
+      bilder: ['Muschel', 'Stern', 'Fisch', 'Krebs'],
+      muenzen: ['1 Cent', '2 Cent', '5 Cent', '10 Cent'],
+    },
+    showSolution: "So geht's",
+    solution: 'So sieht das fertige Sudoku aus. Beim nächsten klappt es bestimmt!',
+    tricky: 'Wow, das war ein kniffliges!',
+    effort: ['Du hast nicht aufgegeben!', 'Das war knifflig, und du hast es geschafft.'],
+  },
   /** Kikos Witzekiste (docs/12 4.2) */
   jokes: {
     box: 'Kikos Witzekiste',

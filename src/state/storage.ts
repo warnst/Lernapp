@@ -122,6 +122,26 @@ function isWardrobe(value: unknown): boolean {
   );
 }
 
+const SUDOKU_KINDS: readonly string[] = ['bilder', 'zahlen4', 'muenzen', 'zahlen6', 'rechnen'];
+
+function isCountArray(value: unknown): boolean {
+  return Array.isArray(value) && value.every(isCount);
+}
+
+function isSudokuSave(value: unknown): boolean {
+  if (value === undefined) return true;
+  return (
+    isObject(value) &&
+    typeof value.kind === 'string' &&
+    SUDOKU_KINDS.includes(value.kind) &&
+    (value.stars === 1 || value.stars === 2 || value.stars === 3) &&
+    isCount(value.seed) &&
+    isCountArray(value.entries) &&
+    isCountArray(value.locked) &&
+    isCountArray(value.notes)
+  );
+}
+
 function isTower(value: unknown): boolean {
   if (value === undefined) return true;
   return (
@@ -131,7 +151,8 @@ function isTower(value: unknown): boolean {
     Object.entries(value.solved).every(([type, n]) => TOWER_TYPES.includes(type) && isCount(n)) &&
     isStringArray(value.jokes) &&
     isStringArray(value.favorites) &&
-    isWardrobe(value.wardrobe)
+    isWardrobe(value.wardrobe) &&
+    isSudokuSave(value.sudoku)
   );
 }
 

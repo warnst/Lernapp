@@ -4,6 +4,7 @@ import type {
   Profile,
   Stufe,
   KikoSlot,
+  SudokuSave,
   NestSlot,
   TowerProgress,
   TowerType,
@@ -38,6 +39,8 @@ export type AppAction =
   | { type: 'add-pearl'; id: string }
   | { type: 'solve-bonus'; id: string; world: WorldId; stationId: string }
   | { type: 'tower-solved'; id: string; kind: TowerType }
+  /** angefangenes Sudoku merken bzw. verwerfen (null) */
+  | { type: 'sudoku-save'; id: string; save: SudokuSave | null }
   | { type: 'joke-heard'; id: string; jokeId: string }
   | { type: 'joke-favorite'; id: string; jokeId: string }
   /** Teil aus einer Truhe wählen (zählt die Truhe als geöffnet) und gleich anziehen */
@@ -158,14 +161,24 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
       });
     case 'tower-solved':
       return updateProfile(state, action.id, (profile) => {
-        const tower = towerOf(profile);
+        const { sudoku: saved, ...tower } = towerOf(profile);
         return {
           ...profile,
           tower: {
             ...tower,
+            // ein gelöstes Sudoku ist kein angefangenes mehr
+            ...(action.kind === 'sudoku' || !saved ? {} : { sudoku: saved }),
             lamps: tower.lamps + 1,
             solved: { ...tower.solved, [action.kind]: (tower.solved[action.kind] ?? 0) + 1 },
           },
+        };
+      });
+    case 'sudoku-save':
+      return updateProfile(state, action.id, (profile) => {
+        const { sudoku: _old, ...tower } = towerOf(profile);
+        return {
+          ...profile,
+          tower: action.save ? { ...tower, sudoku: action.save } : tower,
         };
       });
     case 'joke-heard':

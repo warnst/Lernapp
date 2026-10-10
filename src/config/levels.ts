@@ -34,7 +34,10 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'reicht-das-geld',
       'raetsel',
     ],
-    tower: { types: ['riddles'] },
+    tower: {
+      types: ['sudoku', 'riddles'],
+      sudoku: { kinds: [{ kind: 'bilder', empties: [4, 6, 8] }], notes: false },
+    },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'code'],
       moneyShare: 0.3,
@@ -92,7 +95,17 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'sachaufgaben',
       'raetsel',
     ],
-    tower: { types: ['riddles'] },
+    tower: {
+      types: ['sudoku', 'riddles'],
+      sudoku: {
+        kinds: [
+          { kind: 'bilder', empties: [6, 8, 10] },
+          { kind: 'zahlen4', empties: [6, 8, 10] },
+          { kind: 'muenzen', empties: [6, 8, 10] },
+        ],
+        notes: false,
+      },
+    },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.5,
@@ -166,7 +179,17 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'knobeln',
       'raetsel',
     ],
-    tower: { types: ['riddles'] },
+    tower: {
+      types: ['sudoku', 'riddles'],
+      sudoku: {
+        kinds: [
+          { kind: 'zahlen4', empties: [8, 10, 11] },
+          { kind: 'muenzen', empties: [8, 10, 11] },
+          { kind: 'zahlen6', empties: [10, 13, 16] },
+        ],
+        notes: true,
+      },
+    },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.6,
@@ -251,7 +274,16 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'knobeln',
       'raetsel',
     ],
-    tower: { types: ['riddles'] },
+    tower: {
+      types: ['sudoku', 'riddles'],
+      sudoku: {
+        kinds: [
+          { kind: 'zahlen6', empties: [14, 18, 22] },
+          { kind: 'rechnen', empties: [10, 12, 14] },
+        ],
+        notes: true,
+      },
+    },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.6,

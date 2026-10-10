@@ -278,4 +278,25 @@ describe('Rätselturm (docs/12)', () => {
     });
     expect(wardrobe()?.kiko).toEqual({ kopf: 'krone' });
   });
+
+  it('Sudoku merken, verwerfen und beim Lösen löschen', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    const save = {
+      kind: 'zahlen4' as const,
+      stars: 1 as const,
+      seed: 3,
+      entries: [],
+      locked: [],
+      notes: [],
+    };
+    state = appReducer(state, { type: 'sudoku-save', id: 'p1', save });
+    expect(state.profiles[0]?.tower?.sudoku).toEqual(save);
+    state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'riddles' });
+    expect(state.profiles[0]?.tower?.sudoku).toEqual(save);
+    state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'sudoku' });
+    expect(state.profiles[0]?.tower).not.toHaveProperty('sudoku');
+    state = appReducer(state, { type: 'sudoku-save', id: 'p1', save });
+    state = appReducer(state, { type: 'sudoku-save', id: 'p1', save: null });
+    expect(state.profiles[0]?.tower).not.toHaveProperty('sudoku');
+  });
 });
