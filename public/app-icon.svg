@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- App-Icon (docs/03 11): Schatztruhe auf türkisem Grund, Kikos Schopf dahinter. Quelle für die PNGs (npm run icons). -->
+  <rect width="512" height="512" fill="#0F7F88"/>
+  <circle cx="256" cy="270" r="170" fill="#2BB5A0"/>
+  <g stroke="#1F2D3A" stroke-width="12" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Kikos Schopf -->
+    <path d="M214 196 C196 140 206 104 226 88 C238 130 244 160 246 196 Z" fill="#FF9E3D"/>
+    <path d="M246 196 C244 132 256 92 280 76 C288 124 284 166 274 196 Z" fill="#FFC94A"/>
+    <path d="M274 196 C286 150 306 124 330 118 C326 154 312 180 296 200 Z" fill="#FF8A65"/>
+    <!-- Truhe -->
+    <path d="M136 250 C136 196 180 170 256 170 C332 170 376 196 376 250 V270 H136 Z" fill="#E8C39A"/>
+    <rect x="136" y="270" width="240" height="124" rx="16" fill="#E8C39A"/>
+    <path d="M136 300 H376 M196 270 V394 M316 270 V394" fill="none"/>
+    <rect x="234" y="252" width="44" height="58" rx="10" fill="#FFC94A"/>
+    <path d="M256 274 V290" fill="none"/>
+  </g>
+</svg>

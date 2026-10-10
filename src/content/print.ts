@@ -30,6 +30,8 @@ export const PRINT = {
   preview: 'Vorschau',
   empty: 'Wählen Sie oben aus, was gedruckt werden soll.',
   print: 'Drucken',
+  update: 'Neue Version verfügbar – neu laden',
+  installHint: 'Zum Installieren: Teilen → Zum Home-Bildschirm',
   iosHint:
     'Drucken klappt am besten im Browser. Öffne die Seite in Safari und tippe auf Teilen → Drucken.',
 

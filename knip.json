@@ -2,5 +2,5 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "project": ["src/**/*.{ts,tsx}", "tests/**/*.ts"],
   "ignoreExportsUsedInFile": { "interface": true, "type": true },
-  "ignoreDependencies": ["vite-plugin-pwa"]
+  "entry": ["scripts/*.mjs"]
 }

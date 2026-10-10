@@ -7,9 +7,12 @@ import '@/styles/tokens.css';
 import '@/styles/global.css';
 import '@/styles/print.css';
 import { App } from '@/App';
+import { startServiceWorker } from '@/state/pwa';
 
 const root = document.getElementById('root');
 if (root === null) throw new Error('Element #root fehlt in index.html');
+
+startServiceWorker();
 
 createRoot(root).render(
   <StrictMode>

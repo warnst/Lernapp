@@ -20,6 +20,7 @@ import {
 } from '@/print/job';
 import { PrintDocument } from '@/print/PrintDocument';
 import { useAppState } from '@/state/context';
+import { applyUpdate, useUpdateWaiting } from '@/state/pwa';
 import styles from './Print.module.css';
 
 const STUFE_IDS = Object.values(STUFEN).map((cfg) => cfg.id);
@@ -28,10 +29,13 @@ function newSeed(): number {
   return 1 + Math.floor(Math.random() * 9999);
 }
 
-/** iOS im installierten Modus: window.print() tut dort oft nichts (docs/06 1). */
-function iosStandalone(): boolean {
+const IOS = /iPhone|iPad|iPod/;
+
+/** iOS: installiert (Home-Bildschirm) oder im Browser? */
+function iosMode(): 'standalone' | 'browser' | null {
+  if (!IOS.test(navigator.userAgent)) return null;
   const nav = navigator as Navigator & { standalone?: boolean };
-  return nav.standalone === true && /iPhone|iPad|iPod/.test(navigator.userAgent);
+  return nav.standalone === true ? 'standalone' : 'browser';
 }
 
 function Check({
@@ -63,6 +67,7 @@ function Check({
 /** Druckseite im Erwachsenen-Bereich (docs/06 1). Die Auswahl steht in der URL. */
 export function Print() {
   const { state } = useAppState();
+  const updateWaiting = useUpdateWaiting();
   const [, navigate] = useLocation();
   const search = useSearch();
   const options = useMemo(
@@ -309,7 +314,14 @@ export function Print() {
           {options.stufe === 1 && <p className={styles.muted}>{PRINT.sizeLargeFixed}</p>}
         </section>
 
-        {iosStandalone() && <p className={styles.hint}>{PRINT.iosHint}</p>}
+        {/* iOS: window.print() tut im installierten Modus oft nichts (docs/06 1, docs/03 11) */}
+        {iosMode() === 'standalone' && <p className={styles.hint}>{PRINT.iosHint}</p>}
+        {iosMode() === 'browser' && <p className={styles.hint}>{PRINT.installHint}</p>}
+        {updateWaiting && (
+          <Button variant="ghost" onClick={applyUpdate}>
+            {PRINT.update}
+          </Button>
+        )}
 
         <div className={styles.actions}>
           <Button
