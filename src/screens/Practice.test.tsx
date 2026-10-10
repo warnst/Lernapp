@@ -1,5 +1,5 @@
 import { screen, within } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { AppStateV2 } from '@/domain/types';
 import { buildRound } from '@/practice/round';
 import { STORAGE_KEY } from '@/state/storage';
@@ -11,7 +11,46 @@ function saved(storage: Storage): AppStateV2 {
   return JSON.parse(storage.getItem(STORAGE_KEY) ?? '{}') as AppStateV2;
 }
 
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
+function stubSpeech() {
+  const speak = vi.fn();
+  vi.stubGlobal('speechSynthesis', {
+    speaking: false,
+    speak,
+    cancel: vi.fn(),
+    getVoices: () => [],
+  });
+  vi.stubGlobal(
+    'SpeechSynthesisUtterance',
+    class {
+      text: string;
+      constructor(text: string) {
+        this.text = text;
+      }
+    },
+  );
+  return speak;
+}
+
 describe('Üben (docs/01 5.7)', () => {
+  it('liest die Aufgabe nach der Einstellung der Eltern vor', () => {
+    const speak = stubSpeech();
+    const { unmount } = renderApp(
+      '/ueben/spiel?thema=rueckgeld&schwer=0&anzahl=5',
+      makeState({ profiles: [makeProfile({ stufe: 3, readAloud: true })] }),
+    );
+    expect(speak).toHaveBeenCalledOnce();
+    unmount();
+    renderApp(
+      '/ueben/spiel?thema=mengen-zahlen&schwer=0&anzahl=5',
+      makeState({ profiles: [makeProfile({ stufe: 1, readAloud: false })] }),
+    );
+    expect(speak).toHaveBeenCalledOnce();
+  });
+
   it('zeigt die Themen der Stufe und startet eine Runde', async () => {
     const { user, storage, location } = renderApp(
       '/ueben',

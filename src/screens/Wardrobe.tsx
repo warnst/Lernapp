@@ -3,7 +3,6 @@ import { Button } from '@/components/Button';
 import { cx } from '@/components/cx';
 import { Screen } from '@/components/Screen';
 import { SpeechBubble } from '@/components/SpeechBubble';
-import { STUFEN } from '@/config/levels';
 import { KIKO_ITEMS, KIKO_SLOTS, NEST_ITEMS, NEST_SLOTS } from '@/content/outfits';
 import { UI } from '@/content/ui';
 import type { KikoSlot, NestSlot, Profile } from '@/domain/types';
@@ -12,6 +11,7 @@ import { Kiko } from '@/illustrations/Kiko';
 import { KikoItemIcon } from '@/illustrations/KikoItemIcon';
 import { NestItemIcon, NestRoom } from '@/illustrations/NestRoom';
 import { toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf, wardrobeOf } from '@/state/reducer';
 import { surpriseOutfit } from '@/state/wardrobe';
@@ -29,7 +29,7 @@ function lampsToNextChest(lamps: number): number {
 /** Kikos Kleiderschrank und Nest (docs/12 4.1): antippen zum An- und Ausziehen. */
 export function Wardrobe({ profile }: { profile: Profile }) {
   const { dispatch } = useAppState();
-  const readAloud = STUFEN[profile.stufe].autoRead;
+  const readAloud = autoReadOf(profile);
   const tower = towerOf(profile);
   const wardrobe = wardrobeOf(tower);
   const [tab, setTab] = useState<Tab>('kiko');

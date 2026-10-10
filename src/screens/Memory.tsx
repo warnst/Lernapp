@@ -14,6 +14,7 @@ import { ItemIcon } from '@/illustrations/ItemIcon';
 import { Kiko } from '@/illustrations/Kiko';
 import { type MemoryCard, type MemoryFace, memoryDeck } from '@/practice/tower/memory';
 import { stopSpeaking, toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf } from '@/state/reducer';
 import styles from './Memory.module.css';
@@ -98,7 +99,7 @@ function Board({
 
   const say = (text: string) => {
     setLine(text);
-    if (cfg.autoRead) {
+    if (autoReadOf(profile)) {
       stopSpeaking();
       toggleSpeak(text);
     }
@@ -106,7 +107,7 @@ function Board({
 
   const flip = (card: MemoryCard) => {
     if (open.length >= 2 || open.includes(card.id) || found.includes(card.pair)) return;
-    if (cfg.autoRead) {
+    if (autoReadOf(profile)) {
       stopSpeaking();
       toggleSpeak(faceLabel(card.face));
     }
@@ -201,7 +202,6 @@ function Board({
 /** Adresse `/raetsel/memory` */
 export function Memory({ profile }: { profile: Profile }) {
   const { state } = useAppState();
-  const cfg = STUFEN[profile.stufe];
   const [players, setPlayers] = useState<Player[] | null>(null);
   const [choosing, setChoosing] = useState(false);
   const [done, setDone] = useState<{ before: number; praise: string } | null>(null);
@@ -235,7 +235,7 @@ export function Memory({ profile }: { profile: Profile }) {
     );
   }
   const read = (text: string) => {
-    if (cfg.autoRead) toggleSpeak(text);
+    if (autoReadOf(profile)) toggleSpeak(text);
   };
   return (
     <Screen title={UI.memory.title}>

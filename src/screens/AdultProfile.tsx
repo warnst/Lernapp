@@ -10,7 +10,7 @@ import { WORLDS } from '@/content/worlds';
 import { AvatarIllustration } from '@/illustrations/AvatarIllustration';
 import { StufeIcon } from '@/illustrations/StufeIcon';
 import { useAppState } from '@/state/context';
-import { isCompleted, worldOf } from '@/state/progress';
+import { autoReadOf, isCompleted, worldOf } from '@/state/progress';
 import styles from './AdultProfile.module.css';
 
 type Confirm = 'reset' | 'delete' | undefined;
@@ -98,6 +98,26 @@ export function AdultProfile({ profileId }: { profileId: string }) {
           ))}
         </div>
         <p className={styles.muted}>{UI.stufen[profile.stufe]}</p>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.heading}>{UI.adults.readAloud}</h2>
+        <div className={styles.toggle}>
+          {[true, false].map((value) => (
+            <button
+              key={String(value)}
+              type="button"
+              className={choice.option}
+              aria-pressed={autoReadOf(profile) === value}
+              onClick={() => {
+                dispatch({ type: 'update-profile', id: profile.id, readAloud: value });
+              }}
+            >
+              {value ? UI.adults.readAloudOn : UI.adults.readAloudOff}
+            </button>
+          ))}
+        </div>
+        <p className={styles.muted}>{UI.adults.readAloudHint(STUFEN[profile.stufe].autoRead)}</p>
       </section>
 
       <section className={styles.section}>

@@ -107,6 +107,11 @@ export const UI = {
     storageNote:
       'Der Fortschritt wird nur auf diesem Gerät gespeichert. Mit ‚Sicherung herunterladen‘ können Sie ihn aufbewahren.',
     version: (v: string) => `App-Version: ${v}`,
+    readAloud: 'Vorlesen',
+    readAloudOn: 'An',
+    readAloudOff: 'Aus',
+    readAloudHint: (stufeDefault: boolean) =>
+      `Liest Geschichten, Fragen und Kikos Antworten automatisch vor. Ohne Einstellung ist es auf dieser Stufe ${stufeDefault ? 'an' : 'aus'}. Die Lautsprecher-Taste oben bei jeder Aufgabe geht immer.`,
     back: 'Zurück zum Spiel',
     stufe: 'Stufe',
     name: 'Name',

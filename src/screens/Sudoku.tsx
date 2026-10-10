@@ -12,6 +12,7 @@ import { nextSafe, type SafeStep, units } from '@/domain/sudoku';
 import type { Profile, Stufe, SudokuKind, SudokuSave } from '@/domain/types';
 import { generateSudoku, type SudokuPuzzle } from '@/practice/tower/sudoku';
 import { stopSpeaking, toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf } from '@/state/reducer';
 import styles from './Sudoku.module.css';
@@ -122,7 +123,7 @@ function Play({
   const say = (text: string, nextPose: KikoPose = 'hallo') => {
     setLine(text);
     setPose(nextPose);
-    if (cfg.autoRead) {
+    if (autoReadOf(profile)) {
       stopSpeaking();
       toggleSpeak(text);
     }
@@ -340,7 +341,7 @@ function Start({ profile, onStart }: { profile: Profile; onStart: (save: SudokuS
                 aria-pressed={k === chosen}
                 onClick={() => {
                   setKind(k);
-                  if (cfg.autoRead) toggleSpeak(UI.sudoku.kinds[k]);
+                  if (autoReadOf(profile)) toggleSpeak(UI.sudoku.kinds[k]);
                 }}
               >
                 <KindPreview kind={k} />

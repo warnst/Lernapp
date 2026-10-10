@@ -52,7 +52,7 @@ export function AnswerArea({
   }, [onPending]);
 
   const answer = part.answer;
-  const readOnTap = config.id === 1;
+  const readOnTap = config.id === 1 && config.autoRead;
   switch (answer.type) {
     case 'choice':
       return (

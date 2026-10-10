@@ -9,6 +9,7 @@ import { UI } from '@/content/ui';
 import { mulberry32, pick } from '@/domain/random';
 import type { Profile } from '@/domain/types';
 import { stopSpeaking, toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf } from '@/state/reducer';
 import styles from './Dots.module.css';
@@ -46,7 +47,7 @@ function Play({ profile, onSolved }: { profile: Profile; onSolved: () => void })
     if (next >= picture.points.length) {
       const text = UI.dots.done(picture.name);
       setLine(text);
-      if (cfg.autoRead) {
+      if (autoReadOf(profile)) {
         stopSpeaking();
         toggleSpeak(text);
       }

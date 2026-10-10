@@ -14,6 +14,7 @@ import {
   shadowRound,
 } from '@/practice/tower/choice-riddles';
 import { toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf } from '@/state/reducer';
 import styles from './ChoiceRiddles.module.css';
@@ -120,7 +121,7 @@ export function Quiz({ profile }: { profile: Profile }) {
     return <Round profile={profile} kind="quiz" makeTasks={makeTasks} onFinished={onFinished} />;
   }
   const choose = (next: QuizTopic | null, name: string) => {
-    if (cfg.autoRead) toggleSpeak(name);
+    if (autoReadOf(profile)) toggleSpeak(name);
     setTopic(next);
   };
   return (

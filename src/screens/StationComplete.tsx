@@ -2,7 +2,6 @@ import { type CSSProperties, useState } from 'react';
 import { Redirect } from 'wouter';
 import { Button, LinkButton } from '@/components/Button';
 import { JokeBox } from '@/components/JokeBox';
-import { STUFEN } from '@/config/levels';
 import { SpeechBubble } from '@/components/SpeechBubble';
 import { StarPill } from '@/components/StarPill';
 import { UI } from '@/content/ui';
@@ -13,7 +12,7 @@ import { FindlingIcon } from '@/illustrations/FindlingIcon';
 import { Kiko } from '@/illustrations/Kiko';
 import { Star } from '@/illustrations/Star';
 import { useAppState } from '@/state/context';
-import { activeProfile, isCompleted, starCount, worldOf } from '@/state/progress';
+import { autoReadOf, activeProfile, isCompleted, starCount, worldOf } from '@/state/progress';
 import styles from './StationComplete.module.css';
 
 const CONFETTI_COLORS = ['var(--sun-400)', 'var(--sea-500)', 'var(--coral-400)', 'var(--palm-600)'];
@@ -131,7 +130,7 @@ function Complete({
         )}
       </div>
       <BonusOffer profile={profile} station={station} />
-      <JokeBox profile={profile} readAloud={STUFEN[profile.stufe].autoRead} startOpen={false} />
+      <JokeBox profile={profile} readAloud={autoReadOf(profile)} startOpen={false} />
     </main>
   );
 }

@@ -187,6 +187,7 @@ function isProfile(value: unknown): value is Profile {
     typeof value.avatar === 'string' &&
     (AVATAR_IDS as readonly string[]).includes(value.avatar) &&
     isStufe(value.stufe) &&
+    (value.readAloud === undefined || typeof value.readAloud === 'boolean') &&
     typeof value.createdAt === 'string' &&
     isObject(value.worlds) &&
     Object.entries(value.worlds).every(
@@ -223,7 +224,7 @@ export function parseState(raw: unknown): AppStateV2 | null {
 function repairProfile(value: unknown): Profile | null {
   if (isProfile(value)) return value;
   if (!isObject(value)) return null;
-  const { resume: _resume, tower, ...rest } = value;
+  const { resume: _resume, tower, readAloud, ...rest } = value;
   const practice = value.practice;
   const pearls = isObject(practice) && isCount(practice.pearls) ? practice.pearls : 0;
   const towers = isObject(tower)
@@ -239,6 +240,7 @@ function repairProfile(value: unknown): Profile | null {
     practice: isPractice(practice) ? practice : { pearls },
     celebrated: isStringArray(value.celebrated) ? value.celebrated : [],
     stats: {},
+    ...(typeof readAloud === 'boolean' ? { readAloud } : {}),
     ...(repairedTower ? { tower: JSON.parse(JSON.stringify(repairedTower)) as unknown } : {}),
   };
   return isProfile(candidate) ? candidate : null;

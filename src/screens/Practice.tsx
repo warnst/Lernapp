@@ -9,6 +9,7 @@ import { ItemIcon } from '@/illustrations/ItemIcon';
 import { hasTopic, shiftStufe } from '@/practice/round';
 import { TOPIC_FALLBACK, TOPIC_ICON, TOPIC_ORDER } from '@/practice/topics';
 import { toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import styles from './Practice.module.css';
 
@@ -42,7 +43,7 @@ export function Practice({ profile }: { profile: Profile }) {
   const { dispatch } = useAppState();
   const [, navigate] = useLocation();
   const params = new URLSearchParams(useSearch());
-  const readAloud = STUFEN[profile.stufe].autoRead;
+  const readAloud = autoReadOf(profile);
   const short = profile.stufe <= 2;
   const topics = availableTopics(profile.stufe);
   const [topic, setTopic] = useState(() => initialTopic(profile, params.get('thema')));

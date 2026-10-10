@@ -12,6 +12,7 @@ import type { Profile } from '@/domain/types';
 import { CipherSymbol } from '@/illustrations/CipherSymbol';
 import { cipherKey, cipherLetters } from '@/practice/tower/cipher';
 import { stopSpeaking, toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf } from '@/state/reducer';
 import styles from './Cipher.module.css';
@@ -47,7 +48,6 @@ export function CipherPuzzle({
   numbers?: boolean;
   onSolved: () => void;
 }) {
-  const cfg = STUFEN[profile.stufe];
   const letters = useMemo(() => cipherLetters(message), [message]);
   const keys = useMemo(
     () => cipherKey(message, seed, numbers, UI.cipher.symbolNames.length),
@@ -67,7 +67,7 @@ export function CipherPuzzle({
   const say = (text: string, nextPose: KikoPose = 'hallo') => {
     setLine(text);
     setPose(nextPose);
-    if (cfg.autoRead) {
+    if (autoReadOf(profile)) {
       stopSpeaking();
       toggleSpeak(text);
     }

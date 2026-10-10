@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { WORLDS } from '@/content/worlds';
 import {
   activeProfile,
+  autoReadOf,
   canResume,
   currentStation,
   isUnlocked,
@@ -29,6 +30,13 @@ describe('progress', () => {
   it('Stufe 1 spielt in der Bucht, sonst auf der Insel', () => {
     expect(worldOf(makeProfile({ stufe: 1 }))).toBe('kleine-bucht');
     expect(worldOf(makeProfile({ stufe: 3 }))).toBe('schatzinsel');
+  });
+
+  it('liest wie die Stufe vor, außer die Eltern haben es eingestellt', () => {
+    expect(autoReadOf(makeProfile({ stufe: 1 }))).toBe(true);
+    expect(autoReadOf(makeProfile({ stufe: 3 }))).toBe(false);
+    expect(autoReadOf(makeProfile({ stufe: 1, readAloud: false }))).toBe(false);
+    expect(autoReadOf(makeProfile({ stufe: 3, readAloud: true }))).toBe(true);
   });
 
   it('schaltet der Reihe nach frei', () => {

@@ -5,11 +5,11 @@ import { FreshItems } from '@/components/FreshItems';
 import { JokeBox } from '@/components/JokeBox';
 import { Screen } from '@/components/Screen';
 import { SpeechBubble } from '@/components/SpeechBubble';
-import { STUFEN } from '@/config/levels';
 import { UI } from '@/content/ui';
 import type { Profile } from '@/domain/types';
 import { floorCompleted, floorInfo } from '@/domain/tower';
 import { Tower as TowerArt } from '@/illustrations/Tower';
+import { autoReadOf } from '@/state/progress';
 import { towerOf } from '@/state/reducer';
 import { pendingChests } from '@/state/wardrobe';
 import styles from './Tower.module.css';
@@ -30,7 +30,7 @@ export function TowerDone({
   const lamps = towerOf(profile).lamps;
   const { floors, lit, size } = floorInfo(lamps);
   const newFloor = floorCompleted(before, lamps);
-  const readAloud = STUFEN[profile.stufe].autoRead;
+  const readAloud = autoReadOf(profile);
   // beim Öffnen gemerkt, damit die Truhe nach der Wahl nicht sofort verschwindet
   const [chest, setChest] = useState(() => pendingChests(profile) > 0);
   return (

@@ -139,6 +139,17 @@ describe('Kind bearbeiten', () => {
     expect(screen.getByRole('button', { name: /Oktopus/ })).toHaveAttribute('aria-pressed', 'true');
   });
 
+  it('schaltet das Vorlesen je Kind ein und aus', async () => {
+    const { user, storage } = renderApp('/erwachsene/kind/p2', state);
+    await openGate(user);
+    // Stufe 1 liest ohne Einstellung vor
+    expect(screen.getByRole('button', { name: 'An' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByText(/auf dieser Stufe an/)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Aus' }));
+    expect(saved(storage).profiles[1]).toMatchObject({ readAloud: false });
+    expect(screen.getByRole('button', { name: 'Aus' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('nach der ganzen Bucht schlägt der Bereich Stufe Seestern vor (docs/11)', async () => {
     const bay = ['muschelufer', 'muenzquelle', 'kikos-laden', 'kruemels-wippe', 'muscheltruhe'];
     const done = { completed: true, plays: 1, stufe: 1 as const };

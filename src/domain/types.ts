@@ -102,6 +102,8 @@ export interface Profile {
   name?: string; // optional, nur lokal
   avatar: AvatarId;
   stufe: Stufe;
+  /** Automatisch vorlesen; fehlt → wie die Stufe es vorsieht (levels.ts) */
+  readAloud?: boolean;
   createdAt: string;
   worlds: Partial<Record<WorldId, WorldProgress>>;
   resume?: {

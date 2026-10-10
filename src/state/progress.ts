@@ -45,3 +45,8 @@ export function currentStation(
 export function canResume(profile: Profile, stationId: string): boolean {
   return profile.resume?.stationId === stationId;
 }
+
+/** Automatisch vorlesen: Einstellung im Erwachsenen-Bereich, sonst wie die Stufe es vorsieht. */
+export function autoReadOf(profile: Profile): boolean {
+  return profile.readAloud ?? STUFEN[profile.stufe].autoRead;
+}

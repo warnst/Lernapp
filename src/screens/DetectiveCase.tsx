@@ -14,6 +14,7 @@ import { AvatarIllustration } from '@/illustrations/AvatarIllustration';
 import { ItemIcon } from '@/illustrations/ItemIcon';
 import { buildRound } from '@/practice/round';
 import { stopSpeaking, toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf } from '@/state/reducer';
 import { CipherPuzzle } from './Cipher';
@@ -141,7 +142,7 @@ function Investigation({
   const say = (text: string, nextPose: KikoPose = 'hallo') => {
     setLine(text);
     setPose(nextPose);
-    if (cfg.autoRead) {
+    if (autoReadOf(profile)) {
       stopSpeaking();
       toggleSpeak(text);
     }
@@ -276,7 +277,6 @@ function Resolution({
 /** Adresse `/raetsel/detektivfall` */
 export function Detective({ profile, onLeave }: { profile: Profile; onLeave: () => void }) {
   const { dispatch } = useAppState();
-  const cfg = STUFEN[profile.stufe];
   const tower = towerOf(profile);
   const solvedCases = tower.cases ?? [];
   const save = tower.caseSave;
@@ -364,7 +364,7 @@ export function Detective({ profile, onLeave }: { profile: Profile; onLeave: () 
             type="button"
             className={styles.file}
             onClick={() => {
-              if (cfg.autoRead) toggleSpeak(c.title);
+              if (autoReadOf(profile)) toggleSpeak(c.title);
               start(c.id);
             }}
           >

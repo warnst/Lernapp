@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { canSpeak, stopSpeaking, toggleSpeak } from './speak';
+import { canSpeak, stopSpeaking, toggleSpeak, unlockSpeechOnFirstTap } from './speak';
 
 class FakeUtterance {
   lang = '';
+  volume = 1;
+  onend: (() => void) | null = null;
   rate = 1;
   voice: unknown = null;
   text: string;
@@ -60,5 +62,34 @@ describe('speak', () => {
     expect(speech.speak).not.toHaveBeenCalled();
     stopSpeaking();
     expect(speech.cancel).toHaveBeenCalledTimes(2);
+  });
+
+  it('schaltet beim ersten Tippen stumm frei, danach wird normal vorgelesen', () => {
+    unlockSpeechOnFirstTap(); // ohne Sprachausgabe: nichts
+    const speech = installSpeech([]);
+    unlockSpeechOnFirstTap();
+    document.body.click();
+    expect(speech.speak).toHaveBeenCalledOnce();
+    const silent = speech.speak.mock.calls[0]?.[0] as FakeUtterance;
+    expect(silent.volume).toBe(0);
+
+    // die stumme Ausgabe läuft noch: Vorlesen bricht sie ab und liest trotzdem
+    speech.speaking = true;
+    toggleSpeak('Aufgabe');
+    expect(speech.cancel).toHaveBeenCalledOnce();
+    expect(speech.speak).toHaveBeenCalledTimes(2);
+
+    // weiteres Tippen schaltet nicht noch einmal frei
+    document.body.click();
+    expect(speech.speak).toHaveBeenCalledTimes(2);
+    silent.onend?.();
+  });
+
+  it('läuft beim ersten Tippen schon eine Ausgabe, wird nichts zusätzlich gesprochen', () => {
+    const speech = installSpeech([]);
+    speech.speaking = true;
+    unlockSpeechOnFirstTap();
+    document.body.dispatchEvent(new Event('touchend', { bubbles: true }));
+    expect(speech.speak).not.toHaveBeenCalled();
   });
 });

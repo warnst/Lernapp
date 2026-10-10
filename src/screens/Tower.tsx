@@ -19,6 +19,7 @@ import { Tower as TowerArt } from '@/illustrations/Tower';
 import { toggleSpeak } from '@/speech/speak';
 import { towerOf, wardrobeOf } from '@/state/reducer';
 import { dailyType } from '@/state/daily';
+import { autoReadOf } from '@/state/progress';
 import { pendingChests } from '@/state/wardrobe';
 import styles from './Tower.module.css';
 
@@ -49,7 +50,7 @@ export function Tower({ profile }: { profile: Profile }) {
       {opening ? (
         <ChestPick
           profile={profile}
-          readAloud={cfg.autoRead}
+          readAloud={autoReadOf(profile)}
           onDone={() => {
             setOpening(false);
           }}
@@ -60,7 +61,7 @@ export function Tower({ profile }: { profile: Profile }) {
             type="button"
             className={styles.chestCard}
             onClick={() => {
-              if (cfg.autoRead) toggleSpeak(UI.wardrobe.chestWaiting);
+              if (autoReadOf(profile)) toggleSpeak(UI.wardrobe.chestWaiting);
               setOpening(true);
             }}
           >
@@ -87,7 +88,7 @@ export function Tower({ profile }: { profile: Profile }) {
                 type="button"
                 className={cx(styles.tile, type === daily && styles.dailyTile)}
                 onClick={() => {
-                  if (cfg.autoRead) toggleSpeak(label);
+                  if (autoReadOf(profile)) toggleSpeak(label);
                   navigate(`/raetsel/${TOWER_SLUG[type]}`);
                 }}
               >

@@ -27,7 +27,14 @@ export type AppAction =
       stufe: Stufe;
       name?: string;
     }
-  | { type: 'update-profile'; id: string; name?: string; avatar?: AvatarId; stufe?: Stufe }
+  | {
+      type: 'update-profile';
+      id: string;
+      name?: string;
+      avatar?: AvatarId;
+      stufe?: Stufe;
+      readAloud?: boolean;
+    }
   | { type: 'delete-profile'; id: string }
   | { type: 'set-active'; id: string | undefined }
   | { type: 'finish-setup' }
@@ -157,6 +164,7 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
           ...(name === undefined ? {} : { name }),
           avatar: action.avatar ?? profile.avatar,
           stufe: action.stufe ?? profile.stufe,
+          ...(action.readAloud === undefined ? {} : { readAloud: action.readAloud }),
         };
       });
     case 'delete-profile': {

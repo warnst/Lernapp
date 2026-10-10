@@ -217,6 +217,16 @@ describe('Retten statt Löschen', () => {
     expect(storage.getItem(STORAGE_KEY)).toBe(text);
   });
 
+  it('behält die Vorlese-Einstellung, verwirft aber falsche Werte', () => {
+    const ok = makeState({ profiles: [makeProfile({ readAloud: false })] });
+    expect(parseState(ok)).toEqual(ok);
+    const broken = { ...ok, profiles: [{ ...makeProfile(), readAloud: 'ja' }] };
+    expect(parseState(broken)).toBeNull();
+    expect(repairState(broken)?.profiles[0]).not.toHaveProperty('readAloud');
+    const kept = { ...ok, profiles: [{ ...makeProfile({ readAloud: true }), stats: 1 }] };
+    expect(repairState(kept)?.profiles[0]?.readAloud).toBe(true);
+  });
+
   it('rettet auch ohne Turm, ohne gültige Übung und ohne Einrichtung', () => {
     const state = repairState({
       version: 2,

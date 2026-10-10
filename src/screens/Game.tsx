@@ -20,6 +20,7 @@ import { UiIcon } from '@/illustrations/UiIcon';
 import { canSpeak, stopSpeaking, toggleSpeak } from '@/speech/speak';
 import { useAppState } from '@/state/context';
 import { currentHintLevel, playReducer, startPlay } from '@/state/play';
+import { autoReadOf } from '@/state/progress';
 
 const LETTERS = 'abc';
 
@@ -66,7 +67,7 @@ export function Game({
   const { dispatch } = useAppState();
   const [, navigate] = useLocation();
   const pauseTitle = useId();
-  const config = STUFEN[profile.stufe];
+  const config = { ...STUFEN[profile.stufe], autoRead: autoReadOf(profile) };
   const [play, playDispatch] = useReducer(playReducer, undefined, () =>
     startPlay(tasks, start?.taskIndex, start?.partIndex),
   );

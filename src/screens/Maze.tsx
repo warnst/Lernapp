@@ -22,6 +22,7 @@ import {
   pathSum,
 } from '@/practice/tower/maze';
 import { stopSpeaking, toggleSpeak } from '@/speech/speak';
+import { autoReadOf } from '@/state/progress';
 import { useAppState } from '@/state/context';
 import { towerOf } from '@/state/reducer';
 import styles from './Maze.module.css';
@@ -56,7 +57,6 @@ function walls(puzzle: MazePuzzle, cell: number): string[] {
 
 function Play({ profile, onSolved }: { profile: Profile; onSolved: () => void }) {
   const { dispatch } = useAppState();
-  const cfg = STUFEN[profile.stufe];
   const [seed] = useState(newSeed);
   const puzzle = useMemo(() => makePuzzle(profile, seed), [profile, seed]);
   const coinMode = puzzle.target > 0;
@@ -74,7 +74,7 @@ function Play({ profile, onSolved }: { profile: Profile; onSolved: () => void })
   const say = (text: string, nextPose: KikoPose = 'hallo') => {
     setLine(text);
     setPose(nextPose);
-    if (cfg.autoRead) {
+    if (autoReadOf(profile)) {
       stopSpeaking();
       toggleSpeak(text);
     }
