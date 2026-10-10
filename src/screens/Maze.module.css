@@ -1,0 +1,113 @@
+.board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  border: 5px solid var(--ink-900);
+  border-radius: var(--radius-m);
+  background: var(--sand-50);
+}
+
+.trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.trail polyline {
+  fill: none;
+  stroke: var(--sea-500);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 0.16;
+  opacity: 0.7;
+}
+
+.cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 1px dashed var(--sand-300);
+  background: transparent;
+  cursor: pointer;
+}
+
+.cell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.open .cell {
+  border: 1.5px solid var(--sand-300);
+}
+
+.wallTop {
+  border-top: 4px solid var(--ink-900);
+}
+
+.wallRight {
+  border-right: 4px solid var(--ink-900);
+}
+
+.wallBottom {
+  border-bottom: 4px solid var(--ink-900);
+}
+
+.wallLeft {
+  border-left: 4px solid var(--ink-900);
+}
+
+.path {
+  background: color-mix(in srgb, var(--lagoon-100) 80%, transparent);
+}
+
+.hint {
+  animation: hint 1.2s ease-in-out infinite;
+}
+
+@keyframes hint {
+  50% {
+    background: var(--sun-400);
+  }
+}
+
+.coin {
+  display: inline-flex;
+}
+
+.used {
+  opacity: 0.55;
+}
+
+.cell:focus-visible {
+  z-index: 2;
+  outline: 4px solid var(--sea-700);
+  outline-offset: -4px;
+}
+
+.sum {
+  font-size: calc(20px * var(--text-scale));
+  font-weight: 700;
+  text-align: center;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint {
+    animation: none;
+    background: var(--sun-400);
+  }
+}

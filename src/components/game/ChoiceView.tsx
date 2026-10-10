@@ -39,6 +39,20 @@ function OptionBody({ option, layout }: { option: ChoiceOption; layout: ChoiceAn
       </>
     );
   }
+  if (option.icon && option.shadow) {
+    const { rotate, mirror } = option.shadow;
+    return (
+      <>
+        <span
+          className={styles.shadow}
+          style={{ transform: `rotate(${String(rotate)}deg) scaleX(${mirror ? '-1' : '1'})` }}
+        >
+          <ItemIcon itemId={option.icon} size={64} />
+        </span>
+        <span>{option.label}</span>
+      </>
+    );
+  }
   if (option.icon) {
     return (
       <>

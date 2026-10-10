@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/Button';
 import { ChestPick } from '@/components/ChestPick';
+import { FreshItems } from '@/components/FreshItems';
+import { cx } from '@/components/cx';
 import { Screen } from '@/components/Screen';
 import { SpeechBubble } from '@/components/SpeechBubble';
 import { STUFEN } from '@/config/levels';
@@ -16,6 +18,7 @@ import { NestRoom } from '@/illustrations/NestRoom';
 import { Tower as TowerArt } from '@/illustrations/Tower';
 import { toggleSpeak } from '@/speech/speak';
 import { towerOf, wardrobeOf } from '@/state/reducer';
+import { dailyType } from '@/state/daily';
 import { pendingChests } from '@/state/wardrobe';
 import styles from './Tower.module.css';
 
@@ -28,6 +31,7 @@ export function Tower({ profile }: { profile: Profile }) {
   const types = TOWER_ORDER.filter((type) => cfg.tower.types.includes(type));
   const short = profile.stufe <= 2;
   const [opening, setOpening] = useState(false);
+  const [daily] = useState(() => dailyType(profile, new Date()));
   const chestWaiting = pendingChests(profile) > 0;
   const message = floors >= BEACON_FLOOR ? UI.tower.beacon : UI.tower.toNext(size - lit);
 
@@ -66,6 +70,12 @@ export function Tower({ profile }: { profile: Profile }) {
         )
       )}
 
+      <FreshItems profile={profile} />
+
+      <SpeechBubble pose="hallo" kikoSize={48} className={styles.daily}>
+        {UI.pass.daily(UI.pass.phrases[daily])}
+      </SpeechBubble>
+
       <section className={styles.section}>
         <h2 className={styles.heading}>{UI.tower.what}</h2>
         <div className={styles.tiles}>
@@ -75,12 +85,13 @@ export function Tower({ profile }: { profile: Profile }) {
               <button
                 key={type}
                 type="button"
-                className={styles.tile}
+                className={cx(styles.tile, type === daily && styles.dailyTile)}
                 onClick={() => {
                   if (cfg.autoRead) toggleSpeak(label);
                   navigate(`/raetsel/${TOWER_SLUG[type]}`);
                 }}
               >
+                {type === daily && <span className={styles.badge}>{UI.pass.dailyBadge}</span>}
                 <ItemIcon itemId={TOWER_ICON[type]} size={48} />
                 {label}
               </button>

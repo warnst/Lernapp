@@ -1,0 +1,95 @@
+.board {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  margin-inline: auto;
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  aspect-ratio: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.line {
+  fill: none;
+  stroke: var(--ink-900);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 0.9;
+}
+
+.point circle {
+  fill: var(--ink-900);
+}
+
+.point text {
+  fill: var(--ink-600);
+  font-family: var(--font-body);
+  font-size: 3.4px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.reached circle {
+  fill: var(--sea-700);
+}
+
+.next circle {
+  fill: var(--coral-400);
+  stroke: var(--ink-900);
+  stroke-width: 0.5;
+}
+
+.next text {
+  fill: var(--ink-900);
+  font-size: 4.2px;
+}
+
+.point:focus-visible {
+  outline: none;
+}
+
+.point:focus-visible circle {
+  stroke: var(--sea-700);
+  stroke-width: 1;
+}
+
+.wiggle {
+  animation: wiggle 400ms ease-in-out 1;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes wiggle {
+  25% {
+    transform: scale(1.8);
+  }
+
+  75% {
+    transform: scale(1.4);
+  }
+}
+
+.reveal {
+  animation: reveal 900ms ease-out both;
+}
+
+.reveal polygon,
+.reveal path {
+  stroke: var(--ink-900);
+  stroke-width: 0.6;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wiggle,
+  .reveal {
+    animation: none;
+  }
+}

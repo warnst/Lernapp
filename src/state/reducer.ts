@@ -1,6 +1,7 @@
 import type {
   AppStateV2,
   AvatarId,
+  CaseSave,
   Profile,
   Stufe,
   KikoSlot,
@@ -12,6 +13,7 @@ import type {
   WorldId,
 } from '@/domain/types';
 import { KIKO_ITEMS, NEST_ITEMS } from '@/content/outfits';
+import { BEACON_FLOOR, floorInfo } from '@/domain/tower';
 import { MAX_PROFILES } from './storage';
 
 // Reiner Reducer für den App-Zustand. IDs und Zeiten kommen von außen, damit alles testbar bleibt.
@@ -39,6 +41,12 @@ export type AppAction =
   | { type: 'add-pearl'; id: string }
   | { type: 'solve-bonus'; id: string; world: WorldId; stationId: string }
   | { type: 'tower-solved'; id: string; kind: TowerType }
+  /** angefangenen Detektivfall merken bzw. verwerfen (null) */
+  | { type: 'case-save'; id: string; save: CaseSave | null }
+  /** Fall gelöst: Eintrag im Detektivbuch, angefangener Fall entfällt */
+  | { type: 'case-solved'; id: string; caseId: string }
+  /** Wissenskarte ins Wissensbuch */
+  | { type: 'fact-learned'; id: string; factId: string }
   /** angefangenes Sudoku merken bzw. verwerfen (null) */
   | { type: 'sudoku-save'; id: string; save: SudokuSave | null }
   | { type: 'joke-heard'; id: string; jokeId: string }
@@ -49,6 +57,8 @@ export type AppAction =
   | { type: 'wardrobe-grant'; id: string; itemId: string }
   /** Teil an- oder ausziehen bzw. ins Nest stellen oder wegnehmen */
   | { type: 'wardrobe-toggle'; id: string; itemId: string }
+  /** neue besondere Teile wurden im Schrank angesehen */
+  | { type: 'wardrobe-seen'; id: string }
   /** ganzes Outfit auf einmal (Überrasch mich!) */
   | { type: 'wardrobe-outfit'; id: string; kiko: Partial<Record<KikoSlot, string>> }
   | { type: 'replace'; state: AppStateV2 };
@@ -87,6 +97,18 @@ function toggle(wardrobe: Wardrobe, itemId: string): Wardrobe {
   const { [place.slot]: _removed, ...nest } = wardrobe.nest;
   return { ...wardrobe, nest };
 }
+
+/** besonderes Teil schenken: anziehen und als neu merken (docs/12 4.1) */
+function grant(wardrobe: Wardrobe, itemId: string): Wardrobe {
+  if (wardrobe.owned.includes(itemId) || !slotOf(itemId)) return wardrobe;
+  return wear(
+    { ...wardrobe, owned: [...wardrobe.owned, itemId], fresh: [...(wardrobe.fresh ?? []), itemId] },
+    itemId,
+  );
+}
+
+/** Rätsel einer Art bis zum goldenen Stempel im Rätselpass */
+export const GOLDEN_STAMP = 10;
 
 /** Turm-Fortschritt eines Profils, leer, solange das Kind noch nicht im Turm war. */
 export function towerOf(profile: Profile): TowerProgress {
@@ -162,16 +184,46 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
     case 'tower-solved':
       return updateProfile(state, action.id, (profile) => {
         const { sudoku: saved, ...tower } = towerOf(profile);
+        const lamps = tower.lamps + 1;
+        const count = (tower.solved[action.kind] ?? 0) + 1;
+        let wardrobe = wardrobeOf(tower);
+        if (count === GOLDEN_STAMP) wardrobe = grant(wardrobe, 'zauberhut');
+        if (floorInfo(lamps).floors >= BEACON_FLOOR) wardrobe = grant(wardrobe, 'krone');
         return {
           ...profile,
           tower: {
             ...tower,
             // ein gelöstes Sudoku ist kein angefangenes mehr
             ...(action.kind === 'sudoku' || !saved ? {} : { sudoku: saved }),
-            lamps: tower.lamps + 1,
-            solved: { ...tower.solved, [action.kind]: (tower.solved[action.kind] ?? 0) + 1 },
+            ...(wardrobe.owned.length > 0 ? { wardrobe } : {}),
+            lamps,
+            solved: { ...tower.solved, [action.kind]: count },
           },
         };
+      });
+    case 'case-save':
+      return updateProfile(state, action.id, (profile) => {
+        const { caseSave: _old, ...tower } = towerOf(profile);
+        return { ...profile, tower: action.save ? { ...tower, caseSave: action.save } : tower };
+      });
+    case 'case-solved':
+      return updateProfile(state, action.id, (profile) => {
+        const { caseSave: _old, ...tower } = towerOf(profile);
+        const cases = tower.cases ?? [];
+        return {
+          ...profile,
+          tower: {
+            ...tower,
+            cases: cases.includes(action.caseId) ? cases : [...cases, action.caseId],
+          },
+        };
+      });
+    case 'fact-learned':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        const facts = tower.facts ?? [];
+        if (facts.includes(action.factId)) return profile;
+        return { ...profile, tower: { ...tower, facts: [...facts, action.factId] } };
       });
     case 'sudoku-save':
       return updateProfile(state, action.id, (profile) => {
@@ -195,13 +247,26 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
           : [...tower.favorites, action.jokeId];
         return { ...profile, tower: { ...tower, favorites } };
       });
-    case 'wardrobe-pick':
     case 'wardrobe-grant':
       return updateProfile(state, action.id, (profile) => {
         const tower = towerOf(profile);
         const wardrobe = wardrobeOf(tower);
+        const next = grant(wardrobe, action.itemId);
+        return next === wardrobe ? profile : { ...profile, tower: { ...tower, wardrobe: next } };
+      });
+    case 'wardrobe-seen':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        if (!tower.wardrobe?.fresh) return profile;
+        const { fresh: _fresh, ...wardrobe } = tower.wardrobe;
+        return { ...profile, tower: { ...tower, wardrobe } };
+      });
+    case 'wardrobe-pick':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        const wardrobe = wardrobeOf(tower);
         if (wardrobe.owned.includes(action.itemId) || !slotOf(action.itemId)) return profile;
-        const chests = action.type === 'wardrobe-pick' ? wardrobe.chests + 1 : wardrobe.chests;
+        const chests = wardrobe.chests + 1;
         const owned = [...wardrobe.owned, action.itemId];
         return {
           ...profile,

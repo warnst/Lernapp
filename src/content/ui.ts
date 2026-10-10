@@ -202,6 +202,8 @@ export const UI = {
     nest: 'Kikos Nest',
     nestLabel: 'Kikos Nest im Turm',
     special: 'Ein besonderes Teil!',
+    fresh: (names: string) => `Neu in Kikos Kleiderschrank: ${names}!`,
+    look: 'Ansehen',
   },
   /** Sudoku im Rätselturm (docs/12 3.1, 5) */
   sudoku: {
@@ -270,6 +272,210 @@ export const UI = {
     solution: 'So sieht das fertige Sudoku aus. Beim nächsten klappt es bestimmt!',
     tricky: 'Wow, das war ein kniffliges!',
     effort: ['Du hast nicht aufgegeben!', 'Das war knifflig, und du hast es geschafft.'],
+  },
+  /** Memory (docs/12 3.2) */
+  memory: {
+    title: 'Memory',
+    who: 'Wer spielt?',
+    alone: 'Allein',
+    together: 'Zu zweit',
+    partner: 'Mit wem spielst du?',
+    adult: 'Mit einem Erwachsenen',
+    adultName: 'Erwachsener',
+    start: 'Deck zwei Karten auf. Findest du ein Paar?',
+    turn: (name: string) => `${name} ist dran.`,
+    pair: 'Ein Paar! Du darfst noch einmal.',
+    pairAlone: 'Ein Paar!',
+    noPair: 'Kein Paar. Merk dir die Karten!',
+    found: (n: number, total: number) => `Paare: ${String(n)} von ${String(total)}`,
+    treasure: (n: number) =>
+      n === 1 ? 'Euer gemeinsamer Schatz: 1 Paar' : `Euer gemeinsamer Schatz: ${String(n)} Paare`,
+    doneAlone: 'Super, alle Paare gefunden!',
+    doneTogether: 'Ihr habt alle Paare gefunden!',
+    board: 'Memory-Karten',
+    hidden: (n: number) => `Karte ${String(n)}, verdeckt`,
+    open: (n: number, what: string) => `Karte ${String(n)}: ${what}`,
+    back: 'Zurück',
+  },
+  /** Labyrinth und Münzpfad (docs/12 3.5) */
+  maze: {
+    title: 'Labyrinth',
+    titleCoins: 'Münzpfad',
+    start: 'Hilf mir zur Truhe! Tipp Feld für Feld den Weg.',
+    startCoins: (amount: string) =>
+      `Finde einen Weg zur Truhe, auf dem die Münzen zusammen genau ${amount} ergeben.`,
+    near: 'Tipp ein Feld direkt neben mir.',
+    wall: 'Da ist eine Wand. Probier einen anderen Weg.',
+    sum: (now: string, target: string) => `Zusammen: ${now} von ${target}`,
+    tooMuch: (amount: string) => `Das sind schon ${amount}. Geh ein Stück zurück.`,
+    wrongSum: (got: string, target: string) =>
+      `An der Truhe sind es ${got}. Wir brauchen genau ${target}. Geh ein Stück zurück.`,
+    hintNext: 'Probier dieses Feld!',
+    hintBack: (n: number) =>
+      n === 1
+        ? 'Geh ein Feld zurück. Von hier geht es nicht weiter.'
+        : `Geh ${String(n)} Felder zurück. Von hier geht es nicht weiter.`,
+    undo: 'Ein Feld zurück',
+    restart: 'Von vorn',
+    board: 'Spielfeld',
+    cell: (row: number, col: number, extra: string) =>
+      `Reihe ${String(row)}, Feld ${String(col)}${extra ? `: ${extra}` : ''}`,
+    kiko: 'Kiko',
+    chest: 'Truhe',
+    done: 'Die Truhe ist offen!',
+  },
+  /** Detektivfall (docs/12 3.9) */
+  case: {
+    title: 'Detektivfall',
+    choose: 'Welchen Fall lösen wir, Partner?',
+    secret: 'Geheim!',
+    resume: 'Weiterermitteln',
+    resumeLine: 'Unser Fall wartet auf uns!',
+    start: "Los geht's, Partner!",
+    suspects: 'Verdächtige',
+    board: 'Hinweistafel',
+    clueMissing: 'Hier fehlt noch ein Hinweis.',
+    next: 'Nächstes Rätsel lösen',
+    cleared: 'Entlastet',
+    pinned: (text: string) => `Ein neuer Hinweis: ${text}`,
+    iKnow: 'Ich weiß es! Wer war es?',
+    tapSuspect: 'Tipp auf den, der es war.',
+    notThis: (clue: string) => `Hmm, schau mal: ${clue}`,
+    solved: 'Fall gelöst!',
+    solvedStamp: 'Gelöst',
+    book: 'Detektivbuch',
+    bookEmpty: 'Hier stehen deine gelösten Fälle.',
+    firstHat: 'Für deinen ersten Fall bekommt Kiko den Detektivhut und die Lupe!',
+    toTower: 'Zum Turm',
+    done: 'Fall gelöst! Toll ermittelt, Partner!',
+    suspectLabel: (name: string, trait: string, cleared: boolean) =>
+      `${name}, ${trait}${cleared ? ', entlastet' : ''}`,
+  },
+  /** Geheimschrift (docs/12 3.8) */
+  cipher: {
+    title: 'Geheimschrift',
+    start:
+      'Ich habe dir eine Geheimbotschaft geschickt! Schau in den Schlüssel und tipp unter jedes Zeichen den Buchstaben.',
+    startNumbers:
+      'Eine Geheimbotschaft in Zahlen! A ist 1, B ist 2 und so weiter. Schau in den Schlüssel.',
+    key: 'Schlüssel',
+    message: 'Botschaft',
+    letters: 'Buchstaben',
+    pickSlot: 'Tipp zuerst auf ein leeres Kästchen.',
+    wrong: 'Schau noch einmal genau in den Schlüssel.',
+    right: 'Richtig!',
+    hint: 'Schau, das Zeichen leuchtet im Schlüssel. Welcher Buchstabe steht daneben?',
+    done: (text: string) => `Die Botschaft heißt: ${text}`,
+    slot: (n: number, letter: string | null) => `Zeichen ${String(n)}: ${letter ?? 'noch leer'}`,
+    pair: (symbol: string, letter: string) => `${symbol} ist ${letter}`,
+    symbolNames: [
+      'Kreis',
+      'Quadrat',
+      'Dreieck',
+      'Stern',
+      'Herz',
+      'Raute',
+      'Mond',
+      'Blitz',
+      'Kreuz',
+      'Welle',
+      'Tropfen',
+      'Sonne',
+      'Blatt',
+      'Pfeil',
+      'Glocke',
+      'Fisch',
+    ],
+    solved: 'Botschaft entschlüsselt!',
+  },
+  /** Bilderrätsel (docs/12 3.6) */
+  nonogram: {
+    title: 'Bilderrätsel',
+    start:
+      'Die Zahlen sagen, wie viele Kästchen nacheinander ausgemalt sind. „2 1“ heißt: 2 Kästchen, Lücke, 1 Kästchen. Tipp einmal zum Ausmalen, noch einmal für einen Punkt.',
+    board: 'Bilderrätsel-Raster',
+    rowClue: (n: number, clue: string) => `Reihe ${String(n)}: ${clue}`,
+    colClue: (n: number, clue: string) => `Spalte ${String(n)}: ${clue}`,
+    cell: (row: number, col: number, state: string) =>
+      `Reihe ${String(row)}, Spalte ${String(col)}: ${state}`,
+    empty: 'leer',
+    filled: 'ausgemalt',
+    dot: 'Punkt',
+    tooMuch: 'Ein Kästchen ist zu viel ausgemalt. Schau, es leuchtet.',
+    hint: 'Schau, dieses Kästchen gehört zum Bild.',
+    done: (name: string) => `Ein Bild ist erschienen: ${name}!`,
+    reveal: 'Weiter',
+  },
+  /** Punkte verbinden (docs/12 3.7) */
+  dots: {
+    title: 'Punkte verbinden',
+    start: (first: number, step: number) =>
+      step === 1
+        ? `Verbinde die Punkte der Reihe nach. Fang bei ${String(first)} an!`
+        : `Verbinde die Punkte in ${String(step)}er-Schritten: ${String(first)}, ${String(first + step)}, ${String(first + 2 * step)} … Fang bei ${String(first)} an!`,
+    board: 'Punktebild',
+    point: (n: number) => `Punkt ${String(n)}`,
+    next: (n: number) => `Weiter mit ${String(n)}!`,
+    done: (name: string) => `Ein Bild ist erschienen: ${name}!`,
+  },
+  /** Wissensfragen, Was passt nicht?, Schattenrätsel (docs/12 3.3, 3.4, 3.10) */
+  choiceRiddles: {
+    quizTitle: 'Kikos Wissenskiste',
+    quizWhat: 'Worüber möchtest du etwas wissen?',
+    quizMixed: 'Gemischt',
+    quizCards: (n: number, total: number) => `${String(n)} von ${String(total)} Karten`,
+    didYouKnow: (fact: string) => `Wusstest du? ${fact}`,
+    notThis: (answer: string) => `Es ist nicht „${answer}“.`,
+    oddQuestion: 'Was passt nicht dazu?',
+    oddHint1: 'Drei Sachen gehören zusammen. Was haben sie gemeinsam?',
+    oddHint2: (a: string, b: string, are: string) => `${a} und ${b} ${are}.`,
+    oddExplain: (a: string, b: string, c: string, are: string, isA: string) =>
+      `${a}, ${b} und ${c} ${are}. ${isA}`,
+    even: 'sind gerade Zahlen',
+    odd: 'sind ungerade Zahlen',
+    isEven: (n: number) => `${String(n)} ist gerade.`,
+    isOdd: (n: number) => `${String(n)} ist ungerade.`,
+    tens: 'sind Zehnerzahlen',
+    notTens: (n: number) => `${String(n)} ist keine Zehnerzahl.`,
+    numberHint1: 'Schau dir die Zahlen genau an. Was haben drei davon gemeinsam?',
+    evenHint: 'Gerade Zahlen kann man in zwei gleiche Hälften teilen.',
+    tensHint: 'Zehnerzahlen enden mit einer 0.',
+    shadowQuestion: 'Welcher Schatten gehört zum Bild?',
+    shadowQuestionTurned: 'Welcher Schatten gehört zum Bild? Er kann auch gedreht sein.',
+    shadowHint1: 'Schau dir den Umriss genau an: Wo ist etwas lang, rund oder spitz?',
+    shadowHint2: (name: string) =>
+      `Fahr mit dem Finger um das Bild herum: ${name}. Dreh den Kopf ruhig mit!`,
+    shadowExplain: (name: string) => `Dieser Schatten passt genau zum Bild: ${name}.`,
+    shadowLabel: (n: number) => `Schatten ${String(n)}`,
+    knowledgeBook: 'Wissensbuch',
+    knowledgeCount: (n: number) =>
+      n === 1 ? '1 Wissenskarte gesammelt' : `${String(n)} Wissenskarten gesammelt`,
+    knowledgeEmpty: 'Hier sammelst du Wissenskarten. Spiel Wissensfragen im Rätselturm!',
+    read: 'Vorlesen',
+  },
+  /** Rätselpass und Rätsel des Tages (docs/12 4) */
+  pass: {
+    title: 'Rätselpass',
+    intro: 'Für jede Rätselart gibt es einen Stempel. Nach 10 gelösten Rätseln wird er golden!',
+    stamp: (name: string, n: number, golden: boolean) =>
+      n === 0
+        ? `${name}: noch kein Stempel`
+        : `${name}: ${golden ? 'goldener Stempel' : 'Stempel'}, ${String(n)} gelöst`,
+    daily: (phrase: string) => `Heute habe ich ${phrase} für dich!`,
+    dailyBadge: 'Rätsel des Tages',
+    phrases: {
+      sudoku: 'ein Sudoku',
+      memory: 'ein Memory',
+      odd: 'ein „Was passt nicht?“',
+      shadow: 'ein Schattenrätsel',
+      maze: 'ein Labyrinth',
+      dots: 'ein Punkte-Bild',
+      nonogram: 'ein Bilderrätsel',
+      cipher: 'eine Geheimschrift',
+      case: 'einen Detektivfall',
+      quiz: 'Wissensfragen',
+      riddles: 'ein Muster-Rätsel',
+    } satisfies Record<TowerType, string>,
   },
   /** Kikos Witzekiste (docs/12 4.2) */
   jokes: {

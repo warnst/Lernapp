@@ -1,16 +1,20 @@
 import { useId, useState } from 'react';
 import { BottomSheet } from '@/components/BottomSheet';
 import { LinkButton } from '@/components/Button';
+import { cx } from '@/components/cx';
 import { Screen } from '@/components/Screen';
+import { STUFEN } from '@/config/levels';
+import { TOWER_ICON, TOWER_ORDER } from '@/content/tower';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
 import type { Profile, Station, WorldId } from '@/domain/types';
 import { FindlingIcon } from '@/illustrations/FindlingIcon';
 import { Gem } from '@/illustrations/Gem';
+import { ItemIcon } from '@/illustrations/ItemIcon';
 import { Pearl } from '@/illustrations/Pearl';
 import { Star } from '@/illustrations/Star';
 import { isCompleted, worldOf } from '@/state/progress';
-import { towerOf } from '@/state/reducer';
+import { GOLDEN_STAMP, towerOf } from '@/state/reducer';
 import styles from './Treasures.module.css';
 
 function FindlingSheet({ station, onClose }: { station: Station; onClose: () => void }) {
@@ -125,10 +129,46 @@ export function Treasures({ profile }: { profile: Profile }) {
       </section>
 
       <section className={styles.section}>
+        <h2 className={styles.heading}>{UI.pass.title}</h2>
+        <p className={styles.muted}>{UI.pass.intro}</p>
+        <ul className={styles.pass}>
+          {TOWER_ORDER.filter((type) => STUFEN[profile.stufe].tower.types.includes(type)).map(
+            (type) => {
+              const n = towerOf(profile).solved[type] ?? 0;
+              const golden = n >= GOLDEN_STAMP;
+              const name = UI.tower.shortTypes[type];
+              return (
+                <li
+                  key={type}
+                  className={cx(styles.stamp, n > 0 && styles.stamped, golden && styles.golden)}
+                  aria-label={UI.pass.stamp(UI.tower.types[type], n, golden)}
+                >
+                  <span className={styles.stampRing} aria-hidden="true">
+                    {n > 0 ? <ItemIcon itemId={TOWER_ICON[type]} size={36} /> : '?'}
+                  </span>
+                  <span aria-hidden="true">{name}</span>
+                </li>
+              );
+            },
+          )}
+        </ul>
+      </section>
+
+      <section className={styles.section}>
         <h2 className={styles.heading}>{UI.jokes.book}</h2>
         <p className={styles.muted}>{UI.jokes.bookCount(towerOf(profile).jokes.length)}</p>
         <LinkButton href="/schaetze/witze" variant="secondary" block>
           {UI.jokes.book}
+        </LinkButton>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.heading}>{UI.choiceRiddles.knowledgeBook}</h2>
+        <p className={styles.muted}>
+          {UI.choiceRiddles.knowledgeCount((towerOf(profile).facts ?? []).length)}
+        </p>
+        <LinkButton href="/schaetze/wissen" variant="secondary" block>
+          {UI.choiceRiddles.knowledgeBook}
         </LinkButton>
       </section>
 

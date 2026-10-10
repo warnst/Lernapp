@@ -26,6 +26,7 @@
 }
 
 .tile {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,4 +134,26 @@
   .wiggle {
     animation: none;
   }
+}
+
+.daily {
+  align-self: stretch;
+}
+
+.dailyTile {
+  border-color: var(--sun-400);
+  background: var(--sand-50);
+}
+
+.badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  padding: 0 var(--space-2);
+  border: 2px solid var(--ink-900);
+  border-radius: var(--radius-full);
+  background: var(--sun-400);
+  font-size: 12px;
+  white-space: nowrap;
+  transform: translateX(-50%);
 }

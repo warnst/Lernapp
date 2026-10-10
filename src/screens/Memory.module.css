@@ -1,0 +1,128 @@
+.heading {
+  font-size: calc(22px * var(--text-scale));
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 140px;
+  padding: var(--space-3);
+  border: 3px solid var(--sand-300);
+  border-bottom-width: 6px;
+  border-radius: var(--radius-m);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: calc(18px * var(--text-scale));
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pair {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.turn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 3px solid var(--sun-400);
+  border-radius: var(--radius-full);
+  background: var(--sand-50);
+  font-size: calc(20px * var(--text-scale));
+  font-weight: 700;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.card {
+  aspect-ratio: 1;
+  min-width: 0;
+  min-height: var(--tap-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 600px;
+}
+
+.inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 300ms ease;
+  transform-style: preserve-3d;
+}
+
+.shown .inner {
+  transform: rotateY(180deg);
+}
+
+.back,
+.front {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  border: 3px solid var(--ink-900);
+  border-radius: var(--radius-m);
+  place-items: center;
+  backface-visibility: hidden;
+}
+
+.back {
+  background:
+    radial-gradient(circle at 50% 50%, var(--sun-400) 0 18%, transparent 19%),
+    repeating-linear-gradient(45deg, var(--sea-500) 0 8px, var(--sea-700) 8px 16px);
+}
+
+.front {
+  background: var(--white);
+  transform: rotateY(180deg);
+}
+
+.found .front {
+  border-color: var(--palm-600);
+  box-shadow: inset 0 0 0 3px var(--palm-600);
+}
+
+.text {
+  font-family: var(--font-heading);
+  font-size: calc(22px * var(--text-scale));
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.coins {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px;
+}
+
+.count {
+  color: var(--ink-600);
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inner {
+    transition: none;
+  }
+}

@@ -49,7 +49,7 @@ export interface StufeConfig {
   maxStoryWords: number; // Generatoren verwerfen längere Texte
   practiceTopics: PracticeTopicId[];
   /** Rätselarten im Rätselturm (docs/12) */
-  tower: { types: TowerType[]; sudoku: SudokuConfig };
+  tower: TowerConfig;
   riddles: {
     types: RiddleType[];
     moneyShare: number; // 0..1 Anteil Geld-Rätsel
@@ -123,6 +123,40 @@ export interface SudokuConfig {
   notes: boolean;
 }
 
+/** Grenzen der Rätselarten im Turm je Stufe (docs/12 3, Regel 8). */
+export interface TowerConfig {
+  types: TowerType[];
+  sudoku: SudokuConfig;
+  /** Memory: Paare und Art der Paare (gleiche Bilder, Rechnung ↔ Ergebnis, Betrag ↔ Münzen) */
+  memory: { pairs: number; kind: 'bilder' | 'rechnung' | 'geld'; max: number };
+  /** Was passt nicht?: ab wann auch Zahlen (gerade/ungerade, Zehnerzahlen) */
+  odd: { numbers: boolean; max: number };
+  /** Schattenrätsel: Anzahl Schatten, ob der richtige gedreht bzw. gespiegelt ist */
+  shadow: { options: 3 | 4; rotate: boolean; mirror: boolean };
+  /** Labyrinth (Weg zur Truhe) oder Münzpfad mit Zielbetrag */
+  maze:
+    | { mode: 'maze'; size: number }
+    | { mode: 'coins'; size: number; targets: Cents[]; coins: CoinValue[] };
+  /** Bilderrätsel: Rastergrößen */
+  nonogram: { sizes: number[] };
+  /** Punkte verbinden: Punktzahl und Schrittweite der Nummern */
+  dots: { count: number; step: number }[];
+  /** Geheimschrift: Stufe der Nachrichten und ob auch Zahl → Buchstabe vorkommt */
+  cipher: { messages: (3 | 4)[]; numberKey: boolean };
+  /** Detektivfall: Rätsel je Fall (= Hinweise) und Zahl der Verdächtigen */
+  case: { riddles: 3 | 4 | 5; suspects: 3 | 4 };
+  /** Wissensfragen: Fragen je Runde */
+  quiz: { questions: number };
+}
+
+/** Ein angefangener Detektivfall samt Hinweistafel */
+export interface CaseSave {
+  caseId: string;
+  /** gelöste Rätsel = angepinnte Hinweise */
+  solved: number;
+  seed: number;
+}
+
 /** Ein angefangenes Sudoku; bleibt, bis es gelöst ist oder ein neues gewählt wird. */
 export interface SudokuSave {
   kind: SudokuKind;
@@ -149,6 +183,12 @@ export interface TowerProgress {
   wardrobe?: Wardrobe;
   /** angefangenes Sudoku */
   sudoku?: SudokuSave;
+  /** IDs der gesammelten Wissenskarten */
+  facts?: string[];
+  /** IDs der gelösten Detektivfälle (Detektivbuch) */
+  cases?: string[];
+  /** angefangener Fall */
+  caseSave?: CaseSave;
 }
 
 /** Plätze an Kiko (docs/12 4.1) */
@@ -165,6 +205,8 @@ export interface Wardrobe {
   kiko: Partial<Record<KikoSlot, string>>;
   /** was im Nest steht */
   nest: Partial<Record<NestSlot, string>>;
+  /** besondere Teile, die das Kind noch nicht im Schrank angesehen hat */
+  fresh?: string[];
 }
 
 export interface AppStateV2 {
@@ -262,6 +304,7 @@ export interface SceneItem {
   label: string;
   price?: Cents; // fehlt nur, wenn der Preis gesucht ist
   priceFormat?: 'eur'; // Preisschild als „0,85 €“ statt „85 Cent“
+  noPrice?: true; // reines Bild ohne Preisschild (Schattenrätsel, docs/12 3.4)
   quantity?: number; // Icon mehrfach zeichnen
 }
 
@@ -318,6 +361,8 @@ export interface ChoiceOption {
   feedback?: string; // spezifischer Hinweis, wenn diese Option gewählt wurde
   pieces?: MoneyPiece[]; // bei layout 'coins' / 'bags'
   icon?: string;
+  /** Icon als schwarzer Schatten, ggf. gedreht bzw. gespiegelt (Schattenrätsel, docs/12 3.4) */
+  shadow?: { rotate: 0 | 90 | 180 | 270; mirror: boolean };
   objects?: ObjectGroup; // Eimer/Häufchen mit Dingen statt Geld (docs/11)
 }
 

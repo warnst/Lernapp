@@ -20,6 +20,7 @@ import { TowerPlay } from '@/screens/TowerPlay';
 import { Wardrobe } from '@/screens/Wardrobe';
 import { Treasures } from '@/screens/Treasures';
 import { JokeBook } from '@/screens/JokeBook';
+import { KnowledgeBook } from '@/screens/ChoiceRiddles';
 import { CertificatePreview } from '@/screens/CertificatePreview';
 import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
@@ -41,6 +42,11 @@ function TowerPage() {
 }
 function WardrobePage() {
   return <ChildLayout>{(profile) => <Wardrobe key={profile.id} profile={profile} />}</ChildLayout>;
+}
+function KnowledgeBookPage() {
+  return (
+    <ChildLayout>{(profile) => <KnowledgeBook key={profile.id} profile={profile} />}</ChildLayout>
+  );
 }
 function JokeBookPage() {
   return <ChildLayout>{(profile) => <JokeBook key={profile.id} profile={profile} />}</ChildLayout>;
@@ -82,6 +88,7 @@ export function Routes() {
         <Route path="/raetsel" component={TowerPage} />
         <Route path="/schaetze/urkunde" component={CertificatePreview} />
         <Route path="/schaetze/witze" component={JokeBookPage} />
+        <Route path="/schaetze/wissen" component={KnowledgeBookPage} />
         <Route path="/schaetze" component={TreasuresPage} />
         <Route path="/erwachsene/kind/:profileId">
           {(params) => (

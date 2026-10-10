@@ -1,0 +1,97 @@
+.puzzle {
+  display: grid;
+  grid-template-columns: auto repeat(var(--n), minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  max-width: 440px;
+  margin-inline: auto;
+}
+
+.corner {
+  display: block;
+}
+
+.colClue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+  color: var(--ink-900);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.rowClue {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: var(--ink-900);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.clueDone {
+  color: var(--palm-600);
+}
+
+.cell {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 1.5px solid var(--sand-300);
+  background: var(--white);
+  cursor: pointer;
+}
+
+.split {
+  border-right: 3px solid var(--ink-600);
+}
+
+.filled {
+  background: var(--ink-900);
+}
+
+.dot::after {
+  position: absolute;
+  inset: 40%;
+  border-radius: 50%;
+  background: var(--ink-600);
+  content: '';
+}
+
+.hint {
+  box-shadow: inset 0 0 0 4px var(--sun-400);
+  animation: hint 1.2s ease-in-out infinite;
+}
+
+@keyframes hint {
+  50% {
+    box-shadow: inset 0 0 0 8px var(--sun-400);
+  }
+}
+
+.solved .cell {
+  border-color: transparent;
+  transition: background 600ms ease;
+}
+
+.solved .dot::after {
+  display: none;
+}
+
+.solved .cell:not([style]) {
+  background: var(--white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint {
+    animation: none;
+  }
+
+  .solved .cell {
+    transition: none;
+  }
+}

@@ -82,3 +82,50 @@
   padding: var(--space-4) 0;
   text-align: center;
 }
+
+.pass {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.stamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--ink-600);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.stampRing {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  border: 3px dashed var(--sand-300);
+  border-radius: 50%;
+  color: var(--sand-300);
+  font-size: 24px;
+  place-items: center;
+}
+
+.stamped {
+  color: var(--ink-900);
+}
+
+.stamped .stampRing {
+  border: 4px solid var(--sea-700);
+  background: var(--white);
+  transform: rotate(-8deg);
+}
+
+.golden .stampRing {
+  border-color: var(--sun-400);
+  background: var(--sand-50);
+  box-shadow:
+    0 0 0 3px var(--ink-900),
+    0 0 12px var(--sun-400);
+}

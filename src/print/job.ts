@@ -4,6 +4,7 @@ import type { PracticeTopicId, Profile, Station, Stufe, Task, WorldId } from '@/
 import { buildRound } from '@/practice/round';
 import { TOPIC_ORDER } from '@/practice/topics';
 import { stationTasks } from '@/practice/variants';
+import { type TowerPrint, towerPrint } from './tower-print';
 
 // Was gedruckt wird: Auswahl aus der URL (docs/06 1) und die daraus erzeugten Blätter.
 
@@ -24,12 +25,16 @@ export interface PrintOptions {
   seed: number;
   practiceSeed: number;
   riddleSeed: number;
+  /** Rätselturm-Blatt (docs/12 8) */
+  tower: boolean;
+  towerSeed: number;
 }
 
 export type Sheet =
   | { kind: 'station'; station: Station; tasks: Task[] }
   | { kind: 'practice'; topic: PracticeTopicId; tasks: Task[] }
   | { kind: 'riddles'; tasks: Task[] }
+  | { kind: 'tower'; puzzles: TowerPrint }
   | { kind: 'certificate'; world: WorldId; name?: string };
 
 const STUFE_IDS = Object.values(STUFEN).map((cfg) => cfg.id);
@@ -69,6 +74,8 @@ export function parsePrintOptions(search: string, profiles: readonly Profile[]):
     seed: int(params.get('seed'), 0),
     practiceSeed: int(params.get('useed'), 1),
     riddleSeed: int(params.get('rseed'), 1),
+    tower: params.get('turm') === '1',
+    towerSeed: int(params.get('tseed'), 1),
   };
 }
 
@@ -89,6 +96,8 @@ export function printSearch(o: PrintOptions): string {
   params.set('seed', String(o.seed));
   params.set('useed', String(o.practiceSeed));
   params.set('rseed', String(o.riddleSeed));
+  if (o.tower) params.set('turm', '1');
+  params.set('tseed', String(o.towerSeed));
   return params.toString();
 }
 
@@ -100,7 +109,7 @@ export function certificateAllowed(o: PrintOptions, profile: Profile | undefined
   return WORLDS[world].stations.every((s) => progress[s.id]?.completed === true);
 }
 
-/** Die Blätter in Druckreihenfolge: Stationen, Übungsblatt, Rätselblatt, Urkunde. */
+/** Die Blätter in Druckreihenfolge: Stationen, Übungsblatt, Rätselblatt, Rätselturm, Urkunde. */
 export function buildSheets(o: PrintOptions, profile: Profile | undefined): Sheet[] {
   const world = worldFor(o.stufe);
   const sheets: Sheet[] = WORLDS[world].stations
@@ -118,6 +127,7 @@ export function buildSheets(o: PrintOptions, profile: Profile | undefined): Shee
     const tasks = buildRound('raetsel', o.stufe, 6, o.riddleSeed);
     if (tasks.length > 0) sheets.push({ kind: 'riddles', tasks });
   }
+  if (o.tower) sheets.push({ kind: 'tower', puzzles: towerPrint(o.stufe, o.towerSeed) });
   if (o.certificate && certificateAllowed(o, profile)) {
     sheets.push({
       kind: 'certificate',

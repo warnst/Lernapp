@@ -262,6 +262,28 @@ export function Print() {
           </fieldset>
 
           <fieldset className={styles.fieldset}>
+            <legend className={styles.subheading}>{PRINT.towerLegend}</legend>
+            <Check
+              checked={options.tower}
+              onChange={(checked) => {
+                update({ tower: checked });
+              }}
+            >
+              {PRINT.tower}
+            </Check>
+            {options.tower && (
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  update({ towerSeed: newSeed() });
+                }}
+              >
+                {PRINT.rollTower}
+              </Button>
+            )}
+          </fieldset>
+
+          <fieldset className={styles.fieldset}>
             <legend className={styles.subheading}>{PRINT.certificate}</legend>
             <Check
               checked={options.certificate && allowed}

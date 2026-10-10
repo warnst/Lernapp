@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/Button';
 import { cx } from '@/components/cx';
 import { Screen } from '@/components/Screen';
@@ -35,6 +35,10 @@ export function Wardrobe({ profile }: { profile: Profile }) {
   const [tab, setTab] = useState<Tab>('kiko');
   const [kikoSlot, setKikoSlot] = useState<KikoSlot>('kopf');
   const [nestSlot, setNestSlot] = useState<NestSlot>('boden');
+  const hasFresh = (wardrobe.fresh ?? []).length > 0;
+  useEffect(() => {
+    if (hasFresh) dispatch({ type: 'wardrobe-seen', id: profile.id });
+  }, [dispatch, hasFresh, profile.id]);
   const [line, setLine] = useState<string>(
     wardrobe.owned.length === 0 ? UI.wardrobe.empty : UI.wardrobe.title,
   );

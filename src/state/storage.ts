@@ -120,7 +120,8 @@ function isWardrobe(value: unknown): boolean {
     isStringArray(value.owned) &&
     isCount(value.chests) &&
     isStringRecord(value.kiko) &&
-    isStringRecord(value.nest)
+    isStringRecord(value.nest) &&
+    (value.fresh === undefined || isStringArray(value.fresh))
   );
 }
 
@@ -144,6 +145,16 @@ function isSudokuSave(value: unknown): boolean {
   );
 }
 
+function isCaseSave(value: unknown): boolean {
+  if (value === undefined) return true;
+  return (
+    isObject(value) &&
+    typeof value.caseId === 'string' &&
+    isCount(value.solved) &&
+    isCount(value.seed)
+  );
+}
+
 function isTower(value: unknown): boolean {
   if (value === undefined) return true;
   return (
@@ -154,7 +165,10 @@ function isTower(value: unknown): boolean {
     isStringArray(value.jokes) &&
     isStringArray(value.favorites) &&
     isWardrobe(value.wardrobe) &&
-    isSudokuSave(value.sudoku)
+    isSudokuSave(value.sudoku) &&
+    (value.facts === undefined || isStringArray(value.facts)) &&
+    (value.cases === undefined || isStringArray(value.cases)) &&
+    isCaseSave(value.caseSave)
   );
 }
 
@@ -207,7 +221,11 @@ function repairProfile(value: unknown): Profile | null {
   const practice = value.practice;
   const pearls = isObject(practice) && isCount(practice.pearls) ? practice.pearls : 0;
   const towers = isObject(tower)
-    ? [tower, { ...tower, sudoku: undefined }, { ...tower, sudoku: undefined, wardrobe: undefined }]
+    ? [
+        tower,
+        { ...tower, sudoku: undefined, caseSave: undefined },
+        { ...tower, sudoku: undefined, caseSave: undefined, wardrobe: undefined },
+      ]
     : [];
   const repairedTower = towers.find(isTower);
   const candidate = {

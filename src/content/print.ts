@@ -17,6 +17,25 @@ export const PRINT = {
   rollPractice: 'Neue Aufgaben würfeln',
   riddles: 'Rätselblatt (6 Rätsel)',
   rollRiddles: 'Neue Rätsel würfeln',
+  tower: 'Rätselturm-Blatt (Sudoku, Labyrinth, Punkte, Bilderrätsel …)',
+  rollTower: 'Neues Rätselturm-Blatt würfeln',
+  towerLegend: 'Kikos Rätselturm',
+  towerTitle: (stufe: string) => `Rätselturm-Blatt · Stufe ${stufe}`,
+  towerSudoku: (each: string) =>
+    `Sudoku: In jeder Reihe, jeder Spalte und jedem Kasten kommt ${each} genau einmal vor. Male oder schreibe es in die leeren Felder.`,
+  towerSudokuCages: 'Die kleine Zahl ist die Summe im gestrichelten Kasten.',
+  towerMaze: 'Labyrinth: Zeichne Kikos Weg zur Truhe.',
+  towerCoins: (amount: string) =>
+    `Münzpfad: Zeichne einen Weg zur Truhe. Die Münzen auf dem Weg ergeben zusammen genau ${amount}.`,
+  towerDots: (step: number) =>
+    step === 1
+      ? 'Punkte verbinden: Verbinde die Punkte der Reihe nach. Was entsteht?'
+      : `Punkte verbinden: Verbinde die Punkte in ${String(step)}er-Schritten. Was entsteht?`,
+  towerNonogram:
+    'Bilderrätsel: Die Zahlen sagen, wie viele Kästchen nacheinander ausgemalt werden. Welches Bild erscheint?',
+  towerCipher: 'Geheimschrift: Schreibe unter jedes Zeichen den Buchstaben aus dem Schlüssel.',
+  towerOdd: 'Was passt nicht? Kreise es ein.',
+  towerSolutionPicture: (name: string) => `Bild: ${name}`,
   certificate: 'Urkunde',
   certificateLocked: 'Die Urkunde gibt es, wenn alle Stationen der Welt geschafft sind.',
   certificateAnyway: 'trotzdem erlauben',

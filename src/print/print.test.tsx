@@ -198,4 +198,28 @@ describe('Druckseite (docs/06 1)', () => {
     }
     expect(text).not.toContain('Lösungen für Erwachsene');
   });
+
+  it('Rätselturm-Blatt: alle Rätsel der Stufe, Lösungen dahinter', async () => {
+    for (const stufe of [1, 4]) {
+      const options = parsePrintOptions(`stufe=${String(stufe)}&turm=1&tseed=9`, []);
+      expect(options).toMatchObject({ tower: true, towerSeed: 9 });
+      expect(printSearch(options)).toContain('turm=1');
+      const [sheet] = buildSheets(options, undefined);
+      if (sheet?.kind !== 'tower') throw new Error('kein Turm-Blatt');
+      expect(Boolean(sheet.puzzles.nonogram)).toBe(stufe === 4);
+      expect(Boolean(sheet.puzzles.cipher)).toBe(stufe === 4);
+    }
+    const { user, location } = await openPrint('/erwachsene/drucken?stufe=4');
+    await user.click(screen.getByRole('checkbox', { name: /Rätselturm-Blatt/ }));
+    expect(location.history.at(-1)).toContain('turm=1');
+    const preview = screen.getByLabelText('Vorschau');
+    expect(
+      within(preview).getAllByRole('heading', { name: 'Rätselturm-Blatt · Stufe Oktopus' }),
+    ).toHaveLength(2);
+    expect(within(preview).getByText(/^Sudoku:/)).toBeInTheDocument();
+    expect(within(preview).getByText(/^Geheimschrift:/)).toBeInTheDocument();
+    expect(within(preview).getAllByText(/^Bild:/, { selector: 'p' })).toHaveLength(2);
+    await user.click(screen.getByRole('button', { name: 'Neues Rätselturm-Blatt würfeln' }));
+    expect(location.history.at(-1)).not.toContain('tseed=1&');
+  });
 });

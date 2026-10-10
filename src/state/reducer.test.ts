@@ -299,4 +299,56 @@ describe('Rätselturm (docs/12)', () => {
     state = appReducer(state, { type: 'sudoku-save', id: 'p1', save: null });
     expect(state.profiles[0]?.tower).not.toHaveProperty('sudoku');
   });
+
+  it('besondere Teile: Zauberhut beim goldenen Stempel, Krone beim Leuchtfeuer, als neu markiert', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    const tower = () => state.profiles[0]?.tower;
+    for (let i = 0; i < 9; i++)
+      state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'memory' });
+    expect(tower()?.wardrobe).toBeUndefined();
+    state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'memory' });
+    expect(tower()?.wardrobe).toMatchObject({
+      owned: ['zauberhut'],
+      fresh: ['zauberhut'],
+      kiko: { kopf: 'zauberhut' },
+    });
+    state = appReducer(state, { type: 'wardrobe-seen', id: 'p1' });
+    expect(tower()?.wardrobe).not.toHaveProperty('fresh');
+    // Leuchtfeuer: 3 + 9 × 5 = 48 Lampen für 10 Etagen
+    while ((tower()?.lamps ?? 0) < 48)
+      state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'quiz' });
+    expect(tower()?.wardrobe?.owned).toEqual(['zauberhut', 'krone']);
+    expect(tower()?.wardrobe?.fresh).toEqual(['krone']);
+    // nur einmal
+    state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'quiz' });
+    expect(tower()?.wardrobe?.owned).toEqual(['zauberhut', 'krone']);
+    const same = appReducer(state, { type: 'wardrobe-seen', id: 'p1' });
+    expect(appReducer(same, { type: 'wardrobe-seen', id: 'p1' })).toEqual(same);
+  });
+
+  it('Detektivfall und Wissenskarten', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    state = appReducer(state, {
+      type: 'case-save',
+      id: 'p1',
+      save: { caseId: 'keks', solved: 1, seed: 2 },
+    });
+    expect(state.profiles[0]?.tower?.caseSave).toEqual({ caseId: 'keks', solved: 1, seed: 2 });
+    state = appReducer(state, { type: 'case-solved', id: 'p1', caseId: 'keks' });
+    state = appReducer(state, { type: 'case-solved', id: 'p1', caseId: 'keks' });
+    expect(state.profiles[0]?.tower).toMatchObject({ cases: ['keks'] });
+    expect(state.profiles[0]?.tower).not.toHaveProperty('caseSave');
+    state = appReducer(state, {
+      type: 'case-save',
+      id: 'p1',
+      save: { caseId: 'feder', solved: 0, seed: 1 },
+    });
+    state = appReducer(state, { type: 'case-save', id: 'p1', save: null });
+    expect(state.profiles[0]?.tower).not.toHaveProperty('caseSave');
+    state = appReducer(state, { type: 'fact-learned', id: 'p1', factId: 'a' });
+    const once = state;
+    state = appReducer(state, { type: 'fact-learned', id: 'p1', factId: 'a' });
+    expect(state).toEqual(once);
+    expect(state.profiles[0]?.tower?.facts).toEqual(['a']);
+  });
 });

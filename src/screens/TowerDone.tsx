@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, LinkButton } from '@/components/Button';
 import { ChestPick } from '@/components/ChestPick';
+import { FreshItems } from '@/components/FreshItems';
 import { JokeBox } from '@/components/JokeBox';
 import { Screen } from '@/components/Screen';
 import { SpeechBubble } from '@/components/SpeechBubble';
@@ -41,6 +42,7 @@ export function TowerDone({
         <SpeechBubble pose="freut-sich" kikoSize={72}>
           {newFloor ? UI.tower.newFloor(floors) : (praise ?? UI.tower.done)}
         </SpeechBubble>
+        <FreshItems profile={profile} />
         {chest ? (
           <ChestPick
             profile={profile}

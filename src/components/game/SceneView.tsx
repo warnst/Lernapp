@@ -65,7 +65,7 @@ export function SceneView({ scene }: { scene: Scene }) {
       return (
         <div className={styles.scene}>
           {scene.items.map((item) => (
-            <ItemCard key={item.itemId} item={item} />
+            <ItemCard key={item.itemId} item={item} showPrice={item.noPrice !== true} />
           ))}
           {scene.decor &&
             Array.from({ length: scene.decor.count }, (_, i) => (

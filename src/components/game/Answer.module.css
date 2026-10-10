@@ -255,3 +255,9 @@
   justify-content: center;
   gap: var(--space-1);
 }
+
+/* Schattenrätsel: das Icon ganz schwarz (docs/12 3.4) */
+.shadow {
+  display: inline-flex;
+  filter: brightness(0);
+}

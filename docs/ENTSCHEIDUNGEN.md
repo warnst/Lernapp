@@ -125,3 +125,47 @@ Kurze Notizen zu Abweichungen und offenen Punkten der Spezifikation. Format: Dat
   - ob er dauerhaftes Speichern zugesagt hat,
   - für welche Adresse gespeichert wird (Vorschau-Links von Vercel haben eigene Daten),
   - wie man auf iPhone und iPad umzieht (Safari und Home-Bildschirm haben getrennte Speicher, Safari löscht nach 7 Tagen ohne Besuch).
+- 2026-10-10 – Rätselturm Schritte 4–8, allgemein:
+  - **Grenzen:** Alle Grenzen je Stufe stehen in `levels.ts` unter `tower`.
+  - **Speicherformat:** Der Fortschritt steht in getrennten, optionalen Feldern statt in den gemeinsamen Feldern `saved`/`outfit` aus docs/12 7: `facts` (Wissenskarten), `cases` (Detektivbuch), `caseSave` (angefangener Fall), `sudoku` (angefangenes Sudoku). So bleiben alte Spielstände ohne Umbau lesbar.
+  - **Aufgaben-Motor:** Wissensfragen, „Was passt nicht?“ und Schattenrätsel laufen als normale Aufgaben mit Antwortkarten. Tipps, Vorlesen, „So geht's“ und die freundlichen Rückmeldungen gelten damit wie überall.
+  - **Rundenlänge:** Wissensfragen 5 Fragen, „Was passt nicht?“ und Schatten je 3 Rätsel. Alle anderen Arten: ein Rätsel = eine Lampe.
+- 2026-10-10 – Wissensfragen:
+  - **Bilder auf Stufe 1–2:** Bilder gibt es nur, wo ein vorhandenes Bild genau die Antwort zeigt. Sonst stehen große Wörter da, und alles wird vorgelesen.
+  - **Tipps:** Tipp 2 schließt eine falsche Antwort aus.
+  - **Neue Fragen zuerst:** Fragen ohne Wissenskarte kommen vor bekannten.
+  - **Doktorhut:** Es gibt ihn bei 20 Wissenskarten.
+  - **Bewusst weggelassen:** strittige Fakten (Zahl der Kontinente, „größtes Organ“, Zahl der Sinne, Rekorde).
+- 2026-10-10 – „Was passt nicht?“:
+  - **Karten:** immer 4 Karten, auch auf Stufe 4, weil die Antwortkarten höchstens 4 zeigen.
+  - **Keine Kategorie „Tiere“:** Fisch und Möwe sind auch Tiere, das wäre nicht eindeutig.
+  - **Himmel:** „Dinge am Himmel“ wird nie mit Vögeln oder Fahrzeugen gemischt.
+  - **Zahlen:** Ab Stufe 3 sind 40 % der Rätsel Zahlen: gerade/ungerade oder Zehnerzahlen.
+- 2026-10-10 – Schattenrätsel:
+  - **Bilder:** Die Schatten sind vorhandene und 37 neue Sachen-Bilder, ganz schwarz gefärbt.
+  - **Drehen und Spiegeln:** Ab Stufe 3 ist der richtige Schatten immer gedreht, ab Stufe 4 auch gespiegelt. Die falschen Schatten werden zufällig gedreht, damit die Drehung nichts verrät.
+- 2026-10-10 – Memory:
+  - **Zu zweit:** Wer ein Paar findet, ist noch einmal dran. Mitspielen kann ein anderes Profil oder „ein Erwachsener“.
+  - **Ohne Gewinner:** Es gibt keinen Gewinner und keinen Versuchszähler, nur den gemeinsamen Schatz. Auf Stufe 4 haben die Beträge 2–4 Münzen.
+- 2026-10-10 – Labyrinth und Münzpfad:
+  - **Bedienung:** Feld für Feld tippen. Ein Tipp auf ein Feld des eigenen Weges geht bis dorthin zurück.
+  - **Münzpfad:** Ziele und Münzen stehen in `levels.ts`: Stufe 3 genau 1 € mit 10/20/50 Cent auf 4×4, Stufe 4 2–5 € auf 5×5. Der Tipp zeigt das nächste Feld eines passenden Weges oder sagt, wie viele Felder man zurückgehen soll.
+- 2026-10-10 – Punkte verbinden und Bilderrätsel:
+  - **Punkte treffen:** Ein Tipp in die Nähe des nächsten Punkts genügt (Radius 9 im Feld 0–100), sonst wackelt nur der richtige Punkt. Auf Stufe 4 gibt es 50 Punkte in Einerschritten oder 20 Punkte in Fünfer- bzw. Zehnerschritten.
+  - **Bilderrätsel:** Tippen wechselt zwischen ausmalen, Punkt und leer. Das Bild erscheint, sobald es stimmt. Bei 7×7 sind die Kästchen auf dem Handy kleiner als 56 px, das ist bei diesem Rätsel nicht anders möglich.
+- 2026-10-10 – Geheimschrift:
+  - **Zeichen:** eigene SVG-Zeichen, damit iOS keine Emoji daraus macht.
+  - **Eingabe:** Ein richtiger Buchstabe steht sofort unter allen gleichen Zeichen. Ein falscher wird nicht eingetragen, Kiko verweist freundlich auf den Schlüssel.
+  - **Stufe 4:** Die Hälfte der Botschaften nutzt den Zahlenschlüssel A = 1.
+- 2026-10-10 – Detektivfall:
+  - **Rätsel im Fall:** Muster & Co. der Stufe. Beim „Geheimbrief“ ist auf Stufe 3–4 das letzte Rätsel die Botschaft selbst.
+  - **Hinweise:** Auf Stufe 4 bestätigt Hinweis 5 den Täter nur, denn die Stufe-3-Regel verlangt, dass schon 4 Hinweise reichen.
+  - **Belohnung:** Der erste gelöste Fall bringt Detektivhut und Lupe.
+- 2026-10-10 – Rätselpass und Rätsel des Tages:
+  - **Rätselpass:** Ein Stempel pro Art ab 1 gelösten Rätsel, golden ab 10. Der erste goldene Stempel bringt den Zauberhut, das Leuchtfeuer (Etage 10) die Krone.
+  - **Neue Teile:** Neue besondere Teile zeigt ein Hinweis „Neu in Kikos Kleiderschrank“, bis das Kind den Schrank öffnet.
+  - **Rätsel des Tages:** je Kind und Kalendertag eine Art, mit Plakette auf der Kachel. Es gibt keinen Zähler.
+- 2026-10-10 – Rätselturm-Blatt:
+  - **Inhalt:** Sudoku (leichteste Stufe der gewählten Art), Labyrinth oder Münzpfad, Punkte verbinden, ab Stufe 3 Bilderrätsel und Geheimschrift, dazu „Was passt nicht?“.
+  - **Lösungen:** gelöstes Sudoku, eingezeichneter Weg, Bildname, ausgemaltes Bilderrätsel, Klartext und Erklärung.
+  - **Seed:** eigener Seed `tseed`.

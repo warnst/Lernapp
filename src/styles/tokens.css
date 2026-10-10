@@ -135,6 +135,12 @@
   --ill-nest-wall: #fff4e0; /* Wand in Kikos Nest (docs/12 4.1) */
   --ill-nest-band: #ffd9c9; /* Leuchtturm-Streifen an der Nestwand */
   --ill-sky: #d4f0f7; /* Himmel im Nestfenster */
+  --ill-carrot: #f58a3a; /* Möhre, Entenschnabel (docs/12 3.3) */
+  --ill-tomato: #e8584f; /* Tomate, Erdbeere, Zug */
+  --ill-cherry: #c9384a; /* Kirschen */
+  --ill-lemon: #ffe45c; /* Zitrone, Mond */
+  --ill-metal: #c9d1d8; /* Werkzeug-Metall */
+  --ill-jeans: #5b7fb8; /* Hose */
 }
 
 /* Arbeitsblätter (Druck und Vorschau) nur mit Konturen: alle Illustrationsflächen werden weiß (docs/06) */
@@ -203,6 +209,12 @@
   --ill-nest-wall: var(--fill-main);
   --ill-nest-band: var(--fill-main);
   --ill-sky: var(--fill-main);
+  --ill-carrot: var(--fill-main);
+  --ill-tomato: var(--fill-main);
+  --ill-cherry: var(--fill-main);
+  --ill-lemon: var(--fill-main);
+  --ill-metal: var(--fill-main);
+  --ill-jeans: var(--fill-main);
 
   /* Münzen auf Arbeitsblättern nur als Kontur (docs/06) */
   --coin-copper: var(--fill-main);

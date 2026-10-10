@@ -15,6 +15,7 @@ import { cx } from '@/components/cx';
 import type { PrintOptions, Sheet } from './job';
 import { PaperTask } from './PaperTask';
 import { solutionText } from './solution';
+import { TowerSheetBody, TowerSolutions } from './TowerSheet';
 import styles from './Paper.module.css';
 
 // Alle Druckseiten in Druckreihenfolge (docs/06 3–7). Vorschau und Druck nutzen dieselben Seiten.
@@ -245,6 +246,8 @@ function sheetTitle(sheet: Sheet, cfg: StufeConfig): string {
       return PRINT.practiceTitle(UI.practice.topics[sheet.topic], cfg.name);
     case 'riddles':
       return PRINT.riddleTitle(cfg.name);
+    case 'tower':
+      return PRINT.towerTitle(cfg.name);
     case 'certificate':
       return PRINT.certTitle;
   }
@@ -261,9 +264,12 @@ function SolutionPages({
   cfg: StufeConfig;
 }) {
   const withTasks = sheets.flatMap((sheet) =>
-    sheet.kind === 'certificate' ? [] : [{ title: sheetTitle(sheet, cfg), tasks: sheet.tasks }],
+    sheet.kind === 'certificate' || sheet.kind === 'tower'
+      ? []
+      : [{ title: sheetTitle(sheet, cfg), tasks: sheet.tasks }],
   );
-  if (withTasks.length === 0) return null;
+  const tower = sheets.find((sheet) => sheet.kind === 'tower');
+  if (withTasks.length === 0 && !tower) return null;
   return (
     <Page large={false}>
       <div className={styles.solutions}>
@@ -272,6 +278,12 @@ function SolutionPages({
         {withTasks.map((entry) => (
           <SolutionTable key={entry.title} caption={entry.title} tasks={entry.tasks} />
         ))}
+        {tower && (
+          <>
+            <h2>{sheetTitle(tower, cfg)}</h2>
+            <TowerSolutions puzzles={tower.puzzles} />
+          </>
+        )}
       </div>
       <Footer lines={[PRINT.solutionsTitle, PRINT.footerVariant(cfg.name, options.seed)]} />
     </Page>
@@ -316,6 +328,17 @@ export function PrintDocument({ sheets, options }: { sheets: Sheet[]; options: P
                 options={options}
                 cfg={cfg}
               />
+            );
+          case 'tower':
+            return (
+              <Page key="tower" large={false}>
+                <h1 className={styles.title}>{sheetTitle(sheet, cfg)}</h1>
+                {options.nameField && <NameLine />}
+                <TowerSheetBody puzzles={sheet.puzzles} />
+                <Footer
+                  lines={[PRINT.towerLegend, PRINT.footerVariant(cfg.name, options.towerSeed)]}
+                />
+              </Page>
             );
           case 'certificate':
             return (

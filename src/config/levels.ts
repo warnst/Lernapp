@@ -35,8 +35,17 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'raetsel',
     ],
     tower: {
-      types: ['sudoku', 'riddles'],
+      types: ['sudoku', 'memory', 'odd', 'shadow', 'maze', 'dots', 'quiz', 'riddles'],
       sudoku: { kinds: [{ kind: 'bilder', empties: [4, 6, 8] }], notes: false },
+      memory: { pairs: 6, kind: 'bilder', max: 10 },
+      odd: { numbers: false, max: 10 },
+      shadow: { options: 3, rotate: false, mirror: false },
+      maze: { mode: 'maze', size: 5 },
+      nonogram: { sizes: [] },
+      dots: [{ count: 10, step: 1 }],
+      cipher: { messages: [], numberKey: false },
+      case: { riddles: 3, suspects: 3 },
+      quiz: { questions: 5 },
     },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'code'],
@@ -96,7 +105,7 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'raetsel',
     ],
     tower: {
-      types: ['sudoku', 'riddles'],
+      types: ['sudoku', 'memory', 'odd', 'shadow', 'maze', 'dots', 'case', 'quiz', 'riddles'],
       sudoku: {
         kinds: [
           { kind: 'bilder', empties: [6, 8, 10] },
@@ -105,6 +114,15 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
         ],
         notes: false,
       },
+      memory: { pairs: 8, kind: 'bilder', max: 20 },
+      odd: { numbers: false, max: 20 },
+      shadow: { options: 3, rotate: false, mirror: false },
+      maze: { mode: 'maze', size: 6 },
+      nonogram: { sizes: [] },
+      dots: [{ count: 20, step: 1 }],
+      cipher: { messages: [], numberKey: false },
+      case: { riddles: 3, suspects: 3 },
+      quiz: { questions: 5 },
     },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
@@ -180,7 +198,19 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'raetsel',
     ],
     tower: {
-      types: ['sudoku', 'riddles'],
+      types: [
+        'sudoku',
+        'memory',
+        'odd',
+        'shadow',
+        'maze',
+        'nonogram',
+        'dots',
+        'cipher',
+        'case',
+        'quiz',
+        'riddles',
+      ],
       sudoku: {
         kinds: [
           { kind: 'zahlen4', empties: [8, 10, 11] },
@@ -189,6 +219,18 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
         ],
         notes: true,
       },
+      memory: { pairs: 8, kind: 'rechnung', max: 20 },
+      odd: { numbers: true, max: 100 },
+      shadow: { options: 4, rotate: true, mirror: false },
+      maze: { mode: 'coins', size: 4, targets: [100], coins: [10, 20, 50] },
+      nonogram: { sizes: [5] },
+      dots: [
+        { count: 30, step: 1 },
+        { count: 20, step: 2 },
+      ],
+      cipher: { messages: [3], numberKey: false },
+      case: { riddles: 4, suspects: 4 },
+      quiz: { questions: 5 },
     },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
@@ -275,7 +317,19 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'raetsel',
     ],
     tower: {
-      types: ['sudoku', 'riddles'],
+      types: [
+        'sudoku',
+        'memory',
+        'odd',
+        'shadow',
+        'maze',
+        'nonogram',
+        'dots',
+        'cipher',
+        'case',
+        'quiz',
+        'riddles',
+      ],
       sudoku: {
         kinds: [
           { kind: 'zahlen6', empties: [14, 18, 22] },
@@ -283,6 +337,24 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
         ],
         notes: true,
       },
+      memory: { pairs: 10, kind: 'geld', max: 500 },
+      odd: { numbers: true, max: 1000 },
+      shadow: { options: 4, rotate: true, mirror: true },
+      maze: {
+        mode: 'coins',
+        size: 5,
+        targets: [200, 250, 300, 400, 500],
+        coins: [10, 20, 50, 100, 200],
+      },
+      nonogram: { sizes: [6, 7] },
+      dots: [
+        { count: 50, step: 1 },
+        { count: 20, step: 5 },
+        { count: 20, step: 10 },
+      ],
+      cipher: { messages: [3, 4], numberKey: true },
+      case: { riddles: 5, suspects: 4 },
+      quiz: { questions: 5 },
     },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
