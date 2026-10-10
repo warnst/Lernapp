@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 import { Redirect } from 'wouter';
 import { AppHeader } from '@/components/AppHeader';
 import { BottomNav } from '@/components/BottomNav';
-import { STUFEN } from '@/config/levels';
 import { WORLDS } from '@/content/worlds';
 import type { Profile } from '@/domain/types';
 import { useAppState } from '@/state/context';
@@ -26,7 +25,7 @@ export function ChildLayout({ children }: { children: (profile: Profile) => Reac
         totalStars={world.stations.length}
       />
       {children(profile)}
-      <BottomNav world={world.id} readAloud={STUFEN[profile.stufe].autoRead} />
+      <BottomNav world={world.id} />
     </>
   );
 }

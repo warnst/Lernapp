@@ -2,7 +2,6 @@ import { Link, useLocation } from 'wouter';
 import { UI } from '@/content/ui';
 import type { WorldId } from '@/domain/types';
 import { UiIcon, type UiIconName } from '@/illustrations/UiIcon';
-import { toggleSpeak } from '@/speech/speak';
 import styles from './BottomNav.module.css';
 
 interface Tab {
@@ -13,7 +12,7 @@ interface Tab {
 }
 
 /** Untere Navigation mit 4 Tabs (docs/01 Abschnitt 4, docs/12 Abschnitt 2). */
-export function BottomNav({ world, readAloud }: { world: WorldId; readAloud: boolean }) {
+export function BottomNav({ world }: { world: WorldId }) {
   const [path] = useLocation();
   const tabs: Tab[] = [
     {
@@ -49,9 +48,6 @@ export function BottomNav({ world, readAloud }: { world: WorldId; readAloud: boo
           href={tab.href}
           className={styles.tab}
           aria-current={tab.active(path) ? 'page' : undefined}
-          onClick={() => {
-            if (readAloud) toggleSpeak(tab.label);
-          }}
         >
           <span className={styles.icon}>
             <UiIcon name={tab.icon} size={28} />

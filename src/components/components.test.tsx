@@ -49,7 +49,7 @@ describe('BottomSheet', () => {
 });
 
 describe('BottomNav', () => {
-  it('liest Tab-Namen nur bei automatischem Vorlesen vor und zeigt das Welt-Icon', async () => {
+  it('zeigt das Welt-Icon und liest beim Tippen nichts vor', async () => {
     const speak = vi.fn();
     vi.stubGlobal('speechSynthesis', {
       speaking: false,
@@ -57,30 +57,14 @@ describe('BottomNav', () => {
       cancel: vi.fn(),
       getVoices: () => [],
     });
-    vi.stubGlobal(
-      'SpeechSynthesisUtterance',
-      class {
-        text: string;
-        constructor(text: string) {
-          this.text = text;
-        }
-      },
-    );
     const { hook } = memoryLocation({ path: '/' });
-    const { rerender } = render(
+    render(
       <Router hook={hook}>
-        <BottomNav world="kleine-bucht" readAloud />
+        <BottomNav world="kleine-bucht" />
       </Router>,
     );
     await userEvent.click(screen.getByRole('link', { name: 'Üben' }));
-    expect(speak).toHaveBeenCalledOnce();
-    rerender(
-      <Router hook={hook}>
-        <BottomNav world="schatzinsel" readAloud={false} />
-      </Router>,
-    );
-    await userEvent.click(screen.getByRole('link', { name: 'Schätze' }));
-    expect(speak).toHaveBeenCalledOnce();
+    expect(speak).not.toHaveBeenCalled();
   });
 });
 

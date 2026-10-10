@@ -13,7 +13,7 @@ Der Rätselturm ist ein eigener Bereich für Kinder, die gern knobeln: Sudoku, t
 
 ## 2. Platz in der App
 
-**Untere Navigation mit 4 Tabs** (ändert `01`, Abschnitt 4): **Abenteuer** · **Üben** · **Rätsel** (Icon: Leuchtturm) · **Schätze**. Die Tabs bleiben mindestens 56 px hoch. Bei Stufe 1 und 2 wird der Name beim Antippen vorgelesen.
+**Untere Navigation mit 4 Tabs** (ändert `01`, Abschnitt 4): **Abenteuer** · **Üben** · **Rätsel** (Icon: Leuchtturm) · **Schätze**. Die Tabs bleiben mindestens 56 px hoch. Die Tab-Namen werden nicht vorgelesen (Wunsch der Eltern, siehe `ENTSCHEIDUNGEN.md`).
 
 Route `/raetsel` (Turm), `/raetsel/:art` (Spiel). Die Rätsel aus `10` (Muster, Waage, Zahlenmauer, Rechendreieck, Zahlenschloss, Logik) erscheinen zusätzlich im Turm. Im Üben-Thema „Rätsel“ und als Bonus-Rätsel bleiben sie unverändert.
 

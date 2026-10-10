@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Route, Switch } from 'wouter';
+import { Route, Switch, useLocation } from 'wouter';
 import { KikoOutfitContext } from '@/illustrations/kiko-outfit';
 import { activeProfile } from '@/state/progress';
 import { UI } from '@/content/ui';
@@ -26,6 +26,7 @@ import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
 import { AppStateProvider } from '@/state/app-state';
 import { useAppState } from '@/state/context';
+import { useReloadOnNavigate } from '@/state/pwa';
 
 /** „/“: beim allerersten Start die Einrichtung, sonst die Welt des Kindes. */
 function Home() {
@@ -67,6 +68,8 @@ const NO_OUTFIT = {};
 
 /** Alle Routen aus docs/03, Abschnitt 3. Noch fehlende Seiten sind Platzhalter. */
 export function Routes() {
+  const [path] = useLocation();
+  useReloadOnNavigate(path);
   return (
     <OutfitProvider>
       <Switch>
