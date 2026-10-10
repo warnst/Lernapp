@@ -104,6 +104,12 @@ Die Reihenfolge ist bewusst so gewählt, dass nach Phase 4 schon eine spielbare 
 - Manuelle Geräteprobe: iPhone (klein, z. B. SE), Android-Handy, iPad quer, Desktop.
 - Sprachprüfung: alle sichtbaren Texte einmal vollständig vorlesen lassen und auf Verständlichkeit prüfen. Für die Bucht zusätzlich: Ein 5-jähriges Kind kann eine Station **ohne Lesen** spielen.
 
+## Phase 11 ff. – Rätselturm (`12`)
+
+Die Schritte aus `12`, Abschnitt 9, je ein Pull Request: Navigation und Turm mit Witzekiste · Kleiderschrank und Nest · Sudoku · Wissensfragen · Memory, Was passt nicht?, Schattenrätsel · Labyrinth, Punkte verbinden, Bilderrätsel · Geheimschrift und Detektivfall · Rätselpass, Rätsel des Tages, Druckblatt.
+
+**Abnahme:** `12`, Abschnitt 10.
+
 ---
 
 ## Abnahmekriterien MVP
