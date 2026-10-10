@@ -14,11 +14,14 @@ export function StationSheet({
   station,
   completed,
   resumable,
+  bonusOpen,
   onClose,
 }: {
   station: Station;
   completed: boolean;
   resumable: boolean;
+  /** geschafft, Bonus-Rätsel noch nicht gelöst (docs/01 5.3) */
+  bonusOpen: boolean;
   onClose: () => void;
 }) {
   const titleId = useId();
@@ -65,6 +68,11 @@ export function StationSheet({
           {completed && (
             <LinkButton href={`/ueben?thema=${station.practiceTopic}`} variant="secondary" block>
               {UI.sheet.morePractice}
+            </LinkButton>
+          )}
+          {completed && bonusOpen && (
+            <LinkButton href={`${href}/bonus`} variant="secondary" block>
+              {UI.sheet.bonus}
             </LinkButton>
           )}
         </div>

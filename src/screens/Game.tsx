@@ -4,6 +4,7 @@ import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { AnswerArea, type PendingInput } from '@/components/game/AnswerArea';
 import { KikoSheet } from '@/components/game/KikoSheet';
+import { OrderHelper } from '@/components/game/OrderHelper';
 import styles from '@/components/game/Play.module.css';
 import { ProgressShells } from '@/components/game/ProgressShells';
 import { SceneView } from '@/components/game/SceneView';
@@ -34,6 +35,13 @@ function chipAnswer(answer: Answer): string {
     default:
       return '✓';
   }
+}
+
+/** Logik-Rätsel (Kinder ohne Beträge, Antwortkarten): Namen für die Ordnungshilfe (docs/10 3). */
+function orderHelperNames(task: Task): string[] | null {
+  const scene = task.scene;
+  if (scene.kind !== 'people' || scene.people.some((p) => p.amount !== undefined)) return null;
+  return scene.people.map((p) => p.name);
 }
 
 /**
@@ -163,6 +171,9 @@ export function Game({
         <div className={styles.column}>
           <SceneView key={task.id} scene={task.scene} />
           <p className={styles.story}>{renderText(task.story)}</p>
+          {orderHelperNames(task) && currentHintLevel(play) >= 2 && (
+            <OrderHelper names={orderHelperNames(task) ?? []} />
+          )}
         </div>
         <div className={styles.column}>
           {play.partIndex > 0 && (
@@ -184,6 +195,7 @@ export function Game({
             config={config}
             tried={play.tried}
             found={play.found}
+            locked={play.locked}
             solved={solved}
             onPending={setPending}
             onSubmit={submit}

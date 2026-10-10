@@ -209,9 +209,11 @@ describe('Karte', () => {
     expect(screen.getByRole('heading', { name: 'Schätze' })).toBeInTheDocument();
   });
 
-  it('Platzhalter für Spiel-Routen führen zurück zur Karte', () => {
-    renderApp('/station/muschelstrand/bonus', makeState({ profiles: [makeProfile()] }));
-    expect(screen.getByText('Hier wird noch gebaut.')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Zur Karte' })).toHaveAttribute('href', '/');
+  it('Bonus-Rätsel einer nicht geschafften Station führt zur Karte', () => {
+    const { location } = renderApp(
+      '/station/muschelstrand/bonus',
+      makeState({ profiles: [makeProfile()] }),
+    );
+    expect(location.history.at(-1)).toBe('/');
   });
 });

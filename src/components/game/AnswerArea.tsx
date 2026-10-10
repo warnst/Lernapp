@@ -1,15 +1,25 @@
 import { useEffect } from 'react';
 import type { AnswerInput } from '@/domain/check';
-import type { MoneyPiece, StufeConfig, Task, TaskPart } from '@/domain/types';
+import type { ClueSymbol, MoneyPiece, StufeConfig, Task, TaskPart } from '@/domain/types';
 import { ChoiceView } from './ChoiceView';
+import { CodeLock } from './CodeLock';
 import { CoinTray } from './CoinTray';
 import { FoundVariants } from './FoundVariants';
+import { GridView } from './GridView';
 import { MoneyEntry } from './MoneyEntry';
 import { NumberEntry } from './NumberEntry';
 import { OrderView } from './OrderView';
 import { SelectView } from './SelectView';
 
 export type PendingInput = AnswerInput;
+
+const DEFAULT_SYMBOLS: ClueSymbol[] = ['muschel', 'stern', 'fisch', 'krebs'];
+
+/** Symbole der Räder: aus den Rätselkarten der Szene, sonst der Reihe nach. */
+function codeSymbols(task: Task, count: number): ClueSymbol[] {
+  const fromScene = task.scene.kind === 'clues' ? task.scene.clues.map((c) => c.symbol) : [];
+  return fromScene.length === count ? fromScene : DEFAULT_SYMBOLS.slice(0, count);
+}
 
 /**
  * Der Antwortbereich für den Typ des Aufgabenteils (docs/01 6.2). Eine vollständige Eingabe
@@ -21,6 +31,7 @@ export function AnswerArea({
   config,
   tried,
   found,
+  locked,
   solved,
   onPending,
   onSubmit,
@@ -30,6 +41,7 @@ export function AnswerArea({
   config: StufeConfig;
   tried: readonly string[];
   found: readonly MoneyPiece[][];
+  locked: readonly string[];
   solved: boolean;
   onPending: (input: PendingInput | null) => void;
   onSubmit: (input: PendingInput) => void;
@@ -118,8 +130,27 @@ export function AnswerArea({
         />
       );
     case 'grid':
-    case 'code':
-      // Zahlenmauer, Rechendreieck und Zahlenschloss folgen in Phase 7.
-      return null;
+      return (
+        <GridView
+          answer={answer}
+          config={config}
+          locked={locked}
+          readOnTap={readOnTap}
+          onChange={(values) => {
+            onPending(values ? { type: 'grid', values } : null);
+          }}
+        />
+      );
+    case 'code': {
+      const symbols = codeSymbols(task, answer.digits.length);
+      return (
+        <CodeLock
+          symbols={symbols}
+          onChange={(digits) => {
+            onPending({ type: 'code', digits, symbols: [...symbols] });
+          }}
+        />
+      );
+    }
   }
 }

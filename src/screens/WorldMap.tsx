@@ -123,6 +123,7 @@ export function WorldMap({ profile }: { profile: Profile }) {
 
   const layout = LAYOUT[world.id];
   const points = layout.map(([x, y]) => `${String(x)},${String(y)}`).join(' ');
+  const bonusSolved = profile.worlds[world.id]?.bonusSolved ?? [];
   const stateOf = (station: Station, index: number): StationNodeState => {
     if (isCompleted(profile, world.id, station.id)) return 'done';
     if (station === current) return 'current';
@@ -163,6 +164,7 @@ export function WorldMap({ profile }: { profile: Profile }) {
                 title={station.title}
                 icon={station.icon}
                 state={nodeState}
+                bonus={bonusSolved.includes(station.id)}
                 revealing={revealing.has(station.id)}
                 onSelect={() => {
                   if (nodeState === 'locked') showNotice();
@@ -201,6 +203,7 @@ export function WorldMap({ profile }: { profile: Profile }) {
           station={open}
           completed={isCompleted(profile, world.id, open.id)}
           resumable={canResume(profile, open.id)}
+          bonusOpen={!bonusSolved.includes(open.id)}
           onClose={close}
         />
       )}

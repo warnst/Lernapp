@@ -48,7 +48,11 @@ export interface StufeConfig {
   autoRead: boolean; // Geschichte + Frage beim Öffnen automatisch vorlesen
   maxStoryWords: number; // Generatoren verwerfen längere Texte
   practiceTopics: PracticeTopicId[];
-  riddles: { types: RiddleType[]; moneyShare: number }; // 0..1 Anteil Geld-Rätsel
+  riddles: {
+    types: RiddleType[];
+    moneyShare: number; // 0..1 Anteil Geld-Rätsel
+    params: RiddleParams; // Startwerte je Rätselart (docs/10 4)
+  };
 }
 
 // ---------- Profile (docs/09, Abschnitt 3.1) ----------
@@ -315,4 +319,71 @@ export interface GridAnswer {
 export interface CodeAnswer {
   type: 'code';
   digits: number[];
+}
+
+// ---------- Rätsel-Startwerte je Stufe (docs/10 Abschnitt 4) ----------
+
+/** Regel einer Zahlen- oder Geldreihe. */
+export type SeqRule =
+  { kind: 'add'; d: number } | { kind: 'double' } | { kind: 'alt'; d1: number; d2: number };
+
+export type PicturePeriod = 'AB' | 'AAB' | 'ABC' | 'ABB' | 'AABB';
+
+export type CodeClueKind = 'plus' | 'plusminus' | 'money' | 'divide' | 'times';
+
+export type LogicFrage = 'meisten' | 'wenigsten' | 'mitte' | 'betrag';
+
+export interface RiddleGridMoney {
+  step: number;
+  maxTop: number;
+}
+
+export interface RiddleParams {
+  sequence: {
+    numberRules: SeqRule[];
+    moneyRules: SeqRule[];
+    periods: PicturePeriod[];
+    /** Wachstum je Feld bei Mengen; leer = keine Mengenmuster */
+    mengeSteps: number[];
+    mengeMax: number;
+    numberMax: number;
+  };
+  balance: {
+    /** größte Anzahl bei Mengen (Muscheln …); 0 = keine Mengen */
+    objectsMax: number;
+    /** ohne force: Mengen statt Geld (Anteil Geld dann `riddles.moneyShare`) */
+    objectsByDefault: boolean;
+    /** zwei gleiche fehlende Stücke statt einem */
+    twoEqual: boolean;
+  };
+  wall: {
+    width: number;
+    numberMaxTop: number;
+    /** null = keine Geldmauern */
+    money: RiddleGridMoney | null;
+    gaps: number[];
+    /** Anteil der Mauern mit mindestens einer Lücke unten (0 = nie, 1 = immer) */
+    bottomShare: number;
+  };
+  triangle: {
+    /** welche Felder standardmäßig fehlen */
+    mode: 'outer' | 'mixed' | 'inner';
+    numberMaxOuter: number;
+    money: RiddleGridMoney | null;
+  };
+  code: {
+    wheels: 3 | 4;
+    dots: boolean;
+    kinds: CodeClueKind[];
+    /** größte Zahl in Plus- und Minus-Rätseln */
+    operandMax: number;
+  };
+  logic: {
+    fragen: LogicFrage[];
+    kids: number;
+    /** ab Stufe 3: Die Sätze legen die ganze Reihenfolge fest. */
+    fullOrder: boolean;
+    moneyStep: number;
+    moneyMax: number;
+  };
 }

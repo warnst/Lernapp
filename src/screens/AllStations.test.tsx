@@ -20,7 +20,7 @@ function profileState(stufe: Stufe, world: Station['world']): AppStateV2 {
 }
 
 const islandStations = WORLDS.schatzinsel.stations;
-const bayStations = WORLDS['kleine-bucht'].stations.filter((s) => s.id !== 'muscheltruhe');
+const bayStations = WORLDS['kleine-bucht'].stations;
 
 describe('alle Stationen sind durchspielbar', () => {
   it.each(islandStations.map((s) => [s.id, s] as const))(

@@ -1,13 +1,13 @@
 import { UI } from '@/content/ui';
 import { formatMoney } from '@/domain/money';
 import { renderText } from '@/domain/text';
-import type { BalanceSide, MoneyPiece, Scene, SeqItem } from '@/domain/types';
+import type { MoneyPiece, Scene } from '@/domain/types';
 import { ItemIcon } from '@/illustrations/ItemIcon';
 import styles from './Game.module.css';
 import { ItemCard } from './ItemCard';
 import { MoneyPieceView } from './MoneyPieceView';
 import { ObjectScene } from './ObjectScene';
-import { PriceTag } from './PriceTag';
+import { BalanceScene, CluesScene, SequenceScene } from './RiddleScenes';
 
 function Pieces({ pieces }: { pieces: readonly MoneyPiece[] }) {
   return (
@@ -35,45 +35,7 @@ function NoteLine({ line }: { line: string }) {
   );
 }
 
-function SeqCard({ item }: { item: SeqItem }) {
-  switch (item.kind) {
-    case 'number':
-      return <span className={styles.tag}>{item.value}</span>;
-    case 'money':
-      return <PriceTag price={item.cents} />;
-    case 'icon':
-      return <ItemIcon itemId={item.icon} size={56} />;
-    case 'objects':
-      return (
-        <span className={styles.group}>
-          {Array.from({ length: item.count }, (_, i) => (
-            <ItemIcon key={i} itemId={item.itemId} size={32} />
-          ))}
-        </span>
-      );
-    case 'blank':
-      return <span className={styles.tag}>?</span>;
-  }
-}
-
-function Side({ side }: { side: BalanceSide }) {
-  return (
-    <div className={styles.group}>
-      {side.pieces && <Pieces pieces={side.pieces} />}
-      {side.objects &&
-        Array.from({ length: side.objects.count }, (_, i) => (
-          <ItemIcon key={i} itemId={side.objects?.itemId ?? ''} size={36} />
-        ))}
-      {Array.from({ length: side.unknown ?? 0 }, (_, i) => (
-        <span key={`u${String(i)}`} className={styles.tag}>
-          ?
-        </span>
-      ))}
-    </div>
-  );
-}
-
-/** Bühne oben im Spiel (docs/02 5, docs/03 4). Waage, Muster und Schloss bekommen in Phase 7 ihre Bilder. */
+/** Bühne oben im Spiel (docs/02 5, docs/03 4). */
 export function SceneView({ scene }: { scene: Scene }) {
   switch (scene.kind) {
     case 'none':
@@ -149,27 +111,19 @@ export function SceneView({ scene }: { scene: Scene }) {
     case 'sequence':
       return (
         <div className={styles.scene}>
-          {scene.items.map((item, i) => (
-            <SeqCard key={i} item={item} />
-          ))}
+          <SequenceScene items={scene.items} />
         </div>
       );
     case 'balance':
       return (
         <div className={styles.scene}>
-          <Side side={scene.left} />
-          <Side side={scene.right} />
+          <BalanceScene left={scene.left} right={scene.right} />
         </div>
       );
     case 'clues':
       return (
         <div className={styles.scene}>
-          {scene.clues.map((clue) => (
-            <div key={clue.symbol} className={styles.person}>
-              <ItemIcon itemId={clue.symbol} size={40} />
-              <span>{clue.text}</span>
-            </div>
-          ))}
+          <CluesScene clues={scene.clues} />
         </div>
       );
   }

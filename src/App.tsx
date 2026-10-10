@@ -3,6 +3,7 @@ import { UI } from '@/content/ui';
 import { AdultArea } from '@/screens/AdultArea';
 import { AdultProfile } from '@/screens/AdultProfile';
 import { Adults } from '@/screens/Adults';
+import { BonusPlay } from '@/screens/BonusPlay';
 import { ChildLayout } from '@/screens/ChildLayout';
 import { Placeholder } from '@/screens/Placeholder';
 import { Practice } from '@/screens/Practice';
@@ -41,7 +42,7 @@ export function Routes() {
         {(params) => <StationComplete stationId={params.stationId} />}
       </Route>
       <Route path="/station/:stationId/bonus">
-        <Placeholder title={UI.nav.adventure} />
+        {(params) => <BonusPlay stationId={params.stationId} />}
       </Route>
       <Route path="/station/:stationId">{(params) => <Play stationId={params.stationId} />}</Route>
       <Route path="/ueben/spiel" component={PracticePlay} />

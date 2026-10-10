@@ -4,7 +4,9 @@ import { WORLDS } from '@/content/worlds';
 import type { AppStateV2, StationProgress } from '@/domain/types';
 import { STORAGE_KEY } from '@/state/storage';
 import { makeProfile, makeState } from '@/state/test-helpers';
+import { answerPart } from '@/test/answer-part';
 import { renderApp } from '@/test/render-app';
+import { bonusTask, bonusType } from '@/practice/bonus';
 
 const done: StationProgress = { completed: true, plays: 1, stufe: 3 };
 const islandIds = WORLDS.schatzinsel.stations.map((s) => s.id);
@@ -89,6 +91,59 @@ describe('Stationsabschluss', () => {
     unknown.unmount();
     const none = renderApp('/station/markt/geschafft', makeState({ profiles: [] }));
     expect(none.location.history.at(-1)).toBe('/');
+  });
+});
+
+describe('Bonus-Rätsel (docs/10 6)', () => {
+  it('Angebot nach der Station: „Ja!“ führt zum Rätsel, „Später“ blendet es aus', async () => {
+    const { user } = renderApp('/station/markt/geschafft', withDone(['muschelstrand', 'markt']));
+    expect(screen.getByText('Kiko hat noch ein Bonus-Rätsel. Magst du?')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Ja!' })).toHaveAttribute(
+      'href',
+      '/station/markt/bonus',
+    );
+    await user.click(screen.getByRole('button', { name: 'Später' }));
+    expect(screen.queryByText('Kiko hat noch ein Bonus-Rätsel. Magst du?')).not.toBeInTheDocument();
+  });
+
+  it('gelöst: Glitzerstein, gespeichert, auf der Karte markiert, kein Angebot mehr', async () => {
+    const state = withDone(['muschelstrand', 'markt']);
+    const profile = state.profiles[0];
+    const station = WORLDS.schatzinsel.stations[1];
+    if (!profile || !station) throw new Error('Testdaten fehlen');
+    const task = bonusTask(station, profile);
+    expect(task).not.toBeNull();
+    const { user, storage, unmount } = renderApp('/station/markt/bonus', state);
+    for (const part of task?.parts ?? []) await answerPart(user, part, false);
+    expect(screen.getByRole('img', { name: 'Ein neuer Glitzerstein' })).toBeInTheDocument();
+    expect(saved(storage).profiles[0]?.worlds.schatzinsel?.bonusSolved).toEqual(['markt']);
+    unmount();
+
+    const again = renderApp('/', saved(storage));
+    await again.user.click(
+      screen.getByRole('button', { name: /^Station 2: .*, geschafft, Bonus-Rätsel gelöst$/ }),
+    );
+    expect(
+      within(screen.getByRole('dialog')).queryByRole('link', { name: 'Bonus-Rätsel' }),
+    ).not.toBeInTheDocument();
+    again.unmount();
+    renderApp('/station/markt/geschafft', saved(storage));
+    expect(screen.queryByText('Kiko hat noch ein Bonus-Rätsel. Magst du?')).not.toBeInTheDocument();
+  });
+
+  it('nicht gelöst: die Stationskarte bietet „Bonus-Rätsel“ an', async () => {
+    const { user } = renderApp('/', withDone(['muschelstrand', 'markt']));
+    await user.click(screen.getByRole('button', { name: /^Station 2: .*, geschafft$/ }));
+    expect(
+      within(screen.getByRole('dialog')).getByRole('link', { name: 'Bonus-Rätsel' }),
+    ).toHaveAttribute('href', '/station/markt/bonus');
+  });
+
+  it('nach der letzten Insel-Station ist es immer das Zahlenschloss', () => {
+    const profile = makeProfile();
+    const last = WORLDS.schatzinsel.stations.at(-1);
+    if (!last) throw new Error('Testdaten fehlen');
+    expect(bonusType(last, profile)).toBe('code');
   });
 });
 

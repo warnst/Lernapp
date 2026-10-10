@@ -94,3 +94,22 @@
     animation: none;
   }
 }
+
+.gem {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  animation: sparkle 2.4s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  50% {
+    transform: scale(1.15) rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gem {
+    animation: none;
+  }
+}

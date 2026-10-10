@@ -20,6 +20,8 @@ export interface PlayState {
   tried: string[];
   /** gemerkte Möglichkeiten (pay-variants) */
   found: MoneyPiece[][];
+  /** Felder von Mauer und Dreieck, die schon stimmen und fest sind (grid) */
+  locked: string[];
   sheet?: SheetContent;
   lastPoolText?: string;
   /** Statistik des gerade gelösten Teils, bis er gespeichert ist */
@@ -53,13 +55,23 @@ export function startPlay(tasks: readonly Task[], taskIndex = 0, partIndex = 0):
     hintsOpened: 0,
     tried: [],
     found: [],
+    locked: [],
     finished: false,
   };
 }
 
 function freshPart(state: PlayState, taskIndex: number, partIndex: number): PlayState {
   const { sheet: _sheet, solvedPart: _solved, ...rest } = state;
-  return { ...rest, taskIndex, partIndex, wrongCount: 0, hintsOpened: 0, tried: [], found: [] };
+  return {
+    ...rest,
+    taskIndex,
+    partIndex,
+    wrongCount: 0,
+    hintsOpened: 0,
+    tried: [],
+    found: [],
+    locked: [],
+  };
 }
 
 function advance(state: PlayState): PlayState {
@@ -88,12 +100,17 @@ export function playReducer(state: PlayState, action: PlayAction): PlayState {
         result.status === 'correct' && action.pieces !== undefined
           ? [...state.found, action.pieces]
           : state.found;
+      const locked =
+        result.status === 'wrong' && result.correctCells
+          ? [...new Set([...state.locked, ...result.correctCells])]
+          : state.locked;
       const solved = result.status === 'correct' && result.remaining === undefined;
       return {
         ...state,
         wrongCount,
         tried,
         found,
+        locked,
         sheet: { kind: 'check', result, plan, ...(poolText === undefined ? {} : { poolText }) },
         ...(poolText === undefined ? {} : { lastPoolText: poolText }),
         ...(solved ? { solvedPart: { wrong: wrongCount, hints: state.hintsOpened } } : {}),

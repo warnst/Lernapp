@@ -34,7 +34,28 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'reicht-das-geld',
       'raetsel',
     ],
-    riddles: { types: ['sequence', 'balance', 'wall', 'code'], moneyShare: 0.3 },
+    riddles: {
+      types: ['sequence', 'balance', 'wall', 'code'],
+      moneyShare: 0.3,
+      params: {
+        sequence: {
+          numberRules: [
+            { kind: 'add', d: 1 },
+            { kind: 'add', d: -1 },
+          ],
+          moneyRules: [],
+          periods: ['AB', 'AAB', 'ABC'],
+          mengeSteps: [1],
+          mengeMax: 10,
+          numberMax: 10,
+        },
+        balance: { objectsMax: 10, objectsByDefault: true, twoEqual: false },
+        wall: { width: 2, numberMaxTop: 10, money: null, gaps: [1], bottomShare: 0 },
+        triangle: { mode: 'outer', numberMaxOuter: 10, money: null },
+        code: { wheels: 3, dots: true, kinds: ['plus'], operandMax: 9 },
+        logic: { fragen: ['meisten'], kids: 3, fullOrder: false, moneyStep: 1, moneyMax: 10 },
+      },
+    },
   },
   2: {
     id: 2,
@@ -73,6 +94,30 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.5,
+      params: {
+        sequence: {
+          numberRules: [
+            { kind: 'add', d: 2 },
+            { kind: 'add', d: 5 },
+            { kind: 'add', d: 10 },
+            { kind: 'add', d: -1 },
+            { kind: 'add', d: -2 },
+          ],
+          moneyRules: [
+            { kind: 'add', d: 100 },
+            { kind: 'add', d: 200 },
+          ],
+          periods: ['AB', 'AAB', 'ABC', 'ABB'],
+          mengeSteps: [1, 2],
+          mengeMax: 10,
+          numberMax: 20,
+        },
+        balance: { objectsMax: 20, objectsByDefault: false, twoEqual: false },
+        wall: { width: 3, numberMaxTop: 20, money: null, gaps: [1, 2], bottomShare: 0.3 },
+        triangle: { mode: 'outer', numberMaxOuter: 20, money: null },
+        code: { wheels: 3, dots: false, kinds: ['plusminus'], operandMax: 10 },
+        logic: { fragen: ['meisten'], kids: 3, fullOrder: false, moneyStep: 100, moneyMax: 2000 },
+      },
     },
   },
   3: {
@@ -122,6 +167,41 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.6,
+      params: {
+        sequence: {
+          numberRules: [
+            { kind: 'add', d: 5 },
+            { kind: 'add', d: 10 },
+            { kind: 'add', d: 20 },
+          ],
+          moneyRules: [
+            { kind: 'add', d: 20 },
+            { kind: 'add', d: 50 },
+            { kind: 'add', d: -10 },
+          ],
+          periods: ['AB', 'AAB', 'ABC', 'ABB', 'AABB'],
+          mengeSteps: [],
+          mengeMax: 0,
+          numberMax: 100,
+        },
+        balance: { objectsMax: 0, objectsByDefault: false, twoEqual: false },
+        wall: {
+          width: 3,
+          numberMaxTop: 100,
+          money: { step: 10, maxTop: 500 },
+          gaps: [2],
+          bottomShare: 0.7,
+        },
+        triangle: { mode: 'mixed', numberMaxOuter: 50, money: { step: 10, maxTop: 200 } },
+        code: { wheels: 4, dots: false, kinds: ['money'], operandMax: 10 },
+        logic: {
+          fragen: ['meisten', 'wenigsten', 'mitte'],
+          kids: 3,
+          fullOrder: true,
+          moneyStep: 50,
+          moneyMax: 1000,
+        },
+      },
     },
   },
   4: {
@@ -171,6 +251,41 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.6,
+      params: {
+        sequence: {
+          numberRules: [
+            { kind: 'double' },
+            { kind: 'alt', d1: 2, d2: 3 },
+            { kind: 'alt', d1: 3, d2: 5 },
+            { kind: 'alt', d1: 10, d2: 5 },
+          ],
+          moneyRules: [
+            { kind: 'add', d: 25 },
+            { kind: 'add', d: 150 },
+          ],
+          periods: ['AAB', 'ABC', 'ABB', 'AABB'],
+          mengeSteps: [],
+          mengeMax: 0,
+          numberMax: 200,
+        },
+        balance: { objectsMax: 0, objectsByDefault: false, twoEqual: true },
+        wall: {
+          width: 4,
+          numberMaxTop: 200,
+          money: { step: 5, maxTop: 2000 },
+          gaps: [3],
+          bottomShare: 1,
+        },
+        triangle: { mode: 'inner', numberMaxOuter: 100, money: { step: 10, maxTop: 1000 } },
+        code: { wheels: 4, dots: false, kinds: ['divide', 'money', 'times'], operandMax: 10 },
+        logic: {
+          fragen: ['betrag', 'betrag', 'meisten', 'wenigsten'],
+          kids: 4,
+          fullOrder: true,
+          moneyStep: 50,
+          moneyMax: 2000,
+        },
+      },
     },
   },
 };

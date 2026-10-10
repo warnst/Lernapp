@@ -1,5 +1,6 @@
 import { UI } from '@/content/ui';
 import { Fog } from '@/illustrations/Fog';
+import { Gem } from '@/illustrations/Gem';
 import { StationIcon } from '@/illustrations/StationIcon';
 import { UiIcon } from '@/illustrations/UiIcon';
 import styles from './StationNode.module.css';
@@ -13,6 +14,7 @@ export function StationNode({
   title,
   icon,
   state,
+  bonus = false,
   revealing = false,
   onSelect,
 }: {
@@ -20,6 +22,8 @@ export function StationNode({
   title: string;
   icon: string;
   state: StationNodeState;
+  /** Bonus-Rätsel gelöst: die Station glitzert (docs/10 6) */
+  bonus?: boolean;
   /** Nebel zieht einmalig ab (docs/02 7) */
   revealing?: boolean;
   onSelect: () => void;
@@ -28,7 +32,7 @@ export function StationNode({
     <button
       type="button"
       className={cx(styles.node, state !== 'open' && styles[state])}
-      aria-label={UI.map.stationLabel(number, title, state)}
+      aria-label={UI.map.stationLabel(number, title, state) + (bonus ? UI.map.bonusSolved : '')}
       onClick={onSelect}
     >
       <StationIcon icon={icon} size={44} className={styles.icon} />
@@ -38,6 +42,11 @@ export function StationNode({
       {state === 'done' && (
         <span className={styles.badge} aria-hidden="true">
           <UiIcon name="stern" size={18} />
+        </span>
+      )}
+      {bonus && (
+        <span className={styles.gem} aria-hidden="true">
+          <Gem size={24} found />
         </span>
       )}
       {revealing && <Fog size={120} className={cx(styles.fog, styles.fogLeaving)} />}

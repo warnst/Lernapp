@@ -24,6 +24,7 @@ export type AppAction =
   | { type: 'complete-station'; id: string; world: WorldId; stationId: string; at: string }
   | { type: 'set-practice-last'; id: string; last: NonNullable<Profile['practice']['last']> }
   | { type: 'add-pearl'; id: string }
+  | { type: 'solve-bonus'; id: string; world: WorldId; stationId: string }
   | { type: 'replace'; state: AppStateV2 };
 
 function cleanName(name: string | undefined): string | undefined {
@@ -103,6 +104,22 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
           ? profile
           : { ...profile, celebrated: [...profile.celebrated, action.key] },
       );
+    case 'solve-bonus':
+      return updateProfile(state, action.id, (profile) => {
+        const world = profile.worlds[action.world] ?? {
+          stations: {},
+          unlockAll: false,
+          bonusSolved: [],
+        };
+        if (world.bonusSolved.includes(action.stationId)) return profile;
+        return {
+          ...profile,
+          worlds: {
+            ...profile.worlds,
+            [action.world]: { ...world, bonusSolved: [...world.bonusSolved, action.stationId] },
+          },
+        };
+      });
     case 'save-resume':
       return updateProfile(state, action.id, (profile) => ({ ...profile, resume: action.resume }));
     case 'record-part':

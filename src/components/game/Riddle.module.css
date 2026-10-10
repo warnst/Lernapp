@@ -1,0 +1,357 @@
+/* Rätsel: Mauer, Dreieck, Schloss, Muster, Waage, Ordnungshilfe (docs/10 3) */
+
+/* ---------- Felder von Mauer und Dreieck ---------- */
+
+.cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 72px;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-s);
+  color: var(--ink-900);
+  font-size: calc(20px * var(--text-scale));
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.given {
+  border: 3px solid var(--ill-rock);
+  background: var(--ill-sand);
+}
+
+.open {
+  border: 3px dashed var(--sea-700);
+  background: var(--white);
+  cursor: pointer;
+}
+
+.locked {
+  border: 3px solid var(--palm-600);
+  background: var(--white);
+}
+
+.cellCheck {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  border-radius: var(--radius-full);
+  background: var(--palm-600);
+  color: var(--white);
+}
+
+.wall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.wallRow {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.triangle {
+  position: relative;
+  width: min(100%, 340px);
+  aspect-ratio: 1 / 0.92;
+  margin: 0 auto;
+}
+
+.triangleLines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: var(--sand-100);
+  stroke: var(--wood-500);
+  stroke-width: 1.2;
+}
+
+.spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.inner .cell {
+  min-width: 64px;
+  border-radius: var(--radius-full);
+}
+
+.cellSheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ---------- Zahlenschloss ---------- */
+
+.lock {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 4px solid var(--wood-500);
+  border-radius: var(--radius-l);
+  background: var(--wood-100);
+}
+
+.wheel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.wheelButton {
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: 3px solid var(--wood-500);
+  border-radius: var(--radius-s);
+  background: var(--white);
+  color: var(--wood-900);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.digit {
+  display: grid;
+  place-items: center;
+  width: var(--tap-min);
+  height: 64px;
+  border: 3px solid var(--ink-900);
+  border-radius: var(--radius-s);
+  background: var(--white);
+  font-size: 36px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  touch-action: none;
+}
+
+/* ---------- Muster ---------- */
+
+.sequence {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  max-width: calc(5 * 72px + 4 * var(--space-2));
+  margin: 0 auto;
+}
+
+.seqCard {
+  display: grid;
+  place-items: center;
+  min-width: 64px;
+  min-height: 64px;
+  padding: var(--space-1) var(--space-2);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  font-size: calc(24px * var(--text-scale));
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.seqObjects {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 96px;
+}
+
+.blank {
+  border-style: dashed;
+  border-color: var(--sea-700);
+  color: var(--sea-700);
+}
+
+/* ---------- Waage ---------- */
+
+.balance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 360px);
+  margin: 0 auto;
+  padding-top: var(--space-4);
+}
+
+.beam {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  border-bottom: 10px solid var(--wood-500);
+  border-radius: var(--radius-s);
+  transition: transform 600ms ease-out;
+}
+
+.links {
+  transform: rotate(-6deg);
+}
+
+.rechts {
+  transform: rotate(6deg);
+}
+
+.gerade {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beam {
+    transition: none;
+  }
+}
+
+.fulcrum {
+  width: 0;
+  height: 0;
+  border-right: 28px solid transparent;
+  border-bottom: 40px solid var(--wood-900);
+  border-left: 28px solid transparent;
+}
+
+.pan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 46%;
+}
+
+.panContent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+}
+
+.panBowl {
+  width: 100%;
+  height: 14px;
+  border: 3px solid var(--wood-500);
+  border-top: none;
+  border-radius: 0 0 var(--radius-full) var(--radius-full);
+  background: var(--wood-100);
+}
+
+.unknown {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 3px dashed var(--sea-700);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  color: var(--sea-700);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ---------- Rätselkarten ---------- */
+
+.clues {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.clue {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: var(--space-2);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+}
+
+.clue > svg {
+  flex-shrink: 0;
+}
+
+.clueText {
+  font-size: calc(18px * var(--text-scale));
+  font-weight: 700;
+}
+
+.dots {
+  display: inline-block;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 var(--space-1);
+  border: 2px dashed var(--sand-300);
+  border-radius: var(--radius-s);
+  color: var(--sea-700);
+  letter-spacing: 1px;
+  line-height: 24px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* ---------- Ordnungshilfe ---------- */
+
+.helper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--lagoon-100);
+}
+
+.helperText {
+  color: var(--ink-900);
+  font-size: 16px;
+}
+
+.helperNames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+}
+
+.nameChip {
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chosen {
+  border-color: var(--sea-700);
+  background: var(--sun-400);
+}
+
+.stairs {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.step {
+  flex: 1;
+  min-height: var(--tap-min);
+  border: 3px solid var(--wood-500);
+  border-radius: var(--radius-s) var(--radius-s) 0 0;
+  background: var(--wood-100);
+  color: var(--wood-900);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}

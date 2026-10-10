@@ -130,3 +130,21 @@
     display: none;
   }
 }
+
+.bonus {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-self: stretch;
+  padding: var(--space-3);
+  border: 3px dashed var(--sea-700);
+  border-radius: var(--radius-m);
+  background: var(--lagoon-100);
+  text-align: left;
+}
+
+.bonusActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}

@@ -26,6 +26,7 @@ export const UI = {
           state
         ]
       }`,
+    bonusSolved: ', Bonus-Rätsel gelöst',
   },
   sheet: {
     title: (n: number, title: string) => `Station ${String(n)} · ${title}`,
@@ -35,6 +36,7 @@ export const UI = {
     resume: 'Weiterspielen',
     again: 'Noch einmal spielen',
     morePractice: 'Mehr davon üben',
+    bonus: 'Bonus-Rätsel',
     close: 'Schließen',
     read: 'Vorlesen',
   },
@@ -114,6 +116,16 @@ export const UI = {
     } satisfies Record<WorldId, string>,
     myTreasures: 'Meine Schätze ansehen',
     finaleMap: 'Zur Karte',
+  },
+  /** Bonus-Rätsel nach einer Station (docs/10 6) */
+  bonus: {
+    offer: 'Kiko hat noch ein Bonus-Rätsel. Magst du?',
+    yes: 'Ja!',
+    later: 'Später',
+    solved: 'Bonus-Rätsel gelöst! Dafür bekommst du einen Glitzerstein.',
+    gemLabel: 'Ein neuer Glitzerstein',
+    toMap: 'Zurück zur Karte',
+    toTreasures: 'Meine Schätze ansehen',
   },
   /** Üben (docs/01 5.7, docs/09 6) */
   practice: {
@@ -218,6 +230,30 @@ export const UI = {
     blot: 'Fleck',
     countHelp: (n: number) => `Zählen: ${String(n)}`,
     price: (amount: string) => `Preis: ${amount}`,
+    blank: 'Leeres Feld',
+    balance: (tilt: 'links' | 'rechts' | 'gerade') =>
+      tilt === 'gerade' ? 'Waage, sie ist im Gleichgewicht' : `Waage, sie kippt nach ${tilt}`,
+    left: 'Linke Schale',
+    right: 'Rechte Schale',
+    unknown: 'Fehlt',
+    dots: (a: number, b: number) => `${String(a)} Punkte und ${String(b)} Punkte`,
+  },
+  riddle: {
+    cellEmpty: 'Leeres Feld, antippen',
+    cellValue: (value: string) => `Feld: ${value}, antippen zum Ändern`,
+    cellLocked: (value: string) => `Feld: ${value}, stimmt`,
+    cellTitle: 'Was gehört in dieses Feld?',
+    cellDone: 'Fertig',
+    wall: 'Zahlenmauer',
+    triangle: 'Rechendreieck',
+    lock: 'Zahlenschloss',
+    wheel: (symbol: string, digit: number) => `Rad mit ${symbol}: ${String(digit)}`,
+    up: (symbol: string) => `Rad mit ${symbol} höher`,
+    down: (symbol: string) => `Rad mit ${symbol} niedriger`,
+    symbols: { muschel: 'Muschel', stern: 'Stern', fisch: 'Fisch', krebs: 'Krebs' },
+    stairs: 'Ordnungshilfe: Wer mehr hat, steht höher. Tippe ein Kind an, dann eine Stufe.',
+    step: (n: number) => `Stufe ${String(n)}`,
+    stepEmpty: 'leer',
   },
 } as const;
 

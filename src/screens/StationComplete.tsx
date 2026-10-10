@@ -1,6 +1,6 @@
-import type { CSSProperties } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { Redirect } from 'wouter';
-import { LinkButton } from '@/components/Button';
+import { Button, LinkButton } from '@/components/Button';
 import { SpeechBubble } from '@/components/SpeechBubble';
 import { StarPill } from '@/components/StarPill';
 import { UI } from '@/content/ui';
@@ -32,8 +32,34 @@ function Confetti() {
   );
 }
 
+/** Freiwilliges Angebot: „Kiko hat noch ein Bonus-Rätsel. Magst du?“ (docs/10 6) */
+function BonusOffer({ profile, station }: { profile: Profile; station: Station }) {
+  const [later, setLater] = useState(false);
+  const solved = profile.worlds[station.world]?.bonusSolved.includes(station.id) ?? false;
+  if (solved || later) return null;
+  return (
+    <section className={styles.bonus}>
+      <SpeechBubble kikoSize={48}>{UI.bonus.offer}</SpeechBubble>
+      <div className={styles.bonusActions}>
+        <LinkButton href={`/station/${station.id}/bonus`}>{UI.bonus.yes}</LinkButton>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setLater(true);
+          }}
+        >
+          {UI.bonus.later}
+        </Button>
+      </div>
+    </section>
+  );
+}
+
 /** Finale nach der letzten Station: Truhe öffnet sich, alle Fundstücke erscheinen (docs/01 5.6, docs/11). */
-function Finale({ stations, world }: { stations: Station[]; world: Station['world'] }) {
+function Finale({ profile, stations }: { profile: Profile; stations: Station[] }) {
+  const last = stations.at(-1);
+  if (!last) return null;
+  const world = last.world;
   return (
     <main className={styles.page}>
       <Confetti />
@@ -60,6 +86,7 @@ function Finale({ stations, world }: { stations: Station[]; world: Station['worl
           {UI.complete.finaleMap}
         </LinkButton>
       </div>
+      <BonusOffer profile={profile} station={last} />
     </main>
   );
 }
@@ -75,7 +102,7 @@ function Complete({
 }) {
   const station = stations[index];
   if (!station) return null;
-  if (index === stations.length - 1) return <Finale stations={stations} world={station.world} />;
+  if (index === stations.length - 1) return <Finale profile={profile} stations={stations} />;
   const next = stations[index + 1];
   return (
     <main className={styles.page}>
@@ -101,6 +128,7 @@ function Complete({
           </LinkButton>
         )}
       </div>
+      <BonusOffer profile={profile} station={station} />
     </main>
   );
 }

@@ -35,7 +35,7 @@ describe('buildRound (docs/05 6)', () => {
   });
 
   it('ohne Vorlagen gibt es keine Runde', () => {
-    expect(buildRound('raetsel', 3, 5, 1)).toEqual([]);
+    expect(buildRound('rueckgeld', 1, 5, 1)).toEqual([]);
   });
 
   it('„Wie schwer?“ verschiebt die Stufe und bleibt in 1–4', () => {

@@ -108,8 +108,36 @@ export async function answerPart(user: User, part: TaskPart, numberline: boolean
       break;
     }
     case 'grid':
-    case 'code':
-      throw new Error('Rätsel-Eingaben folgen in Phase 7');
+      for (const cell of answer.cells.filter((c) => !c.given)) {
+        const [empty] = screen.getAllByRole('button', { name: 'Leeres Feld, antippen' });
+        if (!empty) throw new Error('Kein leeres Feld');
+        await user.click(empty);
+        if (answer.unit === 'cents') {
+          await digits(user, String(Math.floor(cell.value / 100)));
+          if (cell.value % 100 > 0) {
+            await user.click(screen.getByRole('button', { name: 'Zum Cent-Feld' }));
+            await digits(user, String(cell.value % 100));
+          }
+        } else if (numberline) {
+          const line = screen.getByRole('group', { name: 'Deine Zahl' });
+          await user.click(within(line).getByRole('button', { name: String(cell.value) }));
+        } else {
+          await digits(user, String(cell.value));
+        }
+        await user.click(screen.getByRole('button', { name: 'Fertig' }));
+      }
+      await user.click(screen.getByRole('button', { name: 'Prüfen' }));
+      break;
+    case 'code': {
+      const ups = screen.getAllByRole('button', { name: /^Rad mit .* höher$/ });
+      for (const [i, digit] of answer.digits.entries()) {
+        const up = ups[i];
+        if (!up) throw new Error(`Rad ${String(i + 1)} fehlt`);
+        for (let n = 0; n < digit; n++) await user.click(up);
+      }
+      await user.click(screen.getByRole('button', { name: 'Öffnen' }));
+      break;
+    }
   }
   await weiter(user);
 }

@@ -267,15 +267,32 @@ export function validateTask(task: Task, cfg: StufeConfig): string[] {
           answer.cells.map((c) => (c.given ? { id: c.id, value: c.value } : { id: c.id })),
         );
         if (!solved) fail('grid nicht eindeutig lösbar');
+        // Die Lösung des Lösers muss zu den hinterlegten Werten passen (sonst prüft die App falsch).
+        else if (answer.cells.some((c) => solved[c.id] !== c.value))
+          fail('grid-Werte passen nicht');
+        for (const { value } of answer.cells) {
+          const inRange =
+            answer.unit === 'number'
+              ? Number.isInteger(value) && value >= 0 && value <= cfg.numbers.max
+              : Number.isInteger(value) &&
+                value >= 0 &&
+                value <= cfg.money.maxTotal &&
+                value % cfg.money.step === 0;
+          if (!inRange) fail(`grid-Wert außerhalb der Stufe: ${String(value)}`);
+        }
         break;
       }
       case 'code':
         if (
           answer.digits.some((d) => !Number.isInteger(d) || d < 0 || d > 9) ||
-          answer.digits[0] === 0
+          answer.digits[0] === 0 ||
+          answer.digits.length < 3 ||
+          answer.digits.length > 4
         ) {
           fail('Code ungültig');
         }
+        if (task.scene.kind === 'clues' && task.scene.clues.length !== answer.digits.length)
+          fail('Code: so viele Räder wie Rätselkarten');
         break;
       default:
         break;
