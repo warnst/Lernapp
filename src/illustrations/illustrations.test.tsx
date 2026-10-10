@@ -56,6 +56,8 @@ const UI_ICONS: UiIconName[] = [
   'zurueck',
   'stift',
   'hand-zahl',
+  'leuchtturm',
+  'herz',
 ];
 const WORLDS: WorldId[] = ['schatzinsel', 'kleine-bucht'];
 

@@ -5,7 +5,7 @@
   left: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   padding-bottom: env(safe-area-inset-bottom);
   border-top: 2px solid var(--sand-300);
   background: var(--sand-100);

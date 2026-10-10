@@ -35,6 +35,14 @@ const full = makeState({
 describe('parseState', () => {
   it('akzeptiert vollständige Zustände', () => {
     expect(parseState(full)).toEqual(full);
+    const withTower = makeState({
+      profiles: [
+        makeProfile({
+          tower: { lamps: 4, solved: { riddles: 4 }, jokes: ['kamm'], favorites: ['kamm'] },
+        }),
+      ],
+    });
+    expect(parseState(withTower)).toEqual(withTower);
     expect(parseState(createInitialState())).toEqual(createInitialState());
   });
 
@@ -58,6 +66,17 @@ describe('parseState', () => {
     ['aktives Profil fehlt', { ...full, activeProfileId: 'gibt-es-nicht' }],
     ['aktives Profil keine Zeichenkette', { ...full, activeProfileId: 3 }],
     ['unbekanntes Tier', { ...full, profiles: [makeProfile({ avatar: 'drache' as never })] }],
+    [
+      'kaputter Turm',
+      {
+        ...full,
+        profiles: [
+          makeProfile({
+            tower: { lamps: 1, solved: { drachen: 1 } as never, jokes: [], favorites: [] },
+          }),
+        ],
+      },
+    ],
     ['Stufe 5', { ...full, profiles: [makeProfile({ stufe: 5 as never })] }],
     ['leere ID', { ...full, activeProfileId: undefined, profiles: [makeProfile({ id: '' })] }],
     ['Name keine Zeichenkette', { ...full, profiles: [makeProfile({ name: 4 as never })] }],

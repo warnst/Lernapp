@@ -21,7 +21,9 @@ export type UiIconName =
   | 'upload'
   | 'zurueck'
   | 'stift'
-  | 'hand-zahl';
+  | 'hand-zahl'
+  | 'leuchtturm'
+  | 'herz';
 
 const round1 = (n: number) => Math.round(n * 10) / 10;
 
@@ -108,6 +110,13 @@ const ICONS: Record<UiIconName, ReactNode> = {
   plus: <path d="M12 5 V19 M5 12 H19" />,
   download: <path d="M12 4 V15 M7 10 L12 15 L17 10 M5 20 H19" />,
   upload: <path d="M12 15 V4 M7 9 L12 4 L17 9 M5 20 H19" />,
+  // Rätselturm in der unteren Navigation (docs/12 2)
+  leuchtturm: (
+    <path d="M9 21 L10.5 9 H13.5 L15 21 Z M8 9 H16 M10 9 V5.5 H14 V9 M12 5.5 V3 M10.2 15 H13.8 M4 5 L7.5 6.5 M20 5 L16.5 6.5 M6 21 H18" />
+  ),
+  herz: (
+    <path d="M12 20 C5 15 3 11 3 8.5 A4.5 4.5 0 0 1 12 6.5 A4.5 4.5 0 0 1 21 8.5 C21 11 19 15 12 20 Z" />
+  ),
   // Bild-Symbole der Bucht-Arbeitsblätter (docs/06 1)
   stift: <path d="M4 20 L5 15 L16 4 L20 8 L9 19 Z M14 6 L18 10 M5 15 L9 19" />,
   'hand-zahl': (

@@ -1,9 +1,15 @@
-import type { PracticeTopicId, Stufe, WorldId } from '@/domain/types';
+import type { TowerType, PracticeTopicId, Stufe, WorldId } from '@/domain/types';
 
 // Texte der Oberfläche (docs/01 Abschnitt 4–5, docs/09 Abschnitt 3–4). Wörtlich, wo die Docs sie vorgeben.
 
 export const UI = {
-  nav: { adventure: 'Abenteuer', practice: 'Üben', treasures: 'Schätze', label: 'Hauptmenü' },
+  nav: {
+    adventure: 'Abenteuer',
+    practice: 'Üben',
+    riddles: 'Rätsel',
+    treasures: 'Schätze',
+    label: 'Hauptmenü',
+  },
   header: {
     adults: 'Für Erwachsene',
     whoPlays: 'Wer spielt?',
@@ -118,6 +124,68 @@ export const UI = {
     } satisfies Record<WorldId, string>,
     myTreasures: 'Meine Schätze ansehen',
     finaleMap: 'Zur Karte',
+  },
+  /** Kikos Rätselturm (docs/12) */
+  tower: {
+    title: 'Kikos Rätselturm',
+    what: 'Was möchtest du knobeln?',
+    toNext: (n: number) =>
+      n === 1
+        ? 'Noch 1 Lampe bis zur nächsten Etage!'
+        : `Noch ${String(n)} Lampen bis zur nächsten Etage!`,
+    label: (floors: number, lit: number, size: number) =>
+      `Turm mit ${String(floors)} ${floors === 1 ? 'Etage' : 'Etagen'}, ${String(lit)} von ${String(size)} Lampen leuchten`,
+    beacon: 'Das Leuchtfeuer brennt!',
+    types: {
+      riddles: 'Muster & Co.',
+      sudoku: 'Sudoku',
+      memory: 'Memory',
+      odd: 'Was passt nicht?',
+      shadow: 'Schattenrätsel',
+      maze: 'Labyrinth',
+      dots: 'Punkte verbinden',
+      nonogram: 'Bilderrätsel',
+      cipher: 'Geheimschrift',
+      case: 'Detektivfall',
+      quiz: 'Wissensfragen',
+    } satisfies Record<TowerType, string>,
+    shortTypes: {
+      riddles: 'Muster',
+      sudoku: 'Sudoku',
+      memory: 'Memory',
+      odd: 'Passt nicht',
+      shadow: 'Schatten',
+      maze: 'Labyrinth',
+      dots: 'Punkte',
+      nonogram: 'Bilder',
+      cipher: 'Geheim',
+      case: 'Detektiv',
+      quiz: 'Wissen',
+    } satisfies Record<TowerType, string>,
+    done: 'Geschafft! Eine neue Lampe leuchtet im Turm.',
+    newFloor: (n: number) =>
+      n === 1
+        ? 'Juhu, die erste Etage ist fertig! Der Turm wächst.'
+        : `Juhu, eine neue Etage! Der Turm ist jetzt ${String(n)} Etagen hoch.`,
+    again: 'Noch eins',
+    toTower: 'Zum Turm',
+  },
+  /** Kikos Witzekiste (docs/12 4.2) */
+  jokes: {
+    box: 'Kikos Witzekiste',
+    open: 'Witz anhören',
+    guess: 'Was meinst du? Rate laut!',
+    reveal: 'Auflösen!',
+    laugh: 'Hihihi!',
+    readAgain: 'Nochmal vorlesen',
+    tell: 'Erzähl ihn weiter!',
+    close: 'Schließen',
+    book: 'Witzebuch',
+    bookCount: (n: number) => (n === 1 ? '1 Witz gesammelt' : `${String(n)} Witze gesammelt`),
+    bookEmpty:
+      'Hier sammelst du Kikos Witze. Löse ein Rätsel im Turm, dann erzählt Kiko dir einen.',
+    favorite: 'Lieblingswitz',
+    read: 'Vorlesen',
   },
   /** Bonus-Rätsel nach einer Station (docs/10 6) */
   bonus: {

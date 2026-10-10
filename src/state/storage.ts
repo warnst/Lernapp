@@ -93,6 +93,32 @@ function isPractice(value: unknown): boolean {
   );
 }
 
+const TOWER_TYPES: readonly string[] = [
+  'sudoku',
+  'memory',
+  'odd',
+  'shadow',
+  'maze',
+  'dots',
+  'nonogram',
+  'cipher',
+  'case',
+  'quiz',
+  'riddles',
+];
+
+function isTower(value: unknown): boolean {
+  if (value === undefined) return true;
+  return (
+    isObject(value) &&
+    isCount(value.lamps) &&
+    isObject(value.solved) &&
+    Object.entries(value.solved).every(([type, n]) => TOWER_TYPES.includes(type) && isCount(n)) &&
+    isStringArray(value.jokes) &&
+    isStringArray(value.favorites)
+  );
+}
+
 function isProfile(value: unknown): value is Profile {
   if (!isObject(value)) return false;
   return (
@@ -109,6 +135,7 @@ function isProfile(value: unknown): value is Profile {
     ) &&
     isResume(value.resume) &&
     isPractice(value.practice) &&
+    isTower(value.tower) &&
     isStringArray(value.celebrated) &&
     isObject(value.stats) &&
     Object.values(value.stats).every(

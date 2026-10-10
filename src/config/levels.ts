@@ -34,6 +34,7 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'reicht-das-geld',
       'raetsel',
     ],
+    tower: { types: ['riddles'] },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'code'],
       moneyShare: 0.3,
@@ -91,6 +92,7 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'sachaufgaben',
       'raetsel',
     ],
+    tower: { types: ['riddles'] },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.5,
@@ -164,6 +166,7 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'knobeln',
       'raetsel',
     ],
+    tower: { types: ['riddles'] },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.6,
@@ -248,6 +251,7 @@ export const STUFEN: Record<Stufe, StufeConfig> = {
       'knobeln',
       'raetsel',
     ],
+    tower: { types: ['riddles'] },
     riddles: {
       types: ['sequence', 'balance', 'wall', 'triangle', 'logic', 'code'],
       moneyShare: 0.6,

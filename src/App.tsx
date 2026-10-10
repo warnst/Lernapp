@@ -12,7 +12,10 @@ import { Play } from '@/screens/Play';
 import { Print } from '@/screens/Print';
 import { Setup } from '@/screens/Setup';
 import { StationComplete } from '@/screens/StationComplete';
+import { Tower } from '@/screens/Tower';
+import { TowerPlay } from '@/screens/TowerPlay';
 import { Treasures } from '@/screens/Treasures';
+import { JokeBook } from '@/screens/JokeBook';
 import { CertificatePreview } from '@/screens/CertificatePreview';
 import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
@@ -28,6 +31,12 @@ function Home() {
 
 function PracticePage() {
   return <ChildLayout>{(profile) => <Practice key={profile.id} profile={profile} />}</ChildLayout>;
+}
+function TowerPage() {
+  return <ChildLayout>{(profile) => <Tower key={profile.id} profile={profile} />}</ChildLayout>;
+}
+function JokeBookPage() {
+  return <ChildLayout>{(profile) => <JokeBook key={profile.id} profile={profile} />}</ChildLayout>;
 }
 function TreasuresPage() {
   return <ChildLayout>{(profile) => <Treasures key={profile.id} profile={profile} />}</ChildLayout>;
@@ -48,7 +57,10 @@ export function Routes() {
       <Route path="/station/:stationId">{(params) => <Play stationId={params.stationId} />}</Route>
       <Route path="/ueben/spiel" component={PracticePlay} />
       <Route path="/ueben" component={PracticePage} />
+      <Route path="/raetsel/:slug">{(params) => <TowerPlay slug={params.slug} />}</Route>
+      <Route path="/raetsel" component={TowerPage} />
       <Route path="/schaetze/urkunde" component={CertificatePreview} />
+      <Route path="/schaetze/witze" component={JokeBookPage} />
       <Route path="/schaetze" component={TreasuresPage} />
       <Route path="/erwachsene/kind/:profileId">
         {(params) => (

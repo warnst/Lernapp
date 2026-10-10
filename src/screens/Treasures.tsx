@@ -10,6 +10,7 @@ import { Gem } from '@/illustrations/Gem';
 import { Pearl } from '@/illustrations/Pearl';
 import { Star } from '@/illustrations/Star';
 import { isCompleted, worldOf } from '@/state/progress';
+import { towerOf } from '@/state/reducer';
 import styles from './Treasures.module.css';
 
 function FindlingSheet({ station, onClose }: { station: Station; onClose: () => void }) {
@@ -121,6 +122,14 @@ export function Treasures({ profile }: { profile: Profile }) {
             <Gem key={station.id} size={28} found={i < bonus} />
           ))}
         </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.heading}>{UI.jokes.book}</h2>
+        <p className={styles.muted}>{UI.jokes.bookCount(towerOf(profile).jokes.length)}</p>
+        <LinkButton href="/schaetze/witze" variant="secondary" block>
+          {UI.jokes.book}
+        </LinkButton>
       </section>
 
       {open && (

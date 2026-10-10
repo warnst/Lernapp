@@ -213,3 +213,29 @@ describe('appReducer', () => {
     expect(state.profiles[0]?.practice).toEqual({ pearls: 2, last });
   });
 });
+
+describe('Rätselturm (docs/12)', () => {
+  it('zählt Lampen und gelöste Rätsel je Art', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'riddles' });
+    state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'riddles' });
+    expect(state.profiles[0]?.tower).toMatchObject({ lamps: 2, solved: { riddles: 2 } });
+  });
+
+  it('merkt gehörte Witze einmal und schaltet Lieblingswitze um', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    state = appReducer(state, { type: 'joke-heard', id: 'p1', jokeId: 'kamm' });
+    state = appReducer(state, { type: 'joke-heard', id: 'p1', jokeId: 'kamm' });
+    state = appReducer(state, { type: 'joke-favorite', id: 'p1', jokeId: 'kamm' });
+    expect(state.profiles[0]?.tower).toMatchObject({ jokes: ['kamm'], favorites: ['kamm'] });
+    state = appReducer(state, { type: 'joke-favorite', id: 'p1', jokeId: 'kamm' });
+    expect(state.profiles[0]?.tower?.favorites).toEqual([]);
+  });
+
+  it('Zurücksetzen löscht auch den Turm', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    state = appReducer(state, { type: 'tower-solved', id: 'p1', kind: 'riddles' });
+    state = appReducer(state, { type: 'reset-progress', id: 'p1' });
+    expect(state.profiles[0]?.tower).toBeUndefined();
+  });
+});

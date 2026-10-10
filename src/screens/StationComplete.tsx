@@ -1,6 +1,8 @@
 import { type CSSProperties, useState } from 'react';
 import { Redirect } from 'wouter';
 import { Button, LinkButton } from '@/components/Button';
+import { JokeBox } from '@/components/JokeBox';
+import { STUFEN } from '@/config/levels';
 import { SpeechBubble } from '@/components/SpeechBubble';
 import { StarPill } from '@/components/StarPill';
 import { UI } from '@/content/ui';
@@ -129,6 +131,7 @@ function Complete({
         )}
       </div>
       <BonusOffer profile={profile} station={station} />
+      <JokeBox profile={profile} readAloud={STUFEN[profile.stufe].autoRead} startOpen={false} />
     </main>
   );
 }

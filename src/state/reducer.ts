@@ -1,4 +1,12 @@
-import type { AppStateV2, AvatarId, Profile, Stufe, WorldId } from '@/domain/types';
+import type {
+  AppStateV2,
+  AvatarId,
+  Profile,
+  Stufe,
+  TowerProgress,
+  TowerType,
+  WorldId,
+} from '@/domain/types';
 import { MAX_PROFILES } from './storage';
 
 // Reiner Reducer für den App-Zustand. IDs und Zeiten kommen von außen, damit alles testbar bleibt.
@@ -25,7 +33,15 @@ export type AppAction =
   | { type: 'set-practice-last'; id: string; last: NonNullable<Profile['practice']['last']> }
   | { type: 'add-pearl'; id: string }
   | { type: 'solve-bonus'; id: string; world: WorldId; stationId: string }
+  | { type: 'tower-solved'; id: string; kind: TowerType }
+  | { type: 'joke-heard'; id: string; jokeId: string }
+  | { type: 'joke-favorite'; id: string; jokeId: string }
   | { type: 'replace'; state: AppStateV2 };
+
+/** Turm-Fortschritt eines Profils, leer, solange das Kind noch nicht im Turm war. */
+export function towerOf(profile: Profile): TowerProgress {
+  return profile.tower ?? { lamps: 0, solved: {}, jokes: [], favorites: [] };
+}
 
 function cleanName(name: string | undefined): string | undefined {
   const trimmed = name?.trim();
@@ -93,9 +109,35 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
           worlds: { ...profile.worlds, [action.world]: { ...world, unlockAll: action.value } },
         };
       });
+    case 'tower-solved':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        return {
+          ...profile,
+          tower: {
+            ...tower,
+            lamps: tower.lamps + 1,
+            solved: { ...tower.solved, [action.kind]: (tower.solved[action.kind] ?? 0) + 1 },
+          },
+        };
+      });
+    case 'joke-heard':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        if (tower.jokes.includes(action.jokeId)) return profile;
+        return { ...profile, tower: { ...tower, jokes: [...tower.jokes, action.jokeId] } };
+      });
+    case 'joke-favorite':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        const favorites = tower.favorites.includes(action.jokeId)
+          ? tower.favorites.filter((id) => id !== action.jokeId)
+          : [...tower.favorites, action.jokeId];
+        return { ...profile, tower: { ...tower, favorites } };
+      });
     case 'reset-progress':
       return updateProfile(state, action.id, (profile) => {
-        const { resume: _resume, ...rest } = profile;
+        const { resume: _resume, tower: _tower, ...rest } = profile;
         return { ...rest, worlds: {}, practice: { pearls: 0 }, celebrated: [], stats: {} };
       });
     case 'mark-celebrated':

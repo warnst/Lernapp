@@ -12,7 +12,7 @@ interface Tab {
   active: (path: string) => boolean;
 }
 
-/** Untere Navigation mit 3 Tabs (docs/01, Abschnitt 4). */
+/** Untere Navigation mit 4 Tabs (docs/01 Abschnitt 4, docs/12 Abschnitt 2). */
 export function BottomNav({ world, readAloud }: { world: WorldId; readAloud: boolean }) {
   const [path] = useLocation();
   const tabs: Tab[] = [
@@ -27,6 +27,12 @@ export function BottomNav({ world, readAloud }: { world: WorldId; readAloud: boo
       label: UI.nav.practice,
       icon: 'muenzen',
       active: (p) => p.startsWith('/ueben'),
+    },
+    {
+      href: '/raetsel',
+      label: UI.nav.riddles,
+      icon: 'leuchtturm',
+      active: (p) => p.startsWith('/raetsel'),
     },
     {
       href: '/schaetze',

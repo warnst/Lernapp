@@ -48,6 +48,8 @@ export interface StufeConfig {
   autoRead: boolean; // Geschichte + Frage beim Öffnen automatisch vorlesen
   maxStoryWords: number; // Generatoren verwerfen längere Texte
   practiceTopics: PracticeTopicId[];
+  /** Rätselarten im Rätselturm (docs/12) */
+  tower: { types: TowerType[] };
   riddles: {
     types: RiddleType[];
     moneyShare: number; // 0..1 Anteil Geld-Rätsel
@@ -93,6 +95,33 @@ export interface Profile {
   };
   celebrated: string[];
   stats: Record<string, { wrong: number; hints: number; stufe: Stufe }>;
+  /** Rätselturm (docs/12); fehlt, solange das Kind noch nicht im Turm war */
+  tower?: TowerProgress;
+}
+
+/** Rätselarten im Turm (docs/12, Abschnitt 3). */
+export type TowerType =
+  | 'sudoku'
+  | 'memory'
+  | 'odd'
+  | 'shadow'
+  | 'maze'
+  | 'dots'
+  | 'nonogram'
+  | 'cipher'
+  | 'case'
+  | 'quiz'
+  | 'riddles';
+
+export interface TowerProgress {
+  /** gelöste Rätsel bzw. Runden insgesamt (je eine Lampe) */
+  lamps: number;
+  /** gelöste Rätsel je Art (Rätselpass) */
+  solved: Partial<Record<TowerType, number>>;
+  /** IDs der gehörten Witze, in der Reihenfolge des Hörens */
+  jokes: string[];
+  /** Lieblingswitze (Herz) */
+  favorites: string[];
 }
 
 export interface AppStateV2 {
