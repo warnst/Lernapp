@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import {
+  BROKEN_KEY,
+  canStore,
   createInitialState,
   exportState,
   importState,
   loadState,
   parseState,
+  repairState,
   saveState,
+  STORAGE_KEY,
 } from './storage';
 import { makeProfile, makeState, memoryStorage } from './test-helpers';
 
@@ -175,5 +179,82 @@ describe('exportState / importState', () => {
     expect(importState(JSON.stringify(full))).toBeNull();
     expect(importState(JSON.stringify({ app: 'anders', state: full }))).toBeNull();
     expect(importState(JSON.stringify({ app: 'schatzinsel', state: { version: 9 } }))).toBeNull();
+  });
+});
+
+describe('Retten statt Löschen', () => {
+  it('ein kaputtes Teil kostet nicht den ganzen Fortschritt; der Text wird aufgehoben', () => {
+    const raw = JSON.parse(JSON.stringify(full)) as Record<string, unknown> & {
+      profiles: Record<string, unknown>[];
+    };
+    const [mila, other] = raw.profiles;
+    if (!mila || !other) throw new Error('Profile fehlen');
+    mila.resume = { world: 'mond' };
+    mila.stats = { x: 'kaputt' };
+    mila.tower = {
+      lamps: 7,
+      solved: {},
+      jokes: [],
+      favorites: [],
+      sudoku: { kind: 'riesig' },
+      wardrobe: { owned: ['piratenhut'], chests: 1, kiko: {}, nest: {} },
+    };
+    raw.profiles.push({ id: 'ohne-avatar' });
+    const text = JSON.stringify(raw);
+    const storage = memoryStorage(text);
+
+    const state = loadState(storage);
+    expect(state.profiles.map((p) => p.id)).toEqual(['p1', 'p2']);
+    expect(state.activeProfileId).toBe('p1');
+    const repaired = state.profiles[0];
+    expect(repaired?.worlds).toEqual(full.profiles[0]?.worlds);
+    expect(repaired?.practice.pearls).toBe(3);
+    expect(repaired?.resume).toBeUndefined();
+    expect(repaired?.stats).toEqual({});
+    expect(repaired?.tower).toMatchObject({ lamps: 7, wardrobe: { owned: ['piratenhut'] } });
+    expect(repaired?.tower).not.toHaveProperty('sudoku');
+    expect(storage.getItem(BROKEN_KEY)).toBe(text);
+    expect(storage.getItem(STORAGE_KEY)).toBe(text);
+  });
+
+  it('rettet auch ohne Turm, ohne gültige Übung und ohne Einrichtung', () => {
+    const state = repairState({
+      version: 2,
+      profiles: [
+        { ...makeProfile(), practice: { pearls: 'viele' }, celebrated: 3, tower: { lamps: -1 } },
+        makeProfile(),
+        'kein Profil',
+      ],
+      activeProfileId: 'weg',
+    });
+    expect(state).toEqual({
+      version: 2,
+      setupDone: true,
+      profiles: [{ ...makeProfile(), practice: { pearls: 0 }, celebrated: [] }],
+    });
+    expect(repairState({ version: 2, profiles: [], setupDone: false })?.setupDone).toBe(false);
+    expect(repairState({ version: 1 })).toBeNull();
+    expect(repairState('text')).toBeNull();
+  });
+
+  it('kaputtes JSON wird aufgehoben, auch wenn das Aufheben scheitert', () => {
+    const storage = memoryStorage('{kaputt');
+    expect(loadState(storage)).toEqual(createInitialState());
+    expect(storage.getItem(BROKEN_KEY)).toBe('{kaputt');
+    const full2 = memoryStorage('{kaputt');
+    full2.setItem = () => {
+      throw new Error('voll');
+    };
+    expect(loadState(full2)).toEqual(createInitialState());
+  });
+
+  it('erkennt, ob gespeichert werden kann', () => {
+    expect(canStore(memoryStorage())).toBe(true);
+    expect(canStore(undefined)).toBe(false);
+    const locked = memoryStorage();
+    locked.setItem = () => {
+      throw new Error('privat');
+    };
+    expect(canStore(locked)).toBe(false);
   });
 });

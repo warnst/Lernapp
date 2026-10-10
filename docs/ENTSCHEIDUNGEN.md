@@ -120,3 +120,8 @@ Kurze Notizen zu Abweichungen und offenen Punkten der Spezifikation. Format: Dat
   - **Prüfen:** Prüfen geht erst, wenn alle Felder gefüllt sind.
   - **So geht's:** „So geht's“ zeigt die Lösung, und das Sudoku zählt trotzdem als gelöst.
   - **Lob:** Ein knifflig gelöstes Sudoku bekommt „Wow, das war ein kniffliges!“. Nach Prüfen mit Fehlern oder Tipps kommt ein Lob für die Mühe.
+- 2026-10-10 – Speichern robuster: Lassen sich gespeicherte Daten beim Start nicht vollständig lesen, verwirft die App sie nicht mehr komplett. Der Originaltext wird unter `schatzinsel.state.v2.unlesbar` aufgehoben, und `repairState` rettet Profile und Fortschritt. Wegfallen dürfen nur angefangene Spiele, Statistik und kaputte Turm-Teile. Der Erwachsenen-Bereich zeigt unter „Speichern auf diesem Gerät“:
+  - ob dieser Browser speichern kann,
+  - ob er dauerhaftes Speichern zugesagt hat,
+  - für welche Adresse gespeichert wird (Vorschau-Links von Vercel haben eigene Daten),
+  - wie man auf iPhone und iPad umzieht (Safari und Home-Bildschirm haben getrennte Speicher, Safari löscht nach 7 Tagen ohne Besuch).

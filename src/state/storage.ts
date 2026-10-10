@@ -4,6 +4,8 @@ import type { AppStateV2, AvatarId, PracticeTopicId, Profile, Stufe } from '@/do
 // Jeder Zugriff in try/catch: Scheitert er, läuft die App mit Sitzungsdaten weiter.
 
 export const STORAGE_KEY = 'schatzinsel.state.v2';
+/** Hier landen gespeicherte Daten, die sich nicht vollständig lesen ließen, bevor sie überschrieben werden. */
+export const BROKEN_KEY = 'schatzinsel.state.v2.unlesbar';
 export const MAX_PROFILES = 6;
 
 const AVATAR_IDS: readonly AvatarId[] = [
@@ -194,14 +196,92 @@ export function parseState(raw: unknown): AppStateV2 | null {
   return raw as unknown as AppStateV2; // Aufbau oben vollständig geprüft
 }
 
-/** Liest den gespeicherten Zustand. Fehlt er oder ist er kaputt, gibt es einen frischen. */
+/**
+ * Rettet, was sich retten lässt: Angefangene Spiele, Statistik und kaputte Turm-Teile fallen weg,
+ * Profile und Fortschritt bleiben. Profile, die auch so nicht lesbar sind, entfallen.
+ */
+function repairProfile(value: unknown): Profile | null {
+  if (isProfile(value)) return value;
+  if (!isObject(value)) return null;
+  const { resume: _resume, tower, ...rest } = value;
+  const practice = value.practice;
+  const pearls = isObject(practice) && isCount(practice.pearls) ? practice.pearls : 0;
+  const towers = isObject(tower)
+    ? [tower, { ...tower, sudoku: undefined }, { ...tower, sudoku: undefined, wardrobe: undefined }]
+    : [];
+  const repairedTower = towers.find(isTower);
+  const candidate = {
+    ...rest,
+    practice: isPractice(practice) ? practice : { pearls },
+    celebrated: isStringArray(value.celebrated) ? value.celebrated : [],
+    stats: {},
+    ...(repairedTower ? { tower: JSON.parse(JSON.stringify(repairedTower)) as unknown } : {}),
+  };
+  return isProfile(candidate) ? candidate : null;
+}
+
+export function repairState(raw: unknown): AppStateV2 | null {
+  if (!isObject(raw) || raw.version !== 2 || !Array.isArray(raw.profiles)) return null;
+  const profiles: Profile[] = [];
+  for (const value of raw.profiles) {
+    const profile = repairProfile(value);
+    if (profile && profiles.length < MAX_PROFILES && !profiles.some((p) => p.id === profile.id)) {
+      profiles.push(profile);
+    }
+  }
+  const active = raw.activeProfileId;
+  const setupDone = typeof raw.setupDone === 'boolean' ? raw.setupDone : profiles.length > 0;
+  return profiles.some((p) => p.id === active) && typeof active === 'string'
+    ? { version: 2, profiles, setupDone, activeProfileId: active }
+    : { version: 2, profiles, setupDone };
+}
+
+/**
+ * Liest den gespeicherten Zustand. Fehlt er, gibt es einen frischen. Ist er nicht vollständig
+ * lesbar, wird der Text unter BROKEN_KEY aufgehoben und so viel wie möglich gerettet, damit ein
+ * Fehler nie still den ganzen Fortschritt löscht.
+ */
 export function loadState(storage: Storage | undefined): AppStateV2 {
+  let text: string | null | undefined;
   try {
-    const text = storage?.getItem(STORAGE_KEY);
-    if (text === null || text === undefined) return createInitialState();
-    return parseState(JSON.parse(text)) ?? createInitialState();
+    text = storage?.getItem(STORAGE_KEY);
   } catch {
     return createInitialState();
+  }
+  if (text === null || text === undefined) return createInitialState();
+  let raw: unknown;
+  try {
+    raw = JSON.parse(text);
+  } catch {
+    raw = undefined;
+  }
+  const state = parseState(raw);
+  if (state) return state;
+  try {
+    storage?.setItem(BROKEN_KEY, text);
+  } catch {
+    // ohne Platz bleibt nur das Retten unten
+  }
+  return repairState(raw) ?? createInitialState();
+}
+
+export function browserStorage(): Storage | undefined {
+  try {
+    return window.localStorage;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Lässt sich in diesem Browser gerade überhaupt etwas speichern? (privates Surfen, gesperrt …) */
+export function canStore(storage: Storage | undefined): boolean {
+  try {
+    if (!storage) return false;
+    storage.setItem('schatzinsel.test', '1');
+    storage.removeItem('schatzinsel.test');
+    return true;
+  } catch {
+    return false;
   }
 }
 

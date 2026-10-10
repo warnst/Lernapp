@@ -89,6 +89,20 @@ export const UI = {
     upload: 'Sicherung laden',
     imported: 'Die Sicherung wurde geladen.',
     importFailed: 'Diese Datei ist keine gültige Sicherung. Es wurde nichts geändert.',
+    storage: 'Speichern auf diesem Gerät',
+    storageOk: 'Der Fortschritt wird in diesem Browser gespeichert.',
+    storageOff:
+      'Achtung: Dieser Browser speichert gerade nichts, zum Beispiel im privaten Modus. Bitte die App in einem normalen Fenster öffnen.',
+    persisted: 'Der Browser hat zugesagt, die Daten nicht von selbst zu löschen.',
+    notPersisted:
+      'Der Browser darf die Daten löschen, wenn der Speicher knapp wird oder die Seite lange nicht genutzt wurde. Eine Sicherung schützt davor.',
+    address: (host: string) =>
+      `Gespeichert wird für die Adresse ${host}. Öffnen Sie die App immer über genau diese Adresse. Jede andere Adresse, zum Beispiel ein Vorschau-Link von Vercel, hat eigene, leere Daten.`,
+    apple:
+      'iPhone und iPad: Safari und die App auf dem Home-Bildschirm haben getrennte Speicher, und Safari löscht Daten von Seiten, die 7 Tage nicht geöffnet wurden. Am zuverlässigsten ist es, die App über „Teilen → Zum Home-Bildschirm“ zu installieren und nur noch von dort zu starten. Bisherige Spielstände ziehen um mit „Sicherung herunterladen“ in Safari und „Sicherung laden“ in der installierten App.',
+    broken:
+      'Beim Start waren gespeicherte Daten nicht vollständig lesbar. Was ging, wurde gerettet. Die ursprünglichen Daten können Sie hier herunterladen.',
+    brokenDownload: 'Ursprüngliche Daten herunterladen',
     notes: 'Hinweise',
     storageNote:
       'Der Fortschritt wird nur auf diesem Gerät gespeichert. Mit ‚Sicherung herunterladen‘ können Sie ihn aufbewahren.',

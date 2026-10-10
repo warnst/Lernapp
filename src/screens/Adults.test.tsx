@@ -1,7 +1,7 @@
 import { act, fireEvent, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { AppStateV2 } from '@/domain/types';
-import { exportState, STORAGE_KEY } from '@/state/storage';
+import { BROKEN_KEY, exportState, STORAGE_KEY } from '@/state/storage';
 import { makeProfile, makeState } from '@/state/test-helpers';
 import { renderApp } from '@/test/render-app';
 
@@ -220,5 +220,33 @@ describe('Kind bearbeiten', () => {
     ).not.toBeInTheDocument();
     await openGate(user);
     expect(screen.getByRole('heading', { name: 'Arbeitsblätter drucken' })).toBeInTheDocument();
+  });
+});
+
+describe('Speichern auf diesem Gerät', () => {
+  afterEach(() => {
+    window.localStorage.clear();
+  });
+
+  it('zeigt, ob und für welche Adresse gespeichert wird, und erklärt iPhone und iPad', async () => {
+    const { user } = renderApp('/erwachsene', state);
+    await openGate(user);
+    expect(
+      screen.getByText('Der Fortschritt wird in diesem Browser gespeichert.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Gespeichert wird für die Adresse localhost/)).toBeInTheDocument();
+    expect(screen.getByText(/Zum Home-Bildschirm/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Ursprüngliche Daten/ })).not.toBeInTheDocument();
+  });
+
+  it('bietet unlesbare alte Daten zum Herunterladen an', async () => {
+    window.localStorage.setItem(BROKEN_KEY, '{kaputt');
+    const create = vi.fn(() => 'blob:x');
+    Object.assign(URL, { createObjectURL: create, revokeObjectURL: vi.fn() });
+    const { user } = renderApp('/erwachsene', state);
+    await openGate(user);
+    expect(screen.getByText(/nicht vollständig lesbar/)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /Ursprüngliche Daten/ }));
+    expect(create).toHaveBeenCalled();
   });
 });

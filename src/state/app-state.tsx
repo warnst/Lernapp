@@ -4,15 +4,7 @@ import { ADULT_UNLOCK_MS } from './adult-gate';
 import { AppContext } from './context';
 import { activeProfile } from './progress';
 import { appReducer } from './reducer';
-import { loadState, saveState } from './storage';
-
-function browserStorage(): Storage | undefined {
-  try {
-    return window.localStorage;
-  } catch {
-    return undefined;
-  }
-}
+import { browserStorage, loadState, saveState } from './storage';
 
 export function AppStateProvider({
   children,

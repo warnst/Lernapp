@@ -1,4 +1,4 @@
-import { type ChangeEvent, useId, useState } from 'react';
+import { type ChangeEvent, useEffect, useId, useState } from 'react';
 import { Link } from 'wouter';
 import { Button, LinkButton } from '@/components/Button';
 import { ChildForm, type NewChild } from '@/components/ChildForm';
@@ -9,7 +9,14 @@ import { UI } from '@/content/ui';
 import { AvatarIllustration } from '@/illustrations/AvatarIllustration';
 import { UiIcon } from '@/illustrations/UiIcon';
 import { useAppState } from '@/state/context';
-import { exportState, importState, MAX_PROFILES } from '@/state/storage';
+import {
+  BROKEN_KEY,
+  browserStorage,
+  canStore,
+  exportState,
+  importState,
+  MAX_PROFILES,
+} from '@/state/storage';
 import styles from './Adults.module.css';
 
 function download(name: string, text: string): void {
@@ -21,12 +28,30 @@ function download(name: string, text: string): void {
   URL.revokeObjectURL(url);
 }
 
-/** Erwachsenen-Bereich: Kinder, Drucken, Daten sichern, Hinweise (docs/09, Abschnitt 4). */
+/** Aufgehobene, unlesbare Daten (siehe loadState). */
+function readBroken(storage: Storage | undefined): string | null {
+  try {
+    return storage?.getItem(BROKEN_KEY) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** Erwachsenen-Bereich: Kinder, Drucken, Speichern, Daten sichern, Hinweise (docs/09, Abschnitt 4). */
 export function Adults() {
   const { state, dispatch } = useAppState();
   const fileId = useId();
   const [adding, setAdding] = useState(false);
   const [message, setMessage] = useState('');
+  const [persisted, setPersisted] = useState<boolean | null>(null);
+  const [storage] = useState(browserStorage);
+  const storable = canStore(storage);
+  const broken = readBroken(storage);
+
+  useEffect(() => {
+    if (!('storage' in navigator) || !('persisted' in navigator.storage)) return;
+    navigator.storage.persisted().then(setPersisted, () => undefined);
+  }, []);
 
   const add = (child: NewChild) => {
     dispatch({
@@ -98,6 +123,34 @@ export function Adults() {
         <LinkButton href="/erwachsene/drucken" variant="secondary">
           {UI.adults.printLink}
         </LinkButton>
+      </section>
+
+      <section className={styles.section} aria-labelledby={`${fileId}-speicher`}>
+        <h2 id={`${fileId}-speicher`} className={styles.heading}>
+          {UI.adults.storage}
+        </h2>
+        <p className={styles.status}>
+          <UiIcon name={storable ? 'haken' : 'gluehbirne'} />
+          {storable ? UI.adults.storageOk : UI.adults.storageOff}
+        </p>
+        {persisted !== null && (
+          <p className={styles.muted}>{persisted ? UI.adults.persisted : UI.adults.notPersisted}</p>
+        )}
+        <p className={styles.muted}>{UI.adults.address(window.location.host)}</p>
+        <p className={styles.muted}>{UI.adults.apple}</p>
+        {broken !== null && (
+          <>
+            <p>{UI.adults.broken}</p>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                download('schatzinsel-urspruengliche-daten.json', broken);
+              }}
+            >
+              <UiIcon name="download" /> {UI.adults.brokenDownload}
+            </Button>
+          </>
+        )}
       </section>
 
       <section className={styles.section}>
