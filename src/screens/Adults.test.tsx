@@ -182,9 +182,12 @@ describe('Kind bearbeiten', () => {
     expect(screen.getByText('Dieses Kind gibt es nicht mehr.')).toBeInTheDocument();
   });
 
-  it('die Druckseite ist ein Platzhalter hinter der Frage', async () => {
+  it('die Druckseite liegt hinter der Frage', async () => {
     const { user } = renderApp('/erwachsene/drucken', state);
+    expect(
+      screen.queryByRole('heading', { name: 'Arbeitsblätter drucken' }),
+    ).not.toBeInTheDocument();
     await openGate(user);
-    expect(screen.getByRole('heading', { name: 'Drucken' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Arbeitsblätter drucken' })).toBeInTheDocument();
   });
 });

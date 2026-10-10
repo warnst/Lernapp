@@ -147,6 +147,16 @@ describe('Bonus-Rätsel (docs/10 6)', () => {
   });
 });
 
+describe('Urkunde (docs/01 5.8)', () => {
+  it('zeigt dem Kind die Urkunde mit Namen, ohne Druckknopf', () => {
+    renderApp('/schaetze/urkunde', withDone(islandIds, { name: 'Mila' }));
+    expect(screen.getByRole('heading', { name: 'URKUNDE' })).toBeInTheDocument();
+    expect(screen.getByText('Mila')).toBeInTheDocument();
+    expect(screen.getByText('hat die geheime Schatzinsel erkundet!')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Drucken' })).not.toBeInTheDocument();
+  });
+});
+
 describe('Nebel auf der Karte', () => {
   it('zieht über neu freigeschalteten Stationen einmalig ab', () => {
     const { storage, unmount } = renderApp('/', withDone(['muschelstrand']));

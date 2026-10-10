@@ -1,0 +1,500 @@
+/* Arbeitsblätter, Lösungsblatt und Urkunde (docs/06). Nur Schwarz auf Weiß, Linien ≥ 1,5 pt. */
+
+.page {
+  --print-scale: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 14mm 14mm 16mm;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-body);
+  font-size: calc(13pt * var(--print-scale));
+  line-height: 1.35;
+}
+
+.large {
+  --print-scale: 1.2;
+}
+
+@media screen {
+  .page {
+    box-shadow: var(--shadow-2);
+  }
+}
+
+@media print {
+  /* Chrome bricht Flex-Container schlecht um: im Druck als Block mit Abständen */
+  .page {
+    display: block;
+    width: auto;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .page > * + * {
+    margin-top: 2.5mm;
+  }
+}
+
+.nameLine {
+  display: flex;
+  gap: 8mm;
+  font-size: calc(12pt * var(--print-scale));
+}
+
+.blank {
+  flex: 1;
+  border-bottom: 1.5pt solid #000;
+}
+
+.head {
+  display: flex;
+  gap: 4mm;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: calc(22pt * var(--print-scale));
+  line-height: 1.15;
+}
+
+.intro {
+  margin-top: 1mm;
+}
+
+.rule {
+  border-top: 1.5pt solid #000;
+}
+
+/* ---------- Aufgabe ---------- */
+
+.task {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+  padding-bottom: 2mm;
+  border-bottom: 1pt solid #000;
+}
+
+.taskHead {
+  display: flex;
+  gap: 3mm;
+  align-items: center;
+  font-weight: 700;
+}
+
+.number {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 8mm;
+  height: 8mm;
+  border: 1.5pt solid #000;
+  border-radius: 50%;
+}
+
+.activity {
+  display: inline-flex;
+  gap: 2mm;
+  align-items: center;
+  margin-left: auto;
+  font-size: calc(10pt * var(--print-scale));
+  font-weight: 400;
+}
+
+/* Text und Antworten links, Szene und Rechenkästchen rechts daneben */
+.body {
+  display: grid;
+  grid-template-columns: 1fr 58mm;
+  gap: 4mm;
+  align-items: start;
+}
+
+.single {
+  grid-template-columns: 1fr;
+}
+
+.main,
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+  min-width: 0;
+}
+
+.part {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+}
+
+/* Szenen aus dem Spiel ohne Flächen, mit dünnem Rahmen, verkleinert */
+.scene {
+  zoom: 0.6;
+}
+
+.large .scene {
+  zoom: 0.75;
+}
+
+.scene > div {
+  min-height: 0;
+  padding: 2mm;
+  border: 1.5pt solid #000;
+  background: none;
+}
+
+.scene * {
+  border-color: #000 !important;
+  background-color: transparent !important;
+  color: #000 !important;
+}
+
+.question {
+  font-size: calc(14pt * var(--print-scale));
+  font-weight: 700;
+}
+
+.instruction {
+  font-style: italic;
+}
+
+.workings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5mm;
+  font-size: calc(9pt * var(--print-scale));
+}
+
+/* 5-mm-Gitter in hellem Grau (#BBB, 0,5 pt), 4 Zeilen */
+.grid {
+  height: 20mm;
+  border: 0.5pt solid #bbb;
+  background-image:
+    linear-gradient(#bbb 0.5pt, transparent 0.5pt),
+    linear-gradient(90deg, #bbb 0.5pt, transparent 0.5pt);
+  background-size: 5mm 5mm;
+  print-color-adjust: exact;
+}
+
+/* ---------- Antworten ---------- */
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4mm 8mm;
+  align-items: flex-end;
+}
+
+.option {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1mm;
+  align-items: center;
+}
+
+.optionLine {
+  display: inline-flex;
+  gap: 2mm;
+  align-items: center;
+}
+
+.circle {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 5mm;
+  height: 5mm;
+  border: 1.5pt solid #000;
+  border-radius: 50%;
+}
+
+.pieces {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 1mm;
+  align-items: center;
+}
+
+.answerLine {
+  display: flex;
+  gap: 2mm;
+  align-items: flex-end;
+}
+
+.fill {
+  display: inline-block;
+  width: 25mm;
+  border-bottom: 1.5pt solid #000;
+}
+
+.box {
+  display: inline-block;
+  width: 14mm;
+  height: 14mm;
+  border: 1.5pt solid #000;
+  border-radius: 2mm;
+}
+
+.bigBox {
+  width: 20mm;
+  height: 20mm;
+}
+
+.tray {
+  min-height: 18mm;
+  border: 1.5pt dashed #000;
+  border-radius: 3mm;
+}
+
+.trays {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(55mm, 1fr));
+  gap: 2mm;
+}
+
+.trays .tray {
+  min-height: 28mm;
+}
+
+.trayLabel {
+  padding: 1mm 2mm;
+  font-size: calc(10pt * var(--print-scale));
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2mm;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  align-items: center;
+  min-width: 18mm;
+  padding: 2mm 2mm 1mm;
+  border: 1.5pt solid #000;
+  border-radius: 3mm;
+  text-align: center;
+}
+
+.cardBox {
+  position: absolute;
+  top: 1mm;
+  right: 1mm;
+  width: 6mm;
+  height: 6mm;
+  border: 1.5pt solid #000;
+}
+
+.priceTag {
+  padding: 0 2mm;
+  border: 1.5pt solid #000;
+  border-radius: 1.5mm;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.numberLine {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2mm;
+  border-top: 1.5pt solid #000;
+}
+
+.tick {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  align-items: center;
+  width: 8mm;
+}
+
+.tick::before {
+  content: '';
+  width: 0;
+  height: 3mm;
+  margin-top: -3.6mm;
+  border-left: 1.5pt solid #000;
+}
+
+/* Mauer und Dreieck als Kästchen */
+.wall {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  align-items: center;
+}
+
+.wallRow {
+  display: flex;
+  gap: 1mm;
+}
+
+.brick {
+  display: grid;
+  place-items: center;
+  min-width: 22mm;
+  height: 11mm;
+  border: 1.5pt solid #000;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.open {
+  border-style: dashed;
+}
+
+.triangle {
+  position: relative;
+  width: 90mm;
+  height: 80mm;
+  margin: 0 auto;
+}
+
+.triangle svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #000;
+  stroke-width: 0.6;
+}
+
+.spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: #fff;
+}
+
+/* Zahlenschloss */
+.lock {
+  display: flex;
+  gap: 4mm;
+  justify-content: center;
+  padding: 3mm;
+  border: 1.5pt solid #000;
+  border-radius: 4mm;
+}
+
+.wheel {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  align-items: center;
+}
+
+/* ---------- Fuß ---------- */
+
+.foot {
+  display: flex;
+  gap: 4mm;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.stars {
+  display: flex;
+  gap: 2mm;
+  align-items: center;
+}
+
+.footer {
+  color: #000;
+  font-size: 8pt;
+  text-align: right;
+}
+
+/* ---------- Lösungsblatt ---------- */
+
+.solutions {
+  font-size: calc(10pt * var(--print-scale));
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 4mm;
+  border-collapse: collapse;
+  break-inside: avoid;
+}
+
+.table th,
+.table td {
+  padding: 1mm 1.5mm;
+  border: 0.75pt solid #000;
+  text-align: left;
+  vertical-align: top;
+}
+
+.table caption {
+  padding-bottom: 1mm;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* ---------- Urkunde ---------- */
+
+.certificate {
+  align-items: center;
+  justify-content: center;
+  padding: 18mm;
+  border: 4pt double #000;
+  text-align: center;
+}
+
+.certTitle {
+  font-family: var(--font-heading);
+  font-size: 40pt;
+  letter-spacing: 4pt;
+}
+
+.certName {
+  min-width: 120mm;
+  padding: 0 4mm 1mm;
+  border-bottom: 1.5pt solid #000;
+  font-family: var(--font-heading);
+  font-size: 32pt;
+}
+
+.certText {
+  font-size: 18pt;
+}
+
+.certSkills {
+  max-width: 150mm;
+  font-size: 13pt;
+}
+
+.certFoot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 8mm;
+}
+
+.signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: 16pt;
+}
+
+.waves {
+  width: 100%;
+  height: 10mm;
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5;
+}

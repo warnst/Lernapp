@@ -54,6 +54,8 @@ const UI_ICONS: UiIconName[] = [
   'download',
   'upload',
   'zurueck',
+  'stift',
+  'hand-zahl',
 ];
 const WORLDS: WorldId[] = ['schatzinsel', 'kleine-bucht'];
 

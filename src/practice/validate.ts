@@ -29,7 +29,8 @@ function subsets<T>(items: readonly T[], size: number): T[][] {
   );
 }
 
-function selectSolutions(answer: SelectAnswer): string[][] {
+/** Alle richtigen Auswahlen (Item-IDs) einer select-Aufgabe. */
+export function selectSolutions(answer: SelectAnswer): string[][] {
   const { items, rule } = answer;
   if (rule.kind === 'affordable') {
     return [items.filter((i) => (i.price ?? Infinity) <= rule.budget).map((i) => i.itemId)];

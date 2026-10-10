@@ -1,0 +1,150 @@
+/* Druckseite: sachlich, 16 px, dieselben Tokens (docs/06 1) */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding-bottom: var(--space-6);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 560px;
+  padding: var(--space-4);
+  font-size: 16px;
+}
+
+.title {
+  font-size: 28px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.heading {
+  font-size: 22px;
+}
+
+.subheading {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.choice {
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.choice[aria-pressed='true'] {
+  border-color: var(--sea-700);
+  background: var(--lagoon-100);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.check input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--sea-700);
+}
+
+.disabled {
+  color: var(--ink-600);
+  cursor: default;
+}
+
+.selectLabel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.select {
+  min-height: 48px;
+  padding: 0 var(--space-3);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-s);
+  background: var(--white);
+  color: var(--ink-900);
+  font: inherit;
+}
+
+.muted {
+  color: var(--ink-600);
+}
+
+.hint {
+  padding: var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--lagoon-100);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Vorschau: die echten A4-Seiten verkleinert untereinander */
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  zoom: 0.42;
+}
+
+@media (width >= 900px) {
+  .preview {
+    zoom: 0.75;
+  }
+}
+
+@media print {
+  .page {
+    display: block;
+    padding: 0;
+  }
+
+  .preview {
+    display: block;
+    zoom: 1;
+  }
+}

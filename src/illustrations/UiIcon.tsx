@@ -19,7 +19,9 @@ export type UiIconName =
   | 'plus'
   | 'download'
   | 'upload'
-  | 'zurueck';
+  | 'zurueck'
+  | 'stift'
+  | 'hand-zahl';
 
 const round1 = (n: number) => Math.round(n * 10) / 10;
 
@@ -106,6 +108,14 @@ const ICONS: Record<UiIconName, ReactNode> = {
   plus: <path d="M12 5 V19 M5 12 H19" />,
   download: <path d="M12 4 V15 M7 10 L12 15 L17 10 M5 20 H19" />,
   upload: <path d="M12 15 V4 M7 9 L12 4 L17 9 M5 20 H19" />,
+  // Bild-Symbole der Bucht-Arbeitsblätter (docs/06 1)
+  stift: <path d="M4 20 L5 15 L16 4 L20 8 L9 19 Z M14 6 L18 10 M5 15 L9 19" />,
+  'hand-zahl': (
+    <>
+      <path d="M6 21 V13 C6 11.5 8 11.5 8 13 V9 C8 7.5 10 7.5 10 9 V12 M10 11 C10 9.5 12 9.5 12 11 V12 M12 11.5 C12 10 14 10 14 11.5 V16 C14 19 12 21 9.5 21" />
+      <path d="M16 3 H21 V9 H16 Z M18 5 L19 4.5 V8" />
+    </>
+  ),
 };
 
 export function UiIcon({

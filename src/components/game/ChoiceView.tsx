@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { UI } from '@/content/ui';
-import { hashSeed, mulberry32, shuffle } from '@/domain/random';
+import { choiceOrder } from '@/domain/choice';
 import { renderText, speakText } from '@/domain/text';
 import type { ChoiceAnswer, ChoiceOption } from '@/domain/types';
 import { Container } from '@/illustrations/Container';
@@ -69,10 +69,7 @@ export function ChoiceView({
   readOnTap: boolean;
   onPick: (optionId: string) => void;
 }) {
-  const options = useMemo(
-    () => (answer.shuffle ? shuffle(mulberry32(hashSeed(seedId)), answer.options) : answer.options),
-    [answer, seedId],
-  );
+  const options = useMemo(() => choiceOrder(answer, seedId), [answer, seedId]);
   const pictorial = answer.layout === 'coins' || answer.layout === 'bags';
   const gridClass =
     options.length === 2 ? styles.two : options.length === 4 || pictorial ? styles.four : undefined;

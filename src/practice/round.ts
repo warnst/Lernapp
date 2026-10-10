@@ -57,7 +57,7 @@ export function withId(task: Task, id: string): Task {
 export function buildRound(
   topic: PracticeTopicId,
   stufe: Stufe,
-  count: 5 | 10,
+  count: number,
   seed: number,
 ): Task[] {
   const generators = generatorsFor(topic, stufe);

@@ -108,7 +108,7 @@ export default defineConfig(
     },
   },
   {
-    files: ['src/components/**'],
+    files: ['src/components/**', 'src/print/**'],
     rules: { 'no-restricted-imports': ['error', { patterns: ['@/screens/*'] }] },
   },
 );

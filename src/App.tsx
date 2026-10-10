@@ -9,6 +9,7 @@ import { Placeholder } from '@/screens/Placeholder';
 import { Practice } from '@/screens/Practice';
 import { PracticePlay } from '@/screens/PracticePlay';
 import { Play } from '@/screens/Play';
+import { Print } from '@/screens/Print';
 import { Setup } from '@/screens/Setup';
 import { StationComplete } from '@/screens/StationComplete';
 import { Treasures } from '@/screens/Treasures';
@@ -58,7 +59,7 @@ export function Routes() {
       </Route>
       <Route path="/erwachsene/drucken">
         <AdultArea>
-          <Placeholder title={UI.adults.print} />
+          <Print />
         </AdultArea>
       </Route>
       <Route path="/erwachsene">
