@@ -174,6 +174,7 @@ export function Adults() {
       <section className={styles.section}>
         <h2 className={styles.heading}>{UI.adults.notes}</h2>
         <p className={styles.muted}>{UI.adults.storageNote}</p>
+        <p className={styles.muted}>{UI.adults.version(__APP_VERSION__)}</p>
       </section>
 
       <LinkButton href="/" variant="ghost">

@@ -106,6 +106,7 @@ export const UI = {
     notes: 'Hinweise',
     storageNote:
       'Der Fortschritt wird nur auf diesem Gerät gespeichert. Mit ‚Sicherung herunterladen‘ können Sie ihn aufbewahren.',
+    version: (v: string) => `App-Version: ${v}`,
     back: 'Zurück zum Spiel',
     stufe: 'Stufe',
     name: 'Name',

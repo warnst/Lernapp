@@ -1,9 +1,27 @@
+import { execSync } from 'node:child_process';
 import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 
+/** Kurzer Stand für den Erwachsenen-Bereich, damit man sieht, ob das Gerät aktuell ist. */
+function appVersion(): string {
+  let sha = process.env.VERCEL_GIT_COMMIT_SHA ?? '';
+  try {
+    sha ||= execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
+  } catch {
+    sha ||= 'lokal';
+  }
+  const date = new Date().toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+  return `${date} · ${sha.slice(0, 7)}`;
+}
+
 export default defineConfig({
+  define: { __APP_VERSION__: JSON.stringify(appVersion()) },
   plugins: [
     react(),
     // docs/03 Abschnitt 11: offline, Updates erst beim nächsten Start (nie mitten in einer Station)
