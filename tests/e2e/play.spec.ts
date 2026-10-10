@@ -64,6 +64,10 @@ test('Fortsetzen nach dem Neuladen', async ({ page }) => {
   await page.goto('/station/muschelstrand');
   await page.getByRole('button', { name: '90 Cent' }).click();
   await weiter(page);
+  // erst neu laden, wenn die Stelle gespeichert ist
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem('schatzinsel.state.v2') ?? ''))
+    .toContain('"resume"');
   await page.reload();
   await expect(
     page.getByRole('heading', { name: 'Lege genau 1 € mit den Münzen auf Kikos Tablett.' }),
