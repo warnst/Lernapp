@@ -75,7 +75,7 @@ export const ITEMS: readonly Item[] = [
     akk: 'einen Keks',
     def: 'der Keks',
     plural: 'Kekse',
-    prices: { 1: [3, 8], 2: [100, 200], 3: [30, 90] },
+    prices: { 1: [3, 8], 2: [100, 200], 3: [30, 90], 4: [50, 150] },
   },
   {
     id: 'apfel',
@@ -84,7 +84,7 @@ export const ITEMS: readonly Item[] = [
     akk: 'einen Apfel',
     def: 'der Apfel',
     plural: 'Äpfel',
-    prices: { 1: [4, 9], 2: [100, 200], 3: [30, 90] },
+    prices: { 1: [4, 9], 2: [100, 200], 3: [30, 90], 4: [50, 150] },
   },
   {
     id: 'banane',
@@ -93,7 +93,7 @@ export const ITEMS: readonly Item[] = [
     akk: 'eine Banane',
     def: 'die Banane',
     plural: 'Bananen',
-    prices: { 2: [100, 200], 3: [20, 60] },
+    prices: { 2: [100, 200], 3: [20, 60], 4: [50, 150] },
   },
   {
     id: 'kokosnuss',

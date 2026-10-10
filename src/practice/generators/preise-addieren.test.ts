@@ -137,7 +137,7 @@ describe('preise-addieren', () => {
   });
 
   it('2.5: A6 mit bind A banane, B saft', () => {
-    for (const stufe of [2, 3] as const) {
+    for (const stufe of [2, 3, 4] as const) {
       const list = tasks('A6', stufe, { bind: { A: 'banane', B: 'saft' } });
       expect(list.length).toBe(100);
       for (const t of list) {
@@ -145,8 +145,6 @@ describe('preise-addieren', () => {
         expect(t.parts[1]?.lead).toMatch(/^Dazu kauft (sie|er) noch einen Saft für/);
       }
     }
-    // Die Banane hat im Katalog (docs/05 3.1) keinen Preis für Stufe 4.
-    expect(tasks('A6', 4, { bind: { A: 'banane', B: 'saft' } })).toEqual([]);
   });
 
   it('7.1: A3 mit bind A kerze', () => {

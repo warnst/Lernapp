@@ -50,10 +50,10 @@ describe('Varianten aus docs/09 5.2', () => {
     }
   });
 
-  it('4.5: Keks hat auf Stufe 4 keinen Preisbereich → unsupported', () => {
-    expect(gen('S1').generate(STUFEN[4], mulberry32(1), { bind: { A: 'keks', B: 'apfel' } })).toBe(
-      'unsupported',
-    );
+  it('4.5: Keks und Apfel gibt es auch auf Stufe 4', () => {
+    const task = gen('S1').generate(STUFEN[4], mulberry32(1), { bind: { A: 'keks', B: 'apfel' } });
+    expect(task).not.toBe('unsupported');
+    if (task !== 'unsupported') expect(itemIds(task)).toEqual(['keks', 'apfel']);
   });
 
   it.each([
@@ -214,7 +214,7 @@ describe('Beispielsätze', () => {
       `"Paul kauft 3 Seile. Ein Seil kostet 1,50 €. Er bezahlt mit einem 10-Euro-Schein. | Wie viel kosten 3 Seile? | Wie viel Rückgeld bekommt er?"`,
     );
     expect(story('S5', 4, 7)).toMatchInlineSnapshot(
-      `"Ida hat 20 €. Sie kauft 4 Kokosnüsse für je 3,95 € und einen Saft für 3,25 €. | Wie viel kosten die Kokosnüsse? | Wie viel kostet alles? | Wie viel bleibt übrig?"`,
+      `"Ida hat 10 €. Sie kauft 4 Kekse für je 1,50 € und eine Kokosnuss für 3,25 €. | Wie viel kosten die Kekse? | Wie viel kostet alles? | Wie viel bleibt übrig?"`,
     );
     expect(story('UE1', 3, 8, { bind: { A: 'kekse', B: 'marmelade' } })).toMatchInlineSnapshot(
       `"Mara kauft eine Tüte Kekse für 1,10 € und ein Glas Marmelade für 2,95 €. | Ungefähr wie viel kostet beides? Du musst nicht genau rechnen."`,
