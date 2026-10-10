@@ -1,5 +1,6 @@
 import { findCombination, formatMoney, payCombinations } from '@/domain/money';
 import { renderText } from '@/domain/text';
+import { timeWords } from '@/domain/clock';
 import type { Answer, MoneyPiece } from '@/domain/types';
 import { selectSolutions } from '@/practice/validate';
 
@@ -44,5 +45,7 @@ export function solutionText(answer: Answer): string {
         .join(', ');
     case 'code':
       return answer.digits.join(', ');
+    case 'clock':
+      return timeWords(answer.correct);
   }
 }

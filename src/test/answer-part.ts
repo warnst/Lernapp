@@ -138,6 +138,18 @@ export async function answerPart(user: User, part: TaskPart, numberline: boolean
       await user.click(screen.getByRole('button', { name: 'Öffnen' }));
       break;
     }
+    case 'clock': {
+      // die Uhr startet auf 12 Uhr
+      const minuteSteps = answer.correct.minute / answer.step;
+      for (let n = 0; n < minuteSteps; n++) {
+        await user.click(screen.getByRole('button', { name: 'Großen Zeiger weiterdrehen' }));
+      }
+      for (let n = 0; n < answer.correct.hour % 12; n++) {
+        await user.click(screen.getByRole('button', { name: 'Kleinen Zeiger weiterdrehen' }));
+      }
+      await user.click(screen.getByRole('button', { name: 'Prüfen' }));
+      break;
+    }
   }
   await weiter(user);
 }

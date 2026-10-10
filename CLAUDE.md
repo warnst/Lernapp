@@ -18,8 +18,9 @@ Dieses Repository wird mit Claude Code gebaut. Die Spezifikation liegt in `docs/
 | `docs/10-raetsel.md` | Muster, Waage, Zahlenmauer, Rechendreieck, Zahlenschloss, Logik |
 | `docs/11-welt-kleine-bucht.md` | Welt für Stufe 1 (etwa 5 Jahre) mit allen 25 Aufgaben |
 | `docs/12-raetselturm.md` | Rätselturm: Sudoku, Kinderrätsel, Wissensfragen, Detektivfall, Kikos Kleiderschrank, Witzekiste |
+| `docs/13-ueben-ohne-geld.md` | Üben ohne Geld: Uhr, Kalender, Formen, Zahlenstrahl, Plus und Minus, Verdoppeln |
 
-**Wichtig:** `09`–`12` erweitern und präzisieren `01`–`06`. Bei Widersprüchen gilt das Dokument mit der höheren Nummer.
+**Wichtig:** `09`–`13` erweitern und präzisieren `01`–`06`. Bei Widersprüchen gilt das Dokument mit der höheren Nummer.
 
 ## Goldene Regeln
 

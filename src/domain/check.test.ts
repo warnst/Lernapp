@@ -26,6 +26,8 @@ const T: CheckTexts = {
   affordableMissingOther: 'missingOther',
   gridFeedback: (correct, wrong, shape) => `grid(${String(correct)}|${String(wrong)}|${shape})`,
   codeStuck: (symbol) => `stuck(${symbol})`,
+  clockHour: 'hour',
+  clockMinute: 'minute',
 };
 
 const NB = ' ';
@@ -409,6 +411,28 @@ describe('code', () => {
 
   it('wirft, wenn einem Rad das Symbol fehlt', () => {
     expect(() => check(answer, { type: 'code', digits: [1, 8, 5], symbols: [] })).toThrow();
+  });
+});
+
+describe('Uhr stellen', () => {
+  const answer: Answer = { type: 'clock', correct: { hour: 3, minute: 30 }, step: 30 };
+  it('richtig, auch 12 und 0 sind gleich', () => {
+    expect(check(answer, { type: 'clock', time: { hour: 3, minute: 30 } })).toEqual({
+      status: 'correct',
+    });
+    const noon: Answer = { type: 'clock', correct: { hour: 12, minute: 0 }, step: 60 };
+    expect(check(noon, { type: 'clock', time: { hour: 0, minute: 0 } }).status).toBe('correct');
+  });
+  it('erst der große, dann der kleine Zeiger', () => {
+    expect(check(answer, { type: 'clock', time: { hour: 4, minute: 0 } })).toEqual({
+      status: 'wrong',
+      feedback: 'minute',
+    });
+    expect(check(answer, { type: 'clock', time: { hour: 4, minute: 30 } })).toEqual({
+      status: 'wrong',
+      feedback: 'hour',
+    });
+    expect(() => check(answer, { type: 'number', value: 3 })).toThrow();
   });
 });
 

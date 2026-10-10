@@ -13,6 +13,7 @@ import type {
 } from '@/domain/types';
 import { Coin } from '@/illustrations/Coin';
 import { Container } from '@/illustrations/Container';
+import { ClockFace } from '@/illustrations/ClockFace';
 import { ItemIcon } from '@/illustrations/ItemIcon';
 import { Note } from '@/illustrations/Note';
 import { cx } from '@/components/cx';
@@ -252,5 +253,13 @@ export function PaperAnswer({
         </div>
       );
     }
+    case 'clock':
+      // leere Uhr zum Einzeichnen der Zeiger
+      return (
+        <div className={styles.clock}>
+          <ClockFace size={130} />
+          <span>{PRINT.drawHands}</span>
+        </div>
+      );
   }
 }

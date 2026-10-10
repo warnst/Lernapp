@@ -1,10 +1,13 @@
 import { AVATARS } from '@/content/avatars';
 import { UI } from '@/content/ui';
+import { ClockFace } from '@/illustrations/ClockFace';
+import { ShapeIcon } from '@/illustrations/ShapeIcon';
 import { formatMoney } from '@/domain/money';
 import { renderText } from '@/domain/text';
 import type { AvatarId, MoneyPiece, Scene } from '@/domain/types';
 import { AvatarIllustration } from '@/illustrations/AvatarIllustration';
 import { ItemIcon } from '@/illustrations/ItemIcon';
+import { NumberLineScene } from './NumberLineScene';
 import styles from './Game.module.css';
 import { ItemCard } from './ItemCard';
 import { MoneyPieceView } from './MoneyPieceView';
@@ -135,5 +138,26 @@ export function SceneView({ scene }: { scene: Scene }) {
           <CluesScene clues={scene.clues} />
         </div>
       );
+    case 'clock':
+      return (
+        <div className={styles.scene} role="img" aria-label={UI.newTopics.clockScene}>
+          <ClockFace time={scene.time} size={180} />
+        </div>
+      );
+    case 'shapes':
+      return (
+        <div className={styles.scene} role="img" aria-label={UI.newTopics.shapesScene}>
+          {scene.shapes.map((s, i) => (
+            <ShapeIcon
+              key={i}
+              shape={s.shape}
+              color={s.color}
+              size={scene.shapes.length === 1 ? 110 : 52}
+            />
+          ))}
+        </div>
+      );
+    case 'numberline':
+      return <NumberLineScene from={scene.from} step={scene.step} labels={scene.labels} />;
   }
 }

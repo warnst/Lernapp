@@ -27,6 +27,12 @@ const TOPIC_IDS: readonly PracticeTopicId[] = [
   'sachaufgaben',
   'knobeln',
   'raetsel',
+  'plus-minus',
+  'verdoppeln',
+  'zahlenreihe',
+  'uhrzeit',
+  'kalender',
+  'formen',
 ];
 const WORLD_IDS: readonly string[] = ['kleine-bucht', 'schatzinsel'];
 

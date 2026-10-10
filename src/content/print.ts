@@ -17,6 +17,7 @@ export const PRINT = {
   rollPractice: 'Neue Aufgaben würfeln',
   riddles: 'Rätselblatt (6 Rätsel)',
   rollRiddles: 'Neue Rätsel würfeln',
+  drawHands: 'Zeichne die Zeiger ein.',
   tower: 'Rätselturm-Blatt (Sudoku, Labyrinth, Punkte, Bilderrätsel …)',
   rollTower: 'Neues Rätselturm-Blatt würfeln',
   towerLegend: 'Kikos Rätselturm',

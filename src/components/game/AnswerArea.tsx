@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import type { AnswerInput } from '@/domain/check';
 import type { ClueSymbol, MoneyPiece, StufeConfig, Task, TaskPart } from '@/domain/types';
 import { ChoiceView } from './ChoiceView';
+import { ClockEntry } from './ClockEntry';
 import { CodeLock } from './CodeLock';
 import { CoinTray } from './CoinTray';
 import { FoundVariants } from './FoundVariants';
@@ -72,6 +73,15 @@ export function AnswerArea({
           useCents={config.money.useCents}
           onChange={(value) => {
             onPending(value ? { type: 'money', ...value } : null);
+          }}
+        />
+      );
+    case 'clock':
+      return (
+        <ClockEntry
+          step={answer.step}
+          onChange={(time) => {
+            onPending({ type: 'clock', time });
           }}
         />
       );

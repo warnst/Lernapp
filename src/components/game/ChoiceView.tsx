@@ -4,7 +4,9 @@ import { choiceOrder } from '@/domain/choice';
 import { renderText, speakText } from '@/domain/text';
 import type { ChoiceAnswer, ChoiceOption } from '@/domain/types';
 import { Container } from '@/illustrations/Container';
+import { ClockFace } from '@/illustrations/ClockFace';
 import { ItemIcon } from '@/illustrations/ItemIcon';
+import { ShapeIcon } from '@/illustrations/ShapeIcon';
 import { UiIcon } from '@/illustrations/UiIcon';
 import { toggleSpeak } from '@/speech/speak';
 import { cx } from '../cx';
@@ -36,6 +38,22 @@ function OptionBody({ option, layout }: { option: ChoiceOption; layout: ChoiceAn
               <ItemIcon key={i} itemId={option.objects?.itemId ?? ''} size={28} />
             ))}
         </span>
+      </>
+    );
+  }
+  if (option.clock) {
+    return (
+      <>
+        <ClockFace time={option.clock} size={96} />
+        <span className={styles.visuallyHidden}>{option.label}</span>
+      </>
+    );
+  }
+  if (option.shape) {
+    return (
+      <>
+        <ShapeIcon shape={option.shape} size={64} />
+        <span className={styles.visuallyHidden}>{option.label}</span>
       </>
     );
   }

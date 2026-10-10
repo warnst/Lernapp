@@ -261,3 +261,13 @@
   display: inline-flex;
   filter: brightness(0);
 }
+
+/* nur für Screenreader (z. B. die Uhrzeit unter einer Uhr-Antwortkarte) */
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

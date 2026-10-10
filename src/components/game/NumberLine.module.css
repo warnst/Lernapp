@@ -1,0 +1,13 @@
+.line {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-m);
+  background: var(--white);
+}
+
+.svg {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}

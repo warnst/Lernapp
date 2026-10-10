@@ -477,6 +477,23 @@ export const UI = {
       riddles: 'ein Muster-Rätsel',
     } satisfies Record<TowerType, string>,
   },
+  /** Üben ohne Geld: Uhr, Formen, Zahlenstrahl (docs/13) */
+  newTopics: {
+    numberLine: (from: number, to: number, values: string) =>
+      `Zahlenstrahl von ${String(from)} bis ${String(to)}: ${values}`,
+    clockScene: 'Eine Uhr mit Zeigern',
+    clockCard: 'Uhr',
+    shapesScene: 'Verschiedene Formen',
+    hourHand: 'Kleiner Zeiger',
+    minuteHand: 'Großer Zeiger',
+    back: 'zurück',
+    forward: 'weiter',
+    hourBack: 'Kleinen Zeiger zurückdrehen',
+    hourForward: 'Kleinen Zeiger weiterdrehen',
+    minuteBack: 'Großen Zeiger zurückdrehen',
+    minuteForward: 'Großen Zeiger weiterdrehen',
+    clockNow: (words: string) => `Die Uhr zeigt ${words}.`,
+  },
   /** Kikos Witzekiste (docs/12 4.2) */
   jokes: {
     box: 'Kikos Witzekiste',
@@ -528,6 +545,12 @@ export const UI = {
       sachaufgaben: 'Sachaufgaben',
       knobeln: 'Knobeln',
       raetsel: 'Rätsel',
+      'plus-minus': 'Plus und Minus',
+      verdoppeln: 'Verdoppeln und Halbieren',
+      zahlenreihe: 'Zahlen und Zahlenstrahl',
+      uhrzeit: 'Die Uhr',
+      kalender: 'Wochentage und Monate',
+      formen: 'Formen',
     } satisfies Record<PracticeTopicId, string>,
     /** ein Wort für Stufe 1 und 2 (docs/09 6) */
     shortTopics: {
@@ -540,6 +563,12 @@ export const UI = {
       sachaufgaben: 'Geschichten',
       knobeln: 'Knobeln',
       raetsel: 'Rätsel',
+      'plus-minus': 'Plus, Minus',
+      verdoppeln: 'Doppelt',
+      zahlenreihe: 'Zahlenstrahl',
+      uhrzeit: 'Uhr',
+      kalender: 'Tage',
+      formen: 'Formen',
     } satisfies Record<PracticeTopicId, string>,
   },
   /** Schätze (docs/01 5.8) */

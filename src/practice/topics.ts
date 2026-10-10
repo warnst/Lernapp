@@ -4,6 +4,12 @@ import type { PracticeTopicId } from '@/domain/types';
 
 export const TOPIC_ORDER: readonly PracticeTopicId[] = [
   'mengen-zahlen',
+  'plus-minus',
+  'verdoppeln',
+  'zahlenreihe',
+  'uhrzeit',
+  'kalender',
+  'formen',
   'muenzen-zaehlen',
   'preise-addieren',
   'rueckgeld',
@@ -25,6 +31,12 @@ export const TOPIC_ICON: Record<PracticeTopicId, string> = {
   sachaufgaben: 'postkarte',
   knobeln: 'kompass',
   raetsel: 'stern',
+  'plus-minus': 'aepfel',
+  verdoppeln: 'kirschen',
+  zahlenreihe: 'zahlenstrahl',
+  uhrzeit: 'wecker',
+  kalender: 'kalender',
+  formen: 'formen',
 };
 
 /** Ersatz, wenn das Thema einer Station auf der Stufe des Kindes fehlt (docs/09 6). */

@@ -87,4 +87,33 @@ describe('Übungsrunde', () => {
     expect(screen.getByRole('list', { name: 'Aufgabe 1 von 5' })).toBeInTheDocument();
     vi.restoreAllMocks();
   });
+
+  it.each([
+    ['uhrzeit', 1],
+    ['uhrzeit', 4],
+    ['plus-minus', 1],
+    ['verdoppeln', 2],
+    ['zahlenreihe', 3],
+    ['kalender', 3],
+    ['formen', 2],
+  ] as const)('Thema ohne Geld: %s auf Stufe %i lässt sich ganz spielen', async (topic, stufe) => {
+    vi.spyOn(crypto, 'getRandomValues').mockImplementation((array) => {
+      if (array instanceof Uint32Array) array[0] = 99;
+      return array;
+    });
+    const tasks = buildRound(topic, stufe, 5, 99);
+    expect(tasks).toHaveLength(5);
+    const { user, storage } = renderApp(
+      `/ueben/spiel?thema=${topic}&schwer=0&anzahl=5`,
+      makeState({
+        profiles: [
+          makeProfile({ stufe, celebrated: ['welcome:kleine-bucht', 'welcome:schatzinsel'] }),
+        ],
+      }),
+    );
+    for (const task of tasks)
+      for (const part of task.parts) await answerPart(user, part, stufe === 1);
+    expect(saved(storage).profiles[0]?.practice.pearls).toBe(1);
+    vi.restoreAllMocks();
+  });
 });

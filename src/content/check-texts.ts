@@ -53,4 +53,6 @@ export const CHECK_TEXTS: CheckTexts = {
   gridFeedback,
   codeStuck: (symbol) =>
     `Das Schloss klemmt noch. Das Rad mit ${SYMBOL_DATIVE[symbol]} stimmt noch nicht.`,
+  clockMinute: 'Schau auf den großen Zeiger. Er zeigt die Minuten.',
+  clockHour: 'Der große Zeiger stimmt! Schau jetzt auf den kleinen Zeiger. Er zeigt die Stunde.',
 };

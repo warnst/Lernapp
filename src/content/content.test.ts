@@ -187,6 +187,8 @@ function correctInputs(task: Task, part: TaskPart): AnswerInput[] {
       const symbols = task.scene.kind === 'clues' ? task.scene.clues.map((c) => c.symbol) : [];
       return [{ type: 'code', digits: answer.digits, symbols }];
     }
+    case 'clock':
+      return [{ type: 'clock', time: answer.correct }];
   }
 }
 
@@ -219,6 +221,8 @@ function describeAnswer(answer: Answer): string {
         .join(', ');
     case 'code':
       return answer.digits.join(' ');
+    case 'clock':
+      return `${String(answer.correct.hour)}:${String(answer.correct.minute)}`;
   }
 }
 

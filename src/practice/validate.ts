@@ -89,6 +89,8 @@ function correctInput(task: Task, part: TaskPart): AnswerInput | undefined {
         digits: answer.digits,
         symbols: task.scene.kind === 'clues' ? task.scene.clues.map((c) => c.symbol) : [],
       };
+    case 'clock':
+      return { type: 'clock', time: answer.correct };
   }
 }
 

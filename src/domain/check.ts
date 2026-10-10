@@ -1,8 +1,10 @@
 import { assertNever } from './assert';
+import { sameTime } from './clock';
 import { formatMoney, minPieces, moneyFromFields, sameMultiset, sumPieces } from './money';
 import type {
   Answer,
   Cents,
+  ClockTime,
   ClueSymbol,
   CodeAnswer,
   GridAnswer,
@@ -45,7 +47,8 @@ export type AnswerInput =
   /** Werte der offenen Felder */
   | { type: 'grid'; values: Partial<Record<string, number>> }
   /** symbols: Symbol je Rad, aus den Rätselkarten der Szene */
-  | { type: 'code'; digits: number[]; symbols: ClueSymbol[] };
+  | { type: 'code'; digits: number[]; symbols: ClueSymbol[] }
+  | { type: 'clock'; time: ClockTime };
 
 /** Satzbausteine für Rückmeldungen. Beträge kommen schon formatiert an. */
 export interface CheckTexts {
@@ -63,6 +66,9 @@ export interface CheckTexts {
   /** correct: richtige offene Felder, wrong: noch nicht richtige */
   gridFeedback: (correct: number, wrong: number, shape: GridAnswer['shape']) => string;
   codeStuck: (symbol: ClueSymbol) => string;
+  /** Uhr stellen: kleiner bzw. großer Zeiger stimmt noch nicht */
+  clockHour: string;
+  clockMinute: string;
 }
 
 function direction(value: number, correct: number): Direction {
@@ -251,6 +257,14 @@ export function checkAnswer(
     case 'code':
       if (input.type !== 'code') return mismatch(answer, input);
       return checkCode(answer, input.digits, input.symbols, texts);
+    case 'clock': {
+      if (input.type !== 'clock') return mismatch(answer, input);
+      if (sameTime(input.time, answer.correct)) return { status: 'correct' };
+      // erst den großen Zeiger, dann den kleinen: der kleine hängt vom großen ab
+      return input.time.minute !== answer.correct.minute
+        ? { status: 'wrong', feedback: texts.clockMinute }
+        : { status: 'wrong', feedback: texts.clockHour };
+    }
     default:
       return assertNever(answer);
   }

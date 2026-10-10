@@ -16,7 +16,23 @@ export type PracticeTopicId =
   | 'reicht-das-geld'
   | 'sachaufgaben'
   | 'knobeln'
-  | 'raetsel';
+  | 'raetsel'
+  // ohne Geld (docs/13)
+  | 'plus-minus'
+  | 'verdoppeln'
+  | 'zahlenreihe'
+  | 'uhrzeit'
+  | 'kalender'
+  | 'formen';
+
+/** Formen (docs/13) */
+export type ShapeKind = 'kreis' | 'dreieck' | 'quadrat' | 'rechteck' | 'fuenfeck' | 'sechseck';
+
+/** Uhrzeit auf einer Zeigeruhr, Stunde 1–12, Minute 0–59 */
+export interface ClockTime {
+  hour: number;
+  minute: number;
+}
 
 // ---------- Stufen (docs/09, Abschnitt 2) ----------
 
@@ -48,6 +64,12 @@ export interface StufeConfig {
   autoRead: boolean; // Geschichte + Frage beim Öffnen automatisch vorlesen
   maxStoryWords: number; // Generatoren verwerfen längere Texte
   practiceTopics: PracticeTopicId[];
+  /** Uhrzeit (docs/13): kleinster Minutenschritt, Zeitspannen, Digitalanzeige */
+  clock: { step: 60 | 30 | 15 | 5; spans: boolean; digital: boolean };
+  /** Kalender (docs/13): Monate ja/nein, größter Abstand „in … Tagen“ */
+  calendar: { months: boolean; maxOffset: number };
+  /** Formen, die vorkommen; Ecken zählen ab `corners` */
+  shapes: { kinds: ShapeKind[]; corners: boolean };
   /** Rätselarten im Rätselturm (docs/12) */
   tower: TowerConfig;
   riddles: {
@@ -297,7 +319,10 @@ export type Scene =
     } // docs/11
   | { kind: 'sequence'; items: SeqItem[] } // docs/10
   | { kind: 'balance'; left: BalanceSide; right: BalanceSide } // docs/10
-  | { kind: 'clues'; clues: Clue[] }; // docs/10 (Zahlenschloss)
+  | { kind: 'clues'; clues: Clue[] } // docs/10 (Zahlenschloss)
+  | { kind: 'clock'; time: ClockTime } // docs/13
+  | { kind: 'shapes'; shapes: { shape: ShapeKind; color: number }[] } // docs/13
+  | { kind: 'numberline'; from: number; step: number; labels: (number | null)[] }; // docs/13
 
 export interface SceneItem {
   itemId: string;
@@ -345,7 +370,15 @@ export type Answer =
   | OrderAnswer
   | SelectAnswer
   | GridAnswer
-  | CodeAnswer;
+  | CodeAnswer
+  | ClockAnswer;
+
+/** Zeiger stellen (docs/13); die Minuten springen in `step`-Schritten */
+export interface ClockAnswer {
+  type: 'clock';
+  correct: ClockTime;
+  step: number;
+}
 
 export interface ChoiceAnswer {
   type: 'choice';
@@ -363,6 +396,9 @@ export interface ChoiceOption {
   icon?: string;
   /** Icon als schwarzer Schatten, ggf. gedreht bzw. gespiegelt (Schattenrätsel, docs/12 3.4) */
   shadow?: { rotate: 0 | 90 | 180 | 270; mirror: boolean };
+  /** Antwortkarte mit Uhr bzw. Form (docs/13) */
+  clock?: ClockTime;
+  shape?: ShapeKind;
   objects?: ObjectGroup; // Eimer/Häufchen mit Dingen statt Geld (docs/11)
 }
 
