@@ -103,8 +103,15 @@ export function sameMultiset(a: readonly MoneyPiece[], b: readonly MoneyPiece[])
   return sortedA.every((piece, i) => piece === sortedB[i]);
 }
 
-/** Alle verschiedenen Möglichkeiten (als Mengen, ohne Reihenfolge), den Betrag mit der Palette zu legen. */
-export function payCombinations(target: Cents, palette: readonly MoneyPiece[]): MoneyPiece[][] {
+/**
+ * Verschiedene Möglichkeiten (als Mengen, ohne Reihenfolge), den Betrag mit der Palette zu legen,
+ * höchstens `limit` Stück (größte Münzen zuerst).
+ */
+export function payCombinations(
+  target: Cents,
+  palette: readonly MoneyPiece[],
+  limit = Infinity,
+): MoneyPiece[][] {
   assertCents(target);
   const pieces = [...new Set(palette)].sort((a, b) => b - a);
   const results: MoneyPiece[][] = [];
@@ -114,9 +121,63 @@ export function payCombinations(target: Cents, palette: readonly MoneyPiece[]): 
       return;
     }
     pieces.slice(from).forEach((piece, offset) => {
-      if (piece <= rest) walk(rest - piece, from + offset, [...chosen, piece]);
+      if (piece <= rest && results.length < limit)
+        walk(rest - piece, from + offset, [...chosen, piece]);
     });
   };
   walk(target, 0, []);
   return results;
+}
+
+/** Anzahl der Möglichkeiten (ohne Reihenfolge), höchstens bis `cap` gezählt. */
+export function countWays(target: Cents, palette: readonly MoneyPiece[], cap: number): number {
+  assertCents(target);
+  const ways: number[] = Array.from({ length: target + 1 }, (_, i) => (i === 0 ? 1 : 0));
+  for (const piece of new Set(palette)) {
+    for (let amount = piece; amount <= target; amount++) {
+      // beide Indizes liegen in 0 … target, die Einträge existieren also
+      ways[amount] = Math.min(cap, (ways[amount] as number) + (ways[amount - piece] as number));
+    }
+  }
+  return ways[target] as number; // target liegt im Array
+}
+
+/**
+ * Eine Möglichkeit, den Betrag zu legen: mit genau `count` Stücken oder, ohne count,
+ * mit so wenigen Stücken wie möglich. null, wenn es keine gibt.
+ */
+export function findCombination(
+  target: Cents,
+  palette: readonly MoneyPiece[],
+  count?: number,
+): MoneyPiece[] | null {
+  assertCents(target);
+  const pieces = [...new Set(palette)];
+  // Schicht k: erreichbare Beträge mit genau k Stücken → (vorheriger Betrag, Stück)
+  const layers: Map<number, [number, MoneyPiece]>[] = [new Map([[0, [0, 0 as MoneyPiece]]])];
+  const maxLayers = count ?? target;
+  for (let k = 0; k <= maxLayers; k++) {
+    const layer = layers[k];
+    if (!layer || layer.size === 0) return null;
+    if (layer.has(target) && (count === undefined || k === count)) {
+      const result: MoneyPiece[] = [];
+      let amount = target;
+      for (let j = k; j > 0; j--) {
+        // rückwärts aus einem erreichten Betrag: der Eintrag existiert in jeder Schicht
+        const [before, piece] = layers[j]?.get(amount) as [number, MoneyPiece];
+        result.push(piece);
+        amount = before;
+      }
+      return result.sort((a, b) => b - a);
+    }
+    const next = new Map<number, [number, MoneyPiece]>();
+    for (const amount of layer.keys()) {
+      for (const piece of pieces) {
+        const sum = amount + piece;
+        if (sum <= target && !next.has(sum)) next.set(sum, [amount, piece]);
+      }
+    }
+    layers.push(next);
+  }
+  return null;
 }

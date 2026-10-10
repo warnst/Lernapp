@@ -5,6 +5,8 @@ import { AdultProfile } from '@/screens/AdultProfile';
 import { Adults } from '@/screens/Adults';
 import { ChildLayout } from '@/screens/ChildLayout';
 import { Placeholder } from '@/screens/Placeholder';
+import { Practice } from '@/screens/Practice';
+import { PracticePlay } from '@/screens/PracticePlay';
 import { Play } from '@/screens/Play';
 import { Setup } from '@/screens/Setup';
 import { StationComplete } from '@/screens/StationComplete';
@@ -22,13 +24,9 @@ function Home() {
   return <ChildLayout>{(profile) => <WorldMap key={profile.id} profile={profile} />}</ChildLayout>;
 }
 
-function withNav(title: string) {
-  return function ChildPlaceholder() {
-    return <ChildLayout>{() => <Placeholder title={title} withNav />}</ChildLayout>;
-  };
+function PracticePage() {
+  return <ChildLayout>{(profile) => <Practice key={profile.id} profile={profile} />}</ChildLayout>;
 }
-
-const PracticePage = withNav(UI.nav.practice);
 function TreasuresPage() {
   return <ChildLayout>{(profile) => <Treasures key={profile.id} profile={profile} />}</ChildLayout>;
 }
@@ -46,9 +44,7 @@ export function Routes() {
         <Placeholder title={UI.nav.adventure} />
       </Route>
       <Route path="/station/:stationId">{(params) => <Play stationId={params.stationId} />}</Route>
-      <Route path="/ueben/spiel">
-        <Placeholder title={UI.nav.practice} />
-      </Route>
+      <Route path="/ueben/spiel" component={PracticePlay} />
       <Route path="/ueben" component={PracticePage} />
       <Route path="/schaetze/urkunde" component={CertificatePreview} />
       <Route path="/schaetze" component={TreasuresPage} />

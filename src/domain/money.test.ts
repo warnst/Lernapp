@@ -3,6 +3,8 @@ import {
   formatMoney,
   minPieces,
   payCombinations,
+  countWays,
+  findCombination,
   moneyFromFields,
   parseMoney,
   sameMultiset,
@@ -192,5 +194,43 @@ describe('payCombinations', () => {
 
   it('liefert nichts, wenn der Betrag nicht legbar ist', () => {
     expect(payCombinations(3, [2])).toEqual([]);
+  });
+});
+
+describe('payCombinations mit Grenze', () => {
+  it('hört nach limit Möglichkeiten auf', () => {
+    expect(payCombinations(100, [50, 20, 10], 2)).toEqual([
+      [50, 50],
+      [50, 20, 20, 10],
+    ]);
+  });
+});
+
+describe('countWays', () => {
+  it('zählt Möglichkeiten und deckelt bei cap', () => {
+    expect(countWays(100, [50, 20, 10], 100)).toBe(10);
+    expect(countWays(100, [50, 20, 10], 3)).toBe(3);
+    expect(countWays(3, [2], 5)).toBe(0);
+    expect(countWays(0, [1], 5)).toBe(1);
+    expect(countWays(4785, [1, 2, 5, 10, 20, 50, 100, 200], 1000)).toBe(1000);
+  });
+});
+
+describe('findCombination', () => {
+  it('findet die kürzeste Möglichkeit', () => {
+    expect(findCombination(75, [50, 20, 10, 5, 2, 1])).toEqual([50, 20, 5]);
+    expect(findCombination(0, [1])).toEqual([]);
+  });
+
+  it('findet eine Möglichkeit mit genau count Stücken', () => {
+    expect(findCombination(150, [1, 2, 5, 10, 20, 50, 100, 200], 2)).toEqual([100, 50]);
+    expect(findCombination(5, [1, 2, 5], 1)).toEqual([5]);
+    expect(findCombination(4, [2, 1], 3)).toEqual([2, 1, 1]);
+  });
+
+  it('liefert null, wenn es nicht geht', () => {
+    expect(findCombination(3, [2])).toBeNull();
+    expect(findCombination(150, [100, 50], 4)).toBeNull();
+    expect(findCombination(5, [], 0)).toBeNull();
   });
 });

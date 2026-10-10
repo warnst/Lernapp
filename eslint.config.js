@@ -40,6 +40,8 @@ export default defineConfig(
     rules: {
       // Felder per Rest-Destrukturierung weglassen ({ resume, ...rest }) ist erlaubt
       '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+      // widerspricht no-non-null-assertion (strict): „!“ ist verboten, begründete „as“ sind erlaubt
+      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
       // Geld nur in ganzen Cent: keine Gleitkomma-Helfer
       'no-restricted-properties': [
         'error',

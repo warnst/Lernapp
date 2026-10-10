@@ -203,4 +203,13 @@ describe('appReducer', () => {
       completedAt: 't2',
     });
   });
+
+  it('merkt sich die letzte Übung und zählt Perlen', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    const last = { topic: 'rueckgeld', shift: -1, count: 5 } as const;
+    state = appReducer(state, { type: 'set-practice-last', id: 'p1', last });
+    state = appReducer(state, { type: 'add-pearl', id: 'p1' });
+    state = appReducer(state, { type: 'add-pearl', id: 'p1' });
+    expect(state.profiles[0]?.practice).toEqual({ pearls: 2, last });
+  });
 });

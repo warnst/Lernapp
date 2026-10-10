@@ -1,4 +1,4 @@
-import type { Stufe, WorldId } from '@/domain/types';
+import type { PracticeTopicId, Stufe, WorldId } from '@/domain/types';
 
 // Texte der Oberfläche (docs/01 Abschnitt 4–5, docs/09 Abschnitt 3–4). Wörtlich, wo die Docs sie vorgeben.
 
@@ -114,6 +114,44 @@ export const UI = {
     } satisfies Record<WorldId, string>,
     myTreasures: 'Meine Schätze ansehen',
     finaleMap: 'Zur Karte',
+  },
+  /** Üben (docs/01 5.7, docs/09 6) */
+  practice: {
+    title: 'Üben',
+    what: 'Was möchtest du üben?',
+    how: 'Wie schwer?',
+    easier: 'Etwas leichter',
+    right: 'Genau richtig',
+    harder: 'Etwas kniffliger',
+    notHere: 'Gibt es hier nicht',
+    count: 'Wie viele Aufgaben?',
+    start: "Los geht's!",
+    done: 'Runde geschafft! Eine neue Perle für deine Kette.',
+    again: 'Noch eine Runde',
+    finish: 'Fertig',
+    topics: {
+      'mengen-zahlen': 'Mengen und Zahlen',
+      'muenzen-zaehlen': 'Münzen zählen',
+      'preise-addieren': 'Preise addieren',
+      rueckgeld: 'Rückgeld',
+      'muenzen-legen': 'Münzen legen',
+      'reicht-das-geld': 'Reicht das Geld?',
+      sachaufgaben: 'Sachaufgaben',
+      knobeln: 'Knobeln',
+      raetsel: 'Rätsel',
+    } satisfies Record<PracticeTopicId, string>,
+    /** ein Wort für Stufe 1 und 2 (docs/09 6) */
+    shortTopics: {
+      'mengen-zahlen': 'Zählen',
+      'muenzen-zaehlen': 'Münzen',
+      'preise-addieren': 'Preise',
+      rueckgeld: 'Rückgeld',
+      'muenzen-legen': 'Legen',
+      'reicht-das-geld': 'Reicht es?',
+      sachaufgaben: 'Geschichten',
+      knobeln: 'Knobeln',
+      raetsel: 'Rätsel',
+    } satisfies Record<PracticeTopicId, string>,
   },
   /** Schätze (docs/01 5.8) */
   treasures: {

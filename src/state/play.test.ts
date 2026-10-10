@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { WORLDS } from '@/content/worlds';
-import { currentHintLevel, playableTasks, playReducer, startPlay } from './play';
+import { currentHintLevel, playReducer, startPlay } from './play';
 
 const station = WORLDS.schatzinsel.stations[0];
 if (!station) throw new Error('Station fehlt');
-const tasks = playableTasks(station);
+const tasks = station.tasks;
 const twoParts = WORLDS.schatzinsel.stations[1]?.tasks ?? [];
 
 describe('playReducer', () => {

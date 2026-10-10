@@ -22,6 +22,8 @@ export type AppAction =
   | { type: 'save-resume'; id: string; resume: NonNullable<Profile['resume']> }
   | { type: 'record-part'; id: string; partId: string; wrong: number; hints: number }
   | { type: 'complete-station'; id: string; world: WorldId; stationId: string; at: string }
+  | { type: 'set-practice-last'; id: string; last: NonNullable<Profile['practice']['last']> }
+  | { type: 'add-pearl'; id: string }
   | { type: 'replace'; state: AppStateV2 };
 
 function cleanName(name: string | undefined): string | undefined {
@@ -139,6 +141,16 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
           },
         };
       });
+    case 'set-practice-last':
+      return updateProfile(state, action.id, (profile) => ({
+        ...profile,
+        practice: { ...profile.practice, last: action.last },
+      }));
+    case 'add-pearl':
+      return updateProfile(state, action.id, (profile) => ({
+        ...profile,
+        practice: { ...profile.practice, pearls: profile.practice.pearls + 1 },
+      }));
     case 'replace':
       return action.state;
   }

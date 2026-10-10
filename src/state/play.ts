@@ -1,7 +1,7 @@
 import { FEEDBACK_POOLS } from '@/content/feedback';
 import type { CheckResult } from '@/domain/check';
 import { type FeedbackPlan, hintLevel, pickFeedback, planFeedback } from '@/domain/hints';
-import type { Answer, MoneyPiece, Station, Task } from '@/domain/types';
+import type { Answer, MoneyPiece, Task } from '@/domain/types';
 
 // Ablauf einer Station (docs/01 5.4, 5.5, 6.1). Rein, damit er ohne Oberfläche testbar ist.
 
@@ -40,14 +40,6 @@ export type PlayAction =
   | { type: 'open-hint' }
   | { type: 'show-solution' }
   | { type: 'close' };
-
-/**
- * Welche Aufgaben gespielt werden. Bis zu den Generatoren (Phase 6) immer die Originale,
- * auch auf anderen Stufen (siehe docs/ENTSCHEIDUNGEN.md).
- */
-export function playableTasks(station: Station): Task[] {
-  return station.tasks;
-}
 
 export function startPlay(tasks: readonly Task[], taskIndex = 0, partIndex = 0): PlayState {
   const partCounts = tasks.map((task) => task.parts.length);
