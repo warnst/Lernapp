@@ -103,6 +103,8 @@ export const UI = {
     cancel: 'Abbrechen',
     toList: 'Zur Übersicht',
     unknownChild: 'Dieses Kind gibt es nicht mehr.',
+    /** docs/11, Finale der Bucht (wörtlich) */
+    bayDone: 'Die kleine Bucht ist geschafft. Vielleicht passt jetzt die Stufe Seestern?',
   },
   placeholder: { text: 'Hier wird noch gebaut.', back: 'Zur Karte' },
   /** Stationsabschluss und Finale (docs/01 5.6, docs/11) */

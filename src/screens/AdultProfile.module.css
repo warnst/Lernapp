@@ -36,3 +36,9 @@
   color: var(--ink-600);
   font-size: 16px;
 }
+
+.hint {
+  padding: var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--lagoon-100);
+}

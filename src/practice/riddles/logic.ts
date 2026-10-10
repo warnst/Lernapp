@@ -1,3 +1,4 @@
+import { AVATARS } from '@/content/avatars';
 import { NAMES } from '@/content/names';
 import { pick, randomInt, type Rng } from '@/domain/random';
 import type { StufeConfig, Task } from '@/domain/types';
@@ -6,6 +7,11 @@ import { STILL_THINGS, thingById } from '../generators/mengen-zahlen-parts';
 import { validMistakes } from '../generators/muenzen-zaehlen-parts';
 import type { Generator } from '../types';
 import { type LogicFrage, paramsFor, riddleStufen } from './params';
+
+/** Kinder der Szene als Avatar mit Namen (docs/10 3); jedes Kind bekommt ein anderes Tier. */
+function withAvatars(names: readonly string[]): { name: string; avatar: string }[] {
+  return names.map((name, i) => ({ name, avatar: AVATARS[i % AVATARS.length]?.id ?? 'delfin' }));
+}
 
 // Wer hat am meisten? (docs/10): aus Sätzen eine Reihenfolge erschließen; Stufe 4 mit Beträgen.
 
@@ -118,7 +124,7 @@ function orderTask(
     : frage === 'meisten'
       ? `${top} hat mehr als ${mid} und mehr als ${low}. Also hat ${top} am meisten.`
       : `${top} und ${mid} haben mehr als ${low}. Also hat ${low} am wenigsten.`;
-  const scene = mix(rng, order).map((name) => ({ name }));
+  const scene = withAvatars(mix(rng, order));
   return makeTask(
     cfg,
     frage === 'mitte' ? 'Wer ist in der Mitte?' : `Wer hat ${QUESTION_WORD[frage]}?`,
@@ -201,7 +207,7 @@ function amountTask(cfg: StufeConfig, rng: Rng, kids: number): Task | 'unsupport
   return makeTask(
     cfg,
     `Wie viel hat ${name(lastIndex)}?`,
-    { kind: 'people', people: mix(rng, names).map((n) => ({ name: n })) },
+    { kind: 'people', people: withAvatars(mix(rng, names)) },
     sentences.join(' '),
     [
       {

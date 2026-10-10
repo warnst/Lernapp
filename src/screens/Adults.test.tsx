@@ -139,6 +139,37 @@ describe('Kind bearbeiten', () => {
     expect(screen.getByRole('button', { name: /Oktopus/ })).toHaveAttribute('aria-pressed', 'true');
   });
 
+  it('nach der ganzen Bucht schlägt der Bereich Stufe Seestern vor (docs/11)', async () => {
+    const bay = ['muschelufer', 'muenzquelle', 'kikos-laden', 'kruemels-wippe', 'muscheltruhe'];
+    const done = { completed: true, plays: 1, stufe: 1 as const };
+    const hint = 'Die kleine Bucht ist geschafft. Vielleicht passt jetzt die Stufe Seestern?';
+    const partly = makeState({
+      profiles: [
+        makeProfile({
+          stufe: 1,
+          worlds: {
+            'kleine-bucht': {
+              stations: Object.fromEntries(bay.slice(0, 4).map((id) => [id, done])),
+              unlockAll: false,
+              bonusSolved: [],
+            },
+          },
+        }),
+      ],
+    });
+    const first = renderApp('/erwachsene/kind/p1', partly);
+    await openGate(first.user);
+    expect(screen.queryByText(hint)).not.toBeInTheDocument();
+    first.unmount();
+
+    const all = structuredClone(partly);
+    const world = all.profiles[0]?.worlds['kleine-bucht'];
+    if (world) world.stations.muscheltruhe = done;
+    const second = renderApp('/erwachsene/kind/p1', all);
+    await openGate(second.user);
+    expect(screen.getByText(hint)).toBeInTheDocument();
+  });
+
   it('schaltet alle Stationen frei und wieder zurück', async () => {
     const { user, storage } = renderApp('/erwachsene/kind/p1', state);
     await openGate(user);

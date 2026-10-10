@@ -1,13 +1,19 @@
+import { AVATARS } from '@/content/avatars';
 import { UI } from '@/content/ui';
 import { formatMoney } from '@/domain/money';
 import { renderText } from '@/domain/text';
-import type { MoneyPiece, Scene } from '@/domain/types';
+import type { AvatarId, MoneyPiece, Scene } from '@/domain/types';
+import { AvatarIllustration } from '@/illustrations/AvatarIllustration';
 import { ItemIcon } from '@/illustrations/ItemIcon';
 import styles from './Game.module.css';
 import { ItemCard } from './ItemCard';
 import { MoneyPieceView } from './MoneyPieceView';
 import { ObjectScene } from './ObjectScene';
 import { BalanceScene, CluesScene, SequenceScene } from './RiddleScenes';
+
+function isAvatar(id: string): id is AvatarId {
+  return AVATARS.some((info) => info.id === id);
+}
 
 function Pieces({ pieces }: { pieces: readonly MoneyPiece[] }) {
   return (
@@ -84,6 +90,9 @@ export function SceneView({ scene }: { scene: Scene }) {
         <div className={styles.scene}>
           {scene.people.map((person) => (
             <div key={person.name} className={styles.person}>
+              {person.avatar && isAvatar(person.avatar) && (
+                <AvatarIllustration avatar={person.avatar} size={56} />
+              )}
               <span>{person.name}</span>
               {person.amount !== undefined && (
                 <span className={styles.tag}>{formatMoney(person.amount)}</span>

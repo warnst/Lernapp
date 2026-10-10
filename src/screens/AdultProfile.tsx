@@ -6,10 +6,11 @@ import { Screen } from '@/components/Screen';
 import { STUFEN } from '@/config/levels';
 import { AVATARS, avatarInfo } from '@/content/avatars';
 import { UI } from '@/content/ui';
+import { WORLDS } from '@/content/worlds';
 import { AvatarIllustration } from '@/illustrations/AvatarIllustration';
 import { StufeIcon } from '@/illustrations/StufeIcon';
 import { useAppState } from '@/state/context';
-import { worldOf } from '@/state/progress';
+import { isCompleted, worldOf } from '@/state/progress';
 import styles from './AdultProfile.module.css';
 
 type Confirm = 'reset' | 'delete' | undefined;
@@ -34,6 +35,9 @@ export function AdultProfile({ profileId }: { profileId: string }) {
   const name = profile.name ?? avatarInfo(profile.avatar).name;
   const world = worldOf(profile);
   const unlocked = profile.worlds[world]?.unlockAll === true;
+  const bayDone =
+    world === 'kleine-bucht' &&
+    WORLDS['kleine-bucht'].stations.every((s) => isCompleted(profile, world, s.id));
 
   return (
     <Screen title={name}>
@@ -75,6 +79,7 @@ export function AdultProfile({ profileId }: { profileId: string }) {
 
       <section className={styles.section}>
         <h2 className={styles.heading}>{UI.adults.stufe}</h2>
+        {bayDone && <p className={styles.hint}>{UI.adults.bayDone}</p>}
         <div className={styles.stufen}>
           {Object.values(STUFEN).map((config) => (
             <button
