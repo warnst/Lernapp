@@ -7,7 +7,8 @@
 .two,
 .four,
 .pieces {
-  grid-template-columns: repeat(2, 1fr);
+  /* minmax(0, …): lange Wörter dürfen die Spalten nicht über den Rand drücken */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .card {
@@ -28,6 +29,8 @@
   font-weight: 700;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
+  overflow-wrap: break-word;
+  hyphens: auto;
   cursor: pointer;
 }
 

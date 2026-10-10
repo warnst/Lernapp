@@ -50,6 +50,8 @@ function OptionBody({ option, layout }: { option: ChoiceOption; layout: ChoiceAn
   return <span>{renderText(option.label)}</span>;
 }
 
+const LONG_LABEL = 16;
+
 /**
  * Antwortkarten: 2 nebeneinander, 3 untereinander, 4 im 2 × 2-Raster; Münz- und Beutelkarten
  * immer im Raster (docs/02 5). Geprüft wird sofort beim Antippen.
@@ -71,6 +73,8 @@ export function ChoiceView({
 }) {
   const options = useMemo(() => choiceOrder(answer, seedId), [answer, seedId]);
   const pictorial = answer.layout === 'coins' || answer.layout === 'bags';
+  // ganze Sätze als Antwort (z. B. „Wie viel Geld hat Mara noch?“) in kleinerer Schrift
+  const sentences = options.some((option) => renderText(option.label).length > LONG_LABEL);
   const gridClass =
     options.length === 2 ? styles.two : options.length === 4 || pictorial ? styles.four : undefined;
 
@@ -88,7 +92,7 @@ export function ChoiceView({
               styles.card,
               isTried && styles.tried,
               isCorrect && styles.correct,
-              (textOnly || answer.layout === 'yesno' || answer.layout === 'bags') &&
+              (textOnly || sentences || answer.layout === 'yesno' || answer.layout === 'bags') &&
                 styles.textCard,
               textOnly && styles.wide,
             )}

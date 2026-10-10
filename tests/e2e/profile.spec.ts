@@ -1,4 +1,5 @@
 import { expect, type Page, test } from '@playwright/test';
+import { playMuschelstrand } from './helpers.ts';
 
 async function addChild(page: Page, animal: string, age: string, name?: string) {
   if (name) await page.getByLabel('Name (optional)').fill(name);
@@ -60,4 +61,32 @@ test('Stationskarte öffnet sich über den Weiter-Knopf', async ({ page }) => {
   );
   await sheet.getByRole('button', { name: 'Schließen' }).click();
   await expect(sheet).toHaveCount(0);
+});
+
+test('Fortschritte zweier Kinder bleiben getrennt', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Kind anlegen' }).click();
+  await addChild(page, 'Pinguin', '7', 'Ben');
+  await page.getByRole('button', { name: 'Noch ein Kind hinzufügen' }).click();
+  await addChild(page, 'Robbe', '8', 'Lea');
+  await page.getByRole('button', { name: 'Fertig' }).click();
+
+  await page.getByRole('button', { name: 'Ben' }).click();
+  await page.getByRole('button', { name: /Weiter: Muschelstrand/ }).click();
+  await page.getByRole('link', { name: "Los geht's!" }).click();
+  await playMuschelstrand(page);
+  await page.goto('/');
+  await expect(page.getByRole('img', { name: '1 von 9 Sternen' })).toBeVisible();
+
+  await page.getByRole('link', { name: /Wer spielt\? \(Ben\)/ }).click();
+  await page.getByRole('button', { name: 'Lea' }).click();
+  await expect(page.getByRole('img', { name: '0 von 9 Sternen' })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /Station 1: Muschelstrand, als Nächstes/ }),
+  ).toBeVisible();
+
+  await page.reload();
+  await page.getByRole('link', { name: /Wer spielt\? \(Lea\)/ }).click();
+  await page.getByRole('button', { name: 'Ben' }).click();
+  await expect(page.getByRole('img', { name: '1 von 9 Sternen' })).toBeVisible();
 });
