@@ -74,3 +74,63 @@
     animation: none;
   }
 }
+
+.chestCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 88px;
+  padding: var(--space-3) var(--space-4);
+  border: 3px solid var(--sun-400);
+  border-bottom-width: 6px;
+  border-radius: var(--radius-m);
+  background: var(--sand-50);
+  color: var(--ink-900);
+  font-size: calc(20px * var(--text-scale));
+  font-weight: 700;
+  text-align: start;
+  cursor: pointer;
+}
+
+.wiggle {
+  flex: none;
+  animation: wiggle 1.6s ease-in-out infinite;
+  transform-origin: 50% 90%;
+}
+
+@keyframes wiggle {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0);
+  }
+
+  70% {
+    transform: rotate(-8deg);
+  }
+
+  80% {
+    transform: rotate(8deg);
+  }
+
+  90% {
+    transform: rotate(-4deg);
+  }
+}
+
+.nest {
+  display: block;
+  border-radius: var(--radius-l);
+}
+
+.nestRoom {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wiggle {
+    animation: none;
+  }
+}

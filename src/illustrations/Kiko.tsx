@@ -1,4 +1,7 @@
+import { useContext } from 'react';
 import type { KikoPose } from '@/domain/hints';
+import { type KikoOutfit, KikoOutfitContext } from './kiko-outfit';
+import { HAND_ANCHOR, type ItemArt, type ItemLayer, KIKO_ITEM_ART } from './KikoItems';
 
 // Kiko, der Papagei (docs/02, 6.1). Ein Körper, die Posen ändern nur Flügel, Augen und Extras.
 
@@ -130,15 +133,38 @@ function Wings({ pose }: { pose: KikoPose }) {
   }
 }
 
+/**
+ * Kiko, wahlweise verkleidet (docs/12 4.1). Ohne `outfit` gilt das Outfit des aktiven Kindes aus dem
+ * Kontext. Hüte und Umhänge dürfen über den Rand des Bildes hinausragen (overflow sichtbar).
+ */
 export function Kiko({
   pose,
   size = 96,
   className,
+  outfit,
 }: {
   pose: KikoPose;
   size?: number;
   className?: string;
+  outfit?: KikoOutfit;
 }) {
+  const fromContext = useContext(KikoOutfitContext);
+  const worn: { id: string; art: ItemArt }[] = Object.values(outfit ?? fromContext).flatMap(
+    (id: string) => {
+      const art = KIKO_ITEM_ART[id];
+      return art ? [{ id, art }] : [];
+    },
+  );
+  const layer = (name: ItemLayer) =>
+    worn
+      .filter((item) => item.art.layer === name)
+      .map((item) => (
+        <g key={item.id} data-worn={item.id}>
+          {item.art.art}
+        </g>
+      ));
+  const crest = !worn.some((item) => item.art.hidesCrest);
+  const [hx, hy] = HAND_ANCHOR[pose];
   return (
     <svg
       aria-hidden="true"
@@ -148,12 +174,19 @@ export function Kiko({
       viewBox="0 0 96 96"
       className={className}
       data-pose={pose}
+      overflow="visible"
     >
       <g stroke="var(--stroke)" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+        {layer('back')}
+        {worn.map((item) => item.art.under && <g key={`u-${item.id}`}>{item.art.under}</g>)}
         {/* Schopffedern: gelb, koralle, gelb */}
-        <path d={FEATHER} fill="var(--fill-accent)" transform="translate(45 21) rotate(-30)" />
-        <path d={FEATHER} fill="var(--fill-accent)" transform="translate(51 21) rotate(30)" />
-        <path d={FEATHER} fill="var(--ill-coral)" transform="translate(48 21)" />
+        {crest && (
+          <>
+            <path d={FEATHER} fill="var(--fill-accent)" transform="translate(45 21) rotate(-30)" />
+            <path d={FEATHER} fill="var(--fill-accent)" transform="translate(51 21) rotate(30)" />
+            <path d={FEATHER} fill="var(--ill-coral)" transform="translate(48 21)" />
+          </>
+        )}
         {/* Füße */}
         <ellipse cx={40} cy={90} rx={5} ry={3} fill="var(--kiko-beak)" />
         <ellipse cx={56} cy={90} rx={5} ry={3} fill="var(--kiko-beak)" />
@@ -166,6 +199,7 @@ export function Kiko({
           d="M48 54 C58 54 64 62 63 72 C62 82 56 87 48 87 C40 87 34 82 33 72 C32 62 38 54 48 54 Z"
           fill="var(--kiko-belly)"
         />
+        {layer('feet')}
         <Eyes pose={pose} />
         {/* Wangen */}
         <circle cx={32} cy={47} r={2.6} fill="var(--ill-coral)" stroke="none" />
@@ -175,7 +209,12 @@ export function Kiko({
           d="M42 45 C42 40 54 40 54 45 C54 50 51 54 47 57 C47 53 45 49 42 45 Z"
           fill="var(--kiko-beak)"
         />
+        {layer('neck')}
+        {layer('face')}
+        {layer('eyes')}
         <Wings pose={pose} />
+        {layer('head')}
+        <g transform={`translate(${String(hx)} ${String(hy)})`}>{layer('hand')}</g>
       </g>
     </svg>
   );

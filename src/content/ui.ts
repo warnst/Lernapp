@@ -170,6 +170,25 @@ export const UI = {
     again: 'Noch eins',
     toTower: 'Zum Turm',
   },
+  /** Kikos Kleiderschrank und Nest (docs/12 4.1) */
+  wardrobe: {
+    title: 'Kikos Kleiderschrank',
+    open: 'Kleiderschrank',
+    chestWaiting: 'Eine Truhe wartet auf dich!',
+    chestTitle: 'Eine Schatztruhe! Was möchtest du?',
+    chestPick: (name: string) => `${name} nehmen`,
+    later: 'Das andere Teil kommt später wieder.',
+    tabKiko: 'Kiko',
+    tabNest: 'Nest',
+    surprise: 'Überrasch mich!',
+    locked: 'Noch nicht gefunden',
+    nextChest: (n: number) =>
+      n === 1 ? 'Nächste Truhe nach 1 Lampe' : `Nächste Truhe nach ${String(n)} Lampen`,
+    empty: 'Löse Rätsel im Turm. Dann findest du Truhen mit Sachen für Kiko und sein Nest!',
+    nest: 'Kikos Nest',
+    nestLabel: 'Kikos Nest im Turm',
+    special: 'Ein besonderes Teil!',
+  },
   /** Kikos Witzekiste (docs/12 4.2) */
   jokes: {
     box: 'Kikos Witzekiste',

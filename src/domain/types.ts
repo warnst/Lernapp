@@ -122,6 +122,24 @@ export interface TowerProgress {
   jokes: string[];
   /** Lieblingswitze (Herz) */
   favorites: string[];
+  /** Kikos Kleiderschrank und Nest (docs/12 4.1); fehlt, bis die erste Truhe geöffnet wurde */
+  wardrobe?: Wardrobe;
+}
+
+/** Plätze an Kiko (docs/12 4.1) */
+export type KikoSlot = 'kopf' | 'augen' | 'gesicht' | 'hals' | 'ruecken' | 'hand' | 'fuesse';
+/** Plätze im Nest */
+export type NestSlot = 'boden' | 'wand' | 'decke' | 'fenster' | 'haustier';
+
+export interface Wardrobe {
+  /** freigeschaltete Teile (Kiko und Nest) */
+  owned: string[];
+  /** geöffnete Truhen */
+  chests: number;
+  /** was Kiko gerade trägt */
+  kiko: Partial<Record<KikoSlot, string>>;
+  /** was im Nest steht */
+  nest: Partial<Record<NestSlot, string>>;
 }
 
 export interface AppStateV2 {

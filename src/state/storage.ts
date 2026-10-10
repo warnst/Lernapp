@@ -107,6 +107,21 @@ const TOWER_TYPES: readonly string[] = [
   'riddles',
 ];
 
+function isStringRecord(value: unknown): boolean {
+  return isObject(value) && Object.values(value).every((v) => typeof v === 'string');
+}
+
+function isWardrobe(value: unknown): boolean {
+  if (value === undefined) return true;
+  return (
+    isObject(value) &&
+    isStringArray(value.owned) &&
+    isCount(value.chests) &&
+    isStringRecord(value.kiko) &&
+    isStringRecord(value.nest)
+  );
+}
+
 function isTower(value: unknown): boolean {
   if (value === undefined) return true;
   return (
@@ -115,7 +130,8 @@ function isTower(value: unknown): boolean {
     isObject(value.solved) &&
     Object.entries(value.solved).every(([type, n]) => TOWER_TYPES.includes(type) && isCount(n)) &&
     isStringArray(value.jokes) &&
-    isStringArray(value.favorites)
+    isStringArray(value.favorites) &&
+    isWardrobe(value.wardrobe)
   );
 }
 

@@ -3,10 +3,14 @@ import type {
   AvatarId,
   Profile,
   Stufe,
+  KikoSlot,
+  NestSlot,
   TowerProgress,
   TowerType,
+  Wardrobe,
   WorldId,
 } from '@/domain/types';
+import { KIKO_ITEMS, NEST_ITEMS } from '@/content/outfits';
 import { MAX_PROFILES } from './storage';
 
 // Reiner Reducer für den App-Zustand. IDs und Zeiten kommen von außen, damit alles testbar bleibt.
@@ -36,7 +40,50 @@ export type AppAction =
   | { type: 'tower-solved'; id: string; kind: TowerType }
   | { type: 'joke-heard'; id: string; jokeId: string }
   | { type: 'joke-favorite'; id: string; jokeId: string }
+  /** Teil aus einer Truhe wählen (zählt die Truhe als geöffnet) und gleich anziehen */
+  | { type: 'wardrobe-pick'; id: string; itemId: string }
+  /** besonderes Teil ohne Truhe (Detektivhut, Krone …) */
+  | { type: 'wardrobe-grant'; id: string; itemId: string }
+  /** Teil an- oder ausziehen bzw. ins Nest stellen oder wegnehmen */
+  | { type: 'wardrobe-toggle'; id: string; itemId: string }
+  /** ganzes Outfit auf einmal (Überrasch mich!) */
+  | { type: 'wardrobe-outfit'; id: string; kiko: Partial<Record<KikoSlot, string>> }
   | { type: 'replace'; state: AppStateV2 };
+
+export function wardrobeOf(tower: TowerProgress): Wardrobe {
+  return tower.wardrobe ?? { owned: [], chests: 0, kiko: {}, nest: {} };
+}
+
+/** Platz eines Teils: an Kiko oder im Nest. */
+function slotOf(
+  itemId: string,
+): { kind: 'kiko'; slot: KikoSlot } | { kind: 'nest'; slot: NestSlot } | null {
+  const kiko = KIKO_ITEMS.find((item) => item.id === itemId);
+  if (kiko) return { kind: 'kiko', slot: kiko.slot };
+  const nest = NEST_ITEMS.find((item) => item.id === itemId);
+  return nest ? { kind: 'nest', slot: nest.slot } : null;
+}
+
+function wear(wardrobe: Wardrobe, itemId: string): Wardrobe {
+  const place = slotOf(itemId);
+  if (!place) return wardrobe;
+  return place.kind === 'kiko'
+    ? { ...wardrobe, kiko: { ...wardrobe.kiko, [place.slot]: itemId } }
+    : { ...wardrobe, nest: { ...wardrobe.nest, [place.slot]: itemId } };
+}
+
+function toggle(wardrobe: Wardrobe, itemId: string): Wardrobe {
+  const place = slotOf(itemId);
+  if (!place) return wardrobe;
+  if (place.kind === 'kiko') {
+    if (wardrobe.kiko[place.slot] !== itemId) return wear(wardrobe, itemId);
+    const { [place.slot]: _removed, ...kiko } = wardrobe.kiko;
+    return { ...wardrobe, kiko };
+  }
+  if (wardrobe.nest[place.slot] !== itemId) return wear(wardrobe, itemId);
+  const { [place.slot]: _removed, ...nest } = wardrobe.nest;
+  return { ...wardrobe, nest };
+}
 
 /** Turm-Fortschritt eines Profils, leer, solange das Kind noch nicht im Turm war. */
 export function towerOf(profile: Profile): TowerProgress {
@@ -134,6 +181,37 @@ export function appReducer(state: AppStateV2, action: AppAction): AppStateV2 {
           ? tower.favorites.filter((id) => id !== action.jokeId)
           : [...tower.favorites, action.jokeId];
         return { ...profile, tower: { ...tower, favorites } };
+      });
+    case 'wardrobe-pick':
+    case 'wardrobe-grant':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        const wardrobe = wardrobeOf(tower);
+        if (wardrobe.owned.includes(action.itemId) || !slotOf(action.itemId)) return profile;
+        const chests = action.type === 'wardrobe-pick' ? wardrobe.chests + 1 : wardrobe.chests;
+        const owned = [...wardrobe.owned, action.itemId];
+        return {
+          ...profile,
+          tower: { ...tower, wardrobe: wear({ ...wardrobe, owned, chests }, action.itemId) },
+        };
+      });
+    case 'wardrobe-toggle':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        const wardrobe = wardrobeOf(tower);
+        if (!wardrobe.owned.includes(action.itemId)) return profile;
+        return { ...profile, tower: { ...tower, wardrobe: toggle(wardrobe, action.itemId) } };
+      });
+    case 'wardrobe-outfit':
+      return updateProfile(state, action.id, (profile) => {
+        const tower = towerOf(profile);
+        const wardrobe = wardrobeOf(tower);
+        const kiko = Object.fromEntries(
+          Object.entries(action.kiko).filter(([, id]: [string, string]) =>
+            wardrobe.owned.includes(id),
+          ),
+        );
+        return { ...profile, tower: { ...tower, wardrobe: { ...wardrobe, kiko } } };
       });
     case 'reset-progress':
       return updateProfile(state, action.id, (profile) => {

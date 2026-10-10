@@ -54,6 +54,11 @@ describe('Rätselturm', () => {
       solved: { riddles: 1 },
     });
 
+    // zuerst die Truhe: ein Teil wählen, dann kommt die Witzekiste
+    const chest = screen.getByRole('region', { name: 'Eine Schatztruhe! Was möchtest du?' });
+    await user.click(within(chest).getAllByRole('button')[0] as HTMLElement);
+    await user.click(screen.getByRole('button', { name: 'Weiter' }));
+
     const box = screen.getByRole('region', { name: 'Kikos Witzekiste' });
     expect(within(box).getByText('Was meinst du? Rate laut!')).toBeInTheDocument();
     await user.click(within(box).getByRole('button', { name: 'Auflösen!' }));

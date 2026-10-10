@@ -1,0 +1,127 @@
+.stage {
+  display: flex;
+  justify-content: center;
+  min-height: 200px;
+  padding: var(--space-5) var(--space-3) var(--space-3);
+  border-radius: var(--radius-l);
+  background: radial-gradient(circle at 50% 60%, var(--lagoon-100), var(--sand-100) 70%);
+}
+
+.kiko {
+  animation: hop 500ms ease-out;
+}
+
+.nest {
+  width: 100%;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.tab {
+  min-height: var(--tap-min);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tab[aria-selected='true'] {
+  border-color: var(--sea-700);
+  background: var(--lagoon-100);
+}
+
+.slots {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+}
+
+.slot {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-full);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.slotActive {
+  border-color: var(--sea-700);
+  background: var(--lagoon-100);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: 108px;
+  padding: var(--space-2);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  color: var(--ink-900);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+.item[aria-pressed='true'] {
+  border-color: var(--palm-600);
+  background: var(--lagoon-100);
+}
+
+.locked {
+  border-style: dashed;
+  background: var(--sand-100);
+  color: var(--ink-600);
+  cursor: default;
+}
+
+.question {
+  font-family: var(--font-heading);
+  font-size: 32px;
+}
+
+.hint {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+@keyframes hop {
+  40% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kiko {
+    animation: none;
+  }
+}
+
+.nestRoom {
+  display: block;
+  width: 100%;
+  height: auto;
+}

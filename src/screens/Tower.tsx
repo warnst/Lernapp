@@ -1,4 +1,7 @@
-import { useLocation } from 'wouter';
+import { useState } from 'react';
+import { Link, useLocation } from 'wouter';
+import { Button } from '@/components/Button';
+import { ChestPick } from '@/components/ChestPick';
 import { Screen } from '@/components/Screen';
 import { SpeechBubble } from '@/components/SpeechBubble';
 import { STUFEN } from '@/config/levels';
@@ -6,10 +9,14 @@ import { TOWER_ICON, TOWER_ORDER, TOWER_SLUG } from '@/content/tower';
 import { UI } from '@/content/ui';
 import type { Profile } from '@/domain/types';
 import { BEACON_FLOOR, floorInfo } from '@/domain/tower';
+import { Chest } from '@/illustrations/Chest';
 import { ItemIcon } from '@/illustrations/ItemIcon';
+import { Kiko } from '@/illustrations/Kiko';
+import { NestRoom } from '@/illustrations/NestRoom';
 import { Tower as TowerArt } from '@/illustrations/Tower';
 import { toggleSpeak } from '@/speech/speak';
-import { towerOf } from '@/state/reducer';
+import { towerOf, wardrobeOf } from '@/state/reducer';
+import { pendingChests } from '@/state/wardrobe';
 import styles from './Tower.module.css';
 
 /** Kikos Rätselturm: Turm mit Lampen und die Rätselarten der Stufe (docs/12 2). */
@@ -20,6 +27,8 @@ export function Tower({ profile }: { profile: Profile }) {
   const { floors, lit, size } = floorInfo(tower.lamps);
   const types = TOWER_ORDER.filter((type) => cfg.tower.types.includes(type));
   const short = profile.stufe <= 2;
+  const [opening, setOpening] = useState(false);
+  const chestWaiting = pendingChests(profile) > 0;
   const message = floors >= BEACON_FLOOR ? UI.tower.beacon : UI.tower.toNext(size - lit);
 
   return (
@@ -32,6 +41,30 @@ export function Tower({ profile }: { profile: Profile }) {
           {message}
         </SpeechBubble>
       </div>
+
+      {opening ? (
+        <ChestPick
+          profile={profile}
+          readAloud={cfg.autoRead}
+          onDone={() => {
+            setOpening(false);
+          }}
+        />
+      ) : (
+        chestWaiting && (
+          <button
+            type="button"
+            className={styles.chestCard}
+            onClick={() => {
+              if (cfg.autoRead) toggleSpeak(UI.wardrobe.chestWaiting);
+              setOpening(true);
+            }}
+          >
+            <Chest size={64} className={styles.wiggle} />
+            {UI.wardrobe.chestWaiting}
+          </button>
+        )
+      )}
 
       <section className={styles.section}>
         <h2 className={styles.heading}>{UI.tower.what}</h2>
@@ -54,6 +87,27 @@ export function Tower({ profile }: { profile: Profile }) {
             );
           })}
         </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.heading}>{UI.wardrobe.nest}</h2>
+        <Link href="/raetsel/kiko" className={styles.nest} aria-label={UI.wardrobe.nestLabel}>
+          <NestRoom
+            items={wardrobeOf(tower).nest}
+            kiko={<Kiko pose="hallo" />}
+            width={320}
+            className={styles.nestRoom}
+          />
+        </Link>
+        <Button
+          variant="secondary"
+          block
+          onClick={() => {
+            navigate('/raetsel/kiko');
+          }}
+        >
+          {UI.wardrobe.open}
+        </Button>
       </section>
     </Screen>
   );

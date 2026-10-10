@@ -238,4 +238,44 @@ describe('Rätselturm (docs/12)', () => {
     state = appReducer(state, { type: 'reset-progress', id: 'p1' });
     expect(state.profiles[0]?.tower).toBeUndefined();
   });
+
+  it('Kleiderschrank: wählen, anziehen, ausziehen, ins Nest stellen', () => {
+    let state = makeState({ profiles: [makeProfile()] });
+    const wardrobe = () => state.profiles[0]?.tower?.wardrobe;
+    state = appReducer(state, { type: 'wardrobe-pick', id: 'p1', itemId: 'piratenhut' });
+    expect(wardrobe()).toEqual({
+      owned: ['piratenhut'],
+      chests: 1,
+      kiko: { kopf: 'piratenhut' },
+      nest: {},
+    });
+    // doppelt wählen zählt nicht
+    state = appReducer(state, { type: 'wardrobe-pick', id: 'p1', itemId: 'piratenhut' });
+    expect(wardrobe()?.chests).toBe(1);
+    // besondere Teile ohne Truhe
+    state = appReducer(state, { type: 'wardrobe-grant', id: 'p1', itemId: 'krone' });
+    expect(wardrobe()).toMatchObject({ chests: 1, kiko: { kopf: 'krone' } });
+    state = appReducer(state, { type: 'wardrobe-toggle', id: 'p1', itemId: 'piratenhut' });
+    expect(wardrobe()?.kiko).toEqual({ kopf: 'piratenhut' });
+    state = appReducer(state, { type: 'wardrobe-toggle', id: 'p1', itemId: 'piratenhut' });
+    expect(wardrobe()?.kiko).toEqual({});
+    // nicht gefundene oder unbekannte Teile ändern nichts
+    const before = state;
+    state = appReducer(state, { type: 'wardrobe-toggle', id: 'p1', itemId: 'zauberstab' });
+    state = appReducer(state, { type: 'wardrobe-grant', id: 'p1', itemId: 'gibt-es-nicht' });
+    expect(wardrobe()?.kiko).toEqual({});
+    expect(wardrobe()?.owned).toEqual(['piratenhut', 'krone']);
+    state = appReducer(before, { type: 'wardrobe-pick', id: 'p1', itemId: 'goldfisch' });
+    expect(wardrobe()?.nest).toEqual({ haustier: 'goldfisch' });
+    state = appReducer(state, { type: 'wardrobe-toggle', id: 'p1', itemId: 'goldfisch' });
+    expect(wardrobe()?.nest).toEqual({});
+    state = appReducer(state, { type: 'wardrobe-toggle', id: 'p1', itemId: 'goldfisch' });
+    expect(wardrobe()?.nest).toEqual({ haustier: 'goldfisch' });
+    state = appReducer(state, {
+      type: 'wardrobe-outfit',
+      id: 'p1',
+      kiko: { kopf: 'krone', hand: 'zauberstab' },
+    });
+    expect(wardrobe()?.kiko).toEqual({ kopf: 'krone' });
+  });
 });

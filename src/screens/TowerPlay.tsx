@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Redirect } from 'wouter';
 import { Button, LinkButton } from '@/components/Button';
+import { ChestPick } from '@/components/ChestPick';
 import { JokeBox } from '@/components/JokeBox';
 import { Screen } from '@/components/Screen';
 import { SpeechBubble } from '@/components/SpeechBubble';
@@ -14,6 +15,7 @@ import { buildRound } from '@/practice/round';
 import { useAppState } from '@/state/context';
 import { activeProfile } from '@/state/progress';
 import { towerOf } from '@/state/reducer';
+import { pendingChests } from '@/state/wardrobe';
 import { Game } from './Game';
 import styles from './Tower.module.css';
 
@@ -37,6 +39,9 @@ function Done({
   const lamps = towerOf(profile).lamps;
   const { floors, lit, size } = floorInfo(lamps);
   const newFloor = floorCompleted(before, lamps);
+  const readAloud = STUFEN[profile.stufe].autoRead;
+  // beim Öffnen gemerkt, damit die Truhe nach der Wahl nicht sofort verschwindet
+  const [chest, setChest] = useState(() => pendingChests(profile) > 0);
   return (
     <Screen title={UI.tower.title}>
       <div className={styles.done}>
@@ -46,7 +51,17 @@ function Done({
         <SpeechBubble pose="freut-sich" kikoSize={72}>
           {newFloor ? UI.tower.newFloor(floors) : UI.tower.done}
         </SpeechBubble>
-        <JokeBox profile={profile} readAloud={STUFEN[profile.stufe].autoRead} />
+        {chest ? (
+          <ChestPick
+            profile={profile}
+            readAloud={readAloud}
+            onDone={() => {
+              setChest(false);
+            }}
+          />
+        ) : (
+          <JokeBox profile={profile} readAloud={readAloud} />
+        )}
         <div className={styles.actions}>
           <Button block onClick={onAgain}>
             {UI.tower.again}

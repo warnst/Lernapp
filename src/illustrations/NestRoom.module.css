@@ -1,0 +1,207 @@
+/* Sanfte Bewegungen in Kikos Nest (docs/12 4.1). Nur im Zimmer, nicht in den Vorschau-Kacheln. */
+
+.scene .blink {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: blink 4.5s ease-in-out infinite;
+}
+
+.scene .glow {
+  animation: glow 2.4s ease-in-out infinite alternate;
+}
+
+.scene .twinkle {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: twinkle 1.8s ease-in-out infinite;
+}
+
+.scene .swing {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: swing 5s ease-in-out infinite alternate;
+}
+
+.scene .sway {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: swing 3.6s ease-in-out infinite alternate;
+}
+
+.scene .pendulum {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: pendulum 2s ease-in-out infinite alternate;
+}
+
+.scene .wave {
+  transform-box: fill-box;
+  transform-origin: 100% 100%;
+  animation: wave 5s ease-in-out infinite;
+}
+
+.scene .bob {
+  animation: bob 2.6s ease-in-out infinite alternate;
+}
+
+.scene .hover {
+  animation: hover 3s ease-in-out infinite alternate;
+}
+
+.scene .swim {
+  animation: swim 4s ease-in-out infinite alternate;
+}
+
+.scene .peek {
+  transform-box: fill-box;
+  transform-origin: 0 100%;
+  animation: peek 6s ease-in-out infinite;
+}
+
+.scene .bubble {
+  animation: bubble 2.4s ease-in infinite;
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes glow {
+  from {
+    opacity: 0.25;
+  }
+
+  to {
+    opacity: 0.85;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.3;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes swing {
+  from {
+    transform: rotate(-3deg);
+  }
+
+  to {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes pendulum {
+  from {
+    transform: rotate(-12deg);
+  }
+
+  to {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes wave {
+  0%,
+  70%,
+  100% {
+    transform: rotate(0);
+  }
+
+  78%,
+  92% {
+    transform: rotate(-14deg);
+  }
+
+  85% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes bob {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes hover {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(2px, -4px);
+  }
+}
+
+@keyframes swim {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-4px);
+  }
+}
+
+@keyframes peek {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0);
+  }
+
+  70%,
+  85% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes bubble {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene .blink,
+  .scene .glow,
+  .scene .twinkle,
+  .scene .swing,
+  .scene .sway,
+  .scene .pendulum,
+  .scene .wave,
+  .scene .bob,
+  .scene .hover,
+  .scene .swim,
+  .scene .peek,
+  .scene .bubble {
+    animation: none;
+  }
+}

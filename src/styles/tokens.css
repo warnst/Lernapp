@@ -75,6 +75,13 @@
   --kiko-wing: #1f9483;
   --kiko-belly: #ffe9a8;
   --kiko-beak: #ff9e3d;
+
+  /* Kikos Kleiderschrank (docs/12 4.1) */
+  --kiko-red: #e8505b;
+  --kiko-pink: #ff6fa5;
+  --kiko-blue: #3e4fb0;
+  --kiko-sky: #cbefff;
+  --kiko-banana: #ffe066;
   --ill-sea: #9fd9d6; /* Meer auf der Karte */
   --ill-wave: #7cc4c2; /* Wellenlinien im Meer */
   --ill-surf: #e9f7f5; /* heller Brandungssaum */
@@ -125,6 +132,9 @@
   --ill-gold-dark: #c99a22; /* Schattenfläche goldener Dinge (Krone, Schlösser) */
   --ill-straw: #f2d27a; /* Strohhut */
   --ill-bamboo: #b8d27a; /* Bambusflöte */
+  --ill-nest-wall: #fff4e0; /* Wand in Kikos Nest (docs/12 4.1) */
+  --ill-nest-band: #ffd9c9; /* Leuchtturm-Streifen an der Nestwand */
+  --ill-sky: #d4f0f7; /* Himmel im Nestfenster */
 }
 
 /* Arbeitsblätter (Druck und Vorschau) nur mit Konturen: alle Illustrationsflächen werden weiß (docs/06) */
@@ -137,6 +147,11 @@
   --kiko-wing: var(--fill-main);
   --kiko-belly: var(--fill-main);
   --kiko-beak: var(--fill-main);
+  --kiko-red: var(--fill-main);
+  --kiko-pink: var(--fill-main);
+  --kiko-blue: var(--fill-main);
+  --kiko-sky: var(--fill-main);
+  --kiko-banana: var(--fill-main);
   --ill-sea: var(--fill-main);
   --ill-wave: var(--fill-main);
   --ill-surf: var(--fill-main);
@@ -185,6 +200,9 @@
   --ill-gold-dark: var(--fill-main);
   --ill-straw: var(--fill-main);
   --ill-bamboo: var(--fill-main);
+  --ill-nest-wall: var(--fill-main);
+  --ill-nest-band: var(--fill-main);
+  --ill-sky: var(--fill-main);
 
   /* Münzen auf Arbeitsblättern nur als Kontur (docs/06) */
   --coin-copper: var(--fill-main);
