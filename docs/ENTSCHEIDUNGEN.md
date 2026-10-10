@@ -169,3 +169,4 @@ Kurze Notizen zu Abweichungen und offenen Punkten der Spezifikation. Format: Dat
   - **Inhalt:** Sudoku (leichteste Stufe der gewählten Art), Labyrinth oder Münzpfad, Punkte verbinden, ab Stufe 3 Bilderrätsel und Geheimschrift, dazu „Was passt nicht?“.
   - **Lösungen:** gelöstes Sudoku, eingezeichneter Weg, Bildname, ausgemaltes Bilderrätsel, Klartext und Erklärung.
   - **Seed:** eigener Seed `tseed`.
+- 2026-10-10 – App-Updates: Eine neue Version wird sofort aktiviert, sobald sie geladen ist (Skip Waiting ohne Neuladen). Sie läuft dann beim nächsten Öffnen bzw. Neuladen. Vorher wartete sie, bis alle Tabs bzw. die Home-Bildschirm-App ganz geschlossen waren; Neuladen half nicht. Kommt die App aus dem Hintergrund zurück, sucht sie außerdem nach einer neuen Version.

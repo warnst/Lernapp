@@ -1,8 +1,11 @@
 import { useSyncExternalStore } from 'react';
 import { registerSW } from 'virtual:pwa-register';
 
-// Service Worker (docs/03 11): Eine neue Version lädt im Hintergrund und wird beim nächsten
-// App-Start aktiv. Nur die Druckseite bietet dezent „neu laden“ an, der Kindermodus nie.
+// Service Worker (docs/03 11): Eine neue Version lädt im Hintergrund und wird sofort aktiviert,
+// ohne die Seite neu zu laden. Beim nächsten Öffnen läuft dann die neue Version. Nur die
+// Druckseite bietet dezent „neu laden“ an, der Kindermodus nie.
+// Auf iPhone und iPad startet eine App vom Home-Bildschirm oft gar nicht neu, sondern kommt nur
+// aus dem Hintergrund zurück. Deshalb wird dann ebenfalls nach einer neuen Version gesucht.
 
 let waiting = false;
 let update: ((reload?: boolean) => Promise<void>) | undefined;
@@ -12,8 +15,17 @@ export function startServiceWorker(): void {
   update = registerSW({
     onNeedRefresh() {
       waiting = true;
+      // ohne Neuladen aktivieren: das laufende Spiel bleibt, der nächste Start ist aktuell
+      void update?.(false);
       listeners.forEach((listener) => {
         listener();
+      });
+    },
+    onRegisteredSW(_url, registration) {
+      if (!registration) return;
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible')
+          void registration.update().catch(() => undefined);
       });
     },
   });
@@ -29,7 +41,7 @@ export function useUpdateWaiting(): boolean {
   return useSyncExternalStore(subscribe, () => waiting);
 }
 
-/** Neue Version sofort aktivieren und die Seite neu laden. */
+/** Die neue (schon aktive) Version sofort laden. */
 export function applyUpdate(): void {
-  void update?.(true);
+  window.location.reload();
 }
