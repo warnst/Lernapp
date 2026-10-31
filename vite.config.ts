@@ -5,19 +5,26 @@ import type { Plugin } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 import speakHandler from './api/speak.ts';
+import stateHandler from './api/state.ts';
 
-/** Bindet die Vercel-Route /api/speak auch lokal in `npm run dev` und `npm run preview` ein. */
+/** Bindet die Vercel-Routen /api/speak und /api/state auch lokal in `npm run dev` und `npm run preview` ein. */
 function speakApiPlugin(): Plugin {
   return {
-    name: 'schatzinsel-speak-api',
+    name: 'schatzinsel-local-api',
     configureServer(server) {
       server.middlewares.use('/api/speak', (req, res) => {
         void speakHandler(req, res);
+      });
+      server.middlewares.use('/api/state', (req, res) => {
+        void stateHandler(req, res);
       });
     },
     configurePreviewServer(server) {
       server.middlewares.use('/api/speak', (req, res) => {
         void speakHandler(req, res);
+      });
+      server.middlewares.use('/api/state', (req, res) => {
+        void stateHandler(req, res);
       });
     },
   };
