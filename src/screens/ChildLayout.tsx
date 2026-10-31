@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Redirect } from 'wouter';
+import { Redirect, useLocation } from 'wouter';
 import { AppHeader } from '@/components/AppHeader';
 import { BottomNav } from '@/components/BottomNav';
 import { WORLDS } from '@/content/worlds';
@@ -13,19 +13,21 @@ import { activeProfile, starCount, worldOf } from '@/state/progress';
  */
 export function ChildLayout({ children }: { children: (profile: Profile) => ReactNode }) {
   const { state } = useAppState();
+  const [path] = useLocation();
   if (!state.setupDone || state.profiles.length === 0) return <Redirect to="/" />;
   const profile = activeProfile(state);
   if (!profile) return <Redirect to="/wer-spielt" />;
-  const world = WORLDS[worldOf(profile)];
+  const baseWorld = WORLDS[worldOf(profile)];
+  const activeWorld = path.startsWith('/kosmos') ? WORLDS.kosmos : baseWorld;
   return (
     <>
       <AppHeader
         profile={profile}
-        stars={starCount(profile, world.stations)}
-        totalStars={world.stations.length}
+        stars={starCount(profile, activeWorld.stations)}
+        totalStars={activeWorld.stations.length}
       />
       {children(profile)}
-      <BottomNav world={world.id} />
+      <BottomNav world={baseWorld.id} />
     </>
   );
 }

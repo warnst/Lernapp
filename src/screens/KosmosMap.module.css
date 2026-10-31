@@ -1,0 +1,262 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4) calc(84px + env(safe-area-inset-bottom));
+}
+
+.greeting {
+  width: min(100%, 520px);
+}
+
+.map {
+  position: relative;
+  width: min(100%, 520px);
+  height: 1120px;
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+}
+
+.path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--sun-400);
+  stroke-width: 4;
+  stroke-dasharray: 8 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+.spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.kiko {
+  position: absolute;
+  top: -12px;
+  right: -44px;
+  pointer-events: none;
+}
+
+.notice {
+  width: min(100%, 520px);
+  min-height: 8px;
+}
+
+.next {
+  position: sticky;
+  bottom: calc(72px + env(safe-area-inset-bottom));
+  z-index: 5;
+  width: min(100%, 420px);
+}
+
+/* ---------- Planeten-Detailansicht ---------- */
+
+.planetPage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(100%, 640px);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-4) calc(96px + env(safe-area-inset-bottom));
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.planetStars {
+  display: inline-flex;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--sand-100);
+}
+
+.planetHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: linear-gradient(135deg, var(--ink-900) 0%, var(--kiko-blue) 100%);
+  color: var(--white);
+}
+
+.planetBadge {
+  flex-shrink: 0;
+}
+
+.planetNumber {
+  margin: 0;
+  color: var(--sun-400);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.planetTitle {
+  margin: 2px 0;
+  font-family: var(--font-heading);
+  font-size: calc(28px * var(--text-scale));
+}
+
+.planetSubtitle {
+  margin: 0;
+  opacity: 0.92;
+  font-size: calc(16px * var(--text-scale));
+}
+
+.storyCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--sand-100);
+}
+
+.stationList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: calc(22px * var(--text-scale));
+}
+
+.stationCards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stationCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  color: var(--ink-900);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+}
+
+.stationCurrent {
+  border-color: var(--sea-700);
+  background: var(--lagoon-100);
+}
+
+.stationDone {
+  border-color: var(--palm-600);
+}
+
+.stationLocked {
+  opacity: 0.65;
+}
+
+.stationInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stationStep {
+  color: var(--ink-600);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.stationName {
+  font-family: var(--font-heading);
+  font-size: calc(20px * var(--text-scale));
+}
+
+.stationSkill {
+  color: var(--ink-600);
+  font-size: calc(15px * var(--text-scale));
+}
+
+.stationStatus {
+  flex-shrink: 0;
+}
+
+.factBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 3px solid var(--sun-400);
+  border-radius: var(--radius-l);
+  background: var(--ill-bg-sun);
+}
+
+.factHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.factBadge {
+  display: inline-block;
+  color: var(--wood-900);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.factTitle {
+  margin: 2px 0 0;
+  font-family: var(--font-heading);
+  font-size: calc(20px * var(--text-scale));
+}
+
+.factText {
+  margin: 0;
+  font-size: calc(17px * var(--text-scale));
+  line-height: 1.45;
+}
+
+.factActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (width >= 900px) {
+  .page,
+  .planetPage {
+    padding-bottom: var(--space-5);
+  }
+
+  .next {
+    bottom: var(--space-4);
+  }
+}

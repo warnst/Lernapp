@@ -7,6 +7,7 @@ import { generateValid, withId } from './round';
 // Original oder Variante für Stationsaufgaben (docs/09 Abschnitt 5.1).
 
 function worldStufen(station: Station): Stufe[] {
+  if (station.world === 'kosmos') return [1, 2, 3, 4];
   return Object.values(STUFEN)
     .filter((cfg) => cfg.world === station.world)
     .map((cfg) => cfg.id);

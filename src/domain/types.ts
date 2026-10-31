@@ -37,7 +37,7 @@ export interface ClockTime {
 // ---------- Stufen (docs/09, Abschnitt 2) ----------
 
 export type Stufe = 1 | 2 | 3 | 4;
-export type WorldId = 'kleine-bucht' | 'schatzinsel';
+export type WorldId = 'kleine-bucht' | 'schatzinsel' | 'kosmos';
 
 export interface StufeConfig {
   id: Stufe;
@@ -463,10 +463,11 @@ export interface GridCell {
 
 export interface GridAnswer {
   type: 'grid';
-  shape: 'wall' | 'triangle';
+  shape: 'wall' | 'triangle' | 'house';
   unit: 'number' | 'cents';
   // wall: id = 'r{reihe}c{spalte}', Reihe 0 = unten
   // triangle: 'a','b','c' (Punktefelder innen) und 'ab','bc','ca' (außen)
+  // house: 'dach' (Dachzahl) und je Etage 'r{etage}l', 'r{etage}r' (links + rechts = dach)
   cells: GridCell[];
 }
 

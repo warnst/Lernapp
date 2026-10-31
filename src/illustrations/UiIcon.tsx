@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 // Kleine Strich-Icons (docs/02, Abschnitt 8): 24 px, 2,5 px Kontur, erben die Textfarbe.
 
 export type UiIconName =
+  | 'planet'
   | 'zahnrad'
   | 'schliessen'
   | 'lautsprecher'
@@ -54,6 +55,12 @@ function starPath(): string {
 }
 
 const ICONS: Record<UiIconName, ReactNode> = {
+  planet: (
+    <>
+      <circle cx={12} cy={12} r={6} />
+      <ellipse cx={12} cy={12} rx={10.5} ry={3.8} transform="rotate(-24 12 12)" />
+    </>
+  ),
   zahnrad: (
     <>
       <path d={gearPath()} />

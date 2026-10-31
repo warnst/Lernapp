@@ -311,4 +311,58 @@ export const FINDLING_DRAWINGS: ReadonlyMap<string, FindlingDrawing> = new Map([
       ),
     },
   ],
+  // Kosmos-Fundstücke
+  ...[
+    'mondstein',
+    'mondflagge',
+    'mondkompass',
+    'sonnenkristall',
+    'merkurfeder',
+    'merkurtaler',
+    'wolkenspiegel',
+    'venusperle',
+    'abendstern',
+    'marskristall',
+    'marsrover',
+    'roter-stein',
+    'sturmauge',
+    'jupitermond',
+    'riesenkugel',
+    'ringstein',
+    'eiskristall',
+    'saturnring',
+    'eisstern',
+    'uranusring',
+    'blauer-stein',
+    'windmuschel',
+    'neptunstein',
+    'kosmoskrone',
+  ].map((id, index): [string, FindlingDrawing] => [
+    id,
+    index % 3 === 0
+      ? {
+          body: [{ d: circle(48, 48, 28), fill: 'var(--ill-sun)' }],
+          details: (
+            <>
+              <circle cx={38} cy={38} r={6} fill="var(--ill-white)" />
+              <path d={starPath(60, 56, 10, 4, 5)} fill="var(--ill-coral)" strokeWidth={2} />
+            </>
+          ),
+        }
+      : index % 3 === 1
+        ? {
+            body: [{ d: starPath(48, 48, 34, 15, 5), fill: 'var(--ill-gem)' }],
+            details: <circle cx={48} cy={48} r={9} fill="var(--ill-sun)" />,
+          }
+        : {
+            body: [
+              { d: circle(48, 48, 22), fill: 'var(--ill-water)' },
+              {
+                d: 'M12 48 C12 38 84 38 84 48 C84 58 12 58 12 48 Z',
+                fill: 'var(--ill-gold)',
+              },
+            ],
+            details: <circle cx={42} cy={40} r={4} fill="var(--ill-white)" />,
+          },
+  ]),
 ]);

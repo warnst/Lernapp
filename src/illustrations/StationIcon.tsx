@@ -198,6 +198,125 @@ const ICONS = new Map<string, ReactNode>([
       />
     </g>,
   ],
+  [
+    'planet-mond',
+    <g key="planet-mond">
+      <circle cx={32} cy={32} r={20} fill="var(--ill-pearl)" />
+      <circle cx={24} cy={25} r={4} fill="var(--ill-rock)" />
+      <circle cx={39} cy={28} r={3} fill="var(--ill-rock)" />
+      <circle cx={30} cy={40} r={5} fill="var(--ill-rock)" />
+    </g>,
+  ],
+  [
+    'planet-merkur',
+    <g key="planet-merkur">
+      <circle cx={32} cy={32} r={18} fill="var(--ill-rock)" />
+      <circle cx={26} cy={26} r={3.5} fill="var(--ill-cave)" />
+      <circle cx={38} cy={36} r={4} fill="var(--ill-cave)" />
+      <circle cx={25} cy={39} r={2.5} fill="var(--ill-cave)" />
+    </g>,
+  ],
+  [
+    'planet-venus',
+    <g key="planet-venus">
+      <circle cx={32} cy={32} r={20} fill="var(--ill-sun)" />
+      <path d="M15 26 Q32 22 49 26" fill="none" stroke="var(--ill-straw)" strokeWidth={3} />
+      <path d="M14 36 Q32 40 50 36" fill="none" stroke="var(--ill-coral)" strokeWidth={3} />
+    </g>,
+  ],
+  [
+    'planet-mars',
+    <g key="planet-mars">
+      <circle cx={32} cy={32} r={20} fill="var(--ill-coral)" />
+      <ellipse cx={32} cy={15} rx={8} ry={3} fill="var(--ill-white)" />
+      <circle cx={25} cy={34} r={4} fill="var(--ill-tomato)" />
+      <circle cx={40} cy={38} r={3} fill="var(--ill-tomato)" />
+    </g>,
+  ],
+  [
+    'planet-jupiter',
+    <g key="planet-jupiter">
+      <circle cx={32} cy={32} r={22} fill="var(--ill-sand)" />
+      <path
+        d="M11 24 H53 M10 32 H54 M12 40 H52"
+        fill="none"
+        stroke="var(--ill-carrot)"
+        strokeWidth={4}
+      />
+      <ellipse cx={38} cy={36} rx={5} ry={3.5} fill="var(--ill-tomato)" />
+    </g>,
+  ],
+  [
+    'planet-saturn',
+    <g key="planet-saturn">
+      <circle cx={32} cy={32} r={16} fill="var(--ill-straw)" />
+      <ellipse
+        cx={32}
+        cy={32}
+        rx={27}
+        ry={8}
+        fill="none"
+        stroke="var(--ill-gold)"
+        strokeWidth={4}
+        transform="rotate(-18 32 32)"
+      />
+    </g>,
+  ],
+  [
+    'planet-uranus',
+    <g key="planet-uranus">
+      <circle cx={32} cy={32} r={18} fill="var(--ill-water)" />
+      <ellipse
+        cx={32}
+        cy={32}
+        rx={7}
+        ry={25}
+        fill="none"
+        stroke="var(--ill-sky)"
+        strokeWidth={3}
+        transform="rotate(15 32 32)"
+      />
+    </g>,
+  ],
+  [
+    'planet-neptun',
+    <g key="planet-neptun">
+      <circle cx={32} cy={32} r={20} fill="var(--kiko-blue)" />
+      <path d="M15 28 Q32 24 49 28" fill="none" stroke="var(--ill-water)" strokeWidth={3} />
+      <path d="M16 38 Q32 42 48 38" fill="none" stroke="var(--ill-sky)" strokeWidth={3} />
+    </g>,
+  ],
+  [
+    'station-rakete',
+    <g key="station-rakete">
+      <path d="M32 8 C42 18 44 32 42 46 H22 C20 32 22 18 32 8 Z" fill="var(--ill-white)" />
+      <path d="M32 8 C37 13 39 19 40 24 H24 C25 19 27 13 32 8 Z" fill="var(--ill-coral)" />
+      <path d="M22 36 L12 48 H22 Z M42 36 L52 48 H42 Z" fill="var(--ill-coral)" />
+      <circle cx={32} cy={32} r={5} fill="var(--ill-water)" />
+      <path d="M26 46 L32 58 L38 46 Z" fill="var(--ill-sun)" />
+    </g>,
+  ],
+  [
+    'station-zahlenhaus',
+    <g key="station-zahlenhaus">
+      <path d="M10 28 L32 10 L54 28 Z" fill="var(--ill-coral)" />
+      <rect x={14} y={28} width={36} height={26} rx={2} fill="var(--ill-sand)" />
+      <line x1={32} y1={28} x2={32} y2={54} />
+      <line x1={14} y1={41} x2={50} y2={41} />
+      <circle cx={32} cy={21} r={3.5} fill="var(--ill-sun)" />
+    </g>,
+  ],
+  [
+    'station-pyramide',
+    <g key="station-pyramide">
+      <rect x={8} y={40} width={16} height={12} rx={2} fill="var(--ill-sand)" />
+      <rect x={24} y={40} width={16} height={12} rx={2} fill="var(--ill-sand)" />
+      <rect x={40} y={40} width={16} height={12} rx={2} fill="var(--ill-sand)" />
+      <rect x={16} y={28} width={16} height={12} rx={2} fill="var(--ill-straw)" />
+      <rect x={32} y={28} width={16} height={12} rx={2} fill="var(--ill-straw)" />
+      <rect x={24} y={16} width={16} height={12} rx={2} fill="var(--ill-sun)" />
+    </g>,
+  ],
 ]);
 
 export function StationIcon({

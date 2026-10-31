@@ -102,12 +102,15 @@ export const PRINT = {
   certExplored: {
     schatzinsel: 'hat die geheime Schatzinsel erkundet!',
     'kleine-bucht': 'hat die kleine Bucht erkundet!',
+    kosmos: 'hat den ganzen Kosmos von Mond bis Neptun erkundet!',
   } satisfies Record<WorldId, string>,
   certSkills: {
     schatzinsel:
       'Du kannst jetzt: Münzen zählen · Preise addieren · Rückgeld berechnen · Beträge legen · prüfen, ob das Geld reicht · Sachaufgaben lösen · knobeln',
     'kleine-bucht':
       'Du kannst jetzt: Zählen · Münzen kennen · mit Cent bezahlen · vergleichen · Rätsel lösen',
+    kosmos:
+      'Du kannst jetzt: Plus und Minus rechnen · Zahlenhäuser bauen · Zahlenmauern und Rechendreiecke lösen · Weltraum-Rätsel knacken',
   } satisfies Record<WorldId, string>,
   certSignature: 'Kiko',
 } as const;

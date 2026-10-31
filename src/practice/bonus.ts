@@ -16,9 +16,15 @@ export function bonusType(station: Station, profile: Profile): RiddleType {
   return types[(station.number - 1) % types.length] ?? 'code';
 }
 
+const KOSMOS_BONUS_TEMPLATES = ['PM4', 'PM5', 'PM6', 'PM7'] as const;
+
 /** Das Bonus-Rätsel einer Station; der Seed kommt aus Profil und Station. */
 export function bonusTask(station: Station, profile: Profile): Task | null {
-  const generator = generatorById(bonusType(station, profile));
+  const templateId =
+    station.world === 'kosmos'
+      ? (KOSMOS_BONUS_TEMPLATES[(station.number - 1) % KOSMOS_BONUS_TEMPLATES.length] ?? 'PM4')
+      : bonusType(station, profile);
+  const generator = generatorById(templateId);
   if (!generator) return null;
   const task = generateValid(generator, profile.stufe, hashSeed(profile.id, station.id, 'bonus'));
   return task && withId(task, `bonus-${station.id}`);

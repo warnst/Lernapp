@@ -167,7 +167,7 @@ const PM2: Generator = {
 const PM3: Generator = {
   id: 'PM3',
   topic: 'plus-minus',
-  stufen: [2, 3, 4],
+  stufen: [1, 2, 3, 4],
   generate(cfg, rng, opts) {
     readForce(opts, []);
     readBind(opts, []);
@@ -207,4 +207,270 @@ const PM3: Generator = {
   },
 };
 
-export const PLUS_MINUS_GENERATORS: readonly Generator[] = [PM1, PM2, PM3];
+// ---------- PM4: Zahlenhaus ----------
+
+const PM4: Generator = {
+  id: 'PM4',
+  topic: 'plus-minus',
+  stufen: [1, 2, 3, 4],
+  generate(cfg, rng, opts) {
+    const force = readForce(opts, ['etagen', 'dachFehlt']);
+    readBind(opts, []);
+    if (force.etagen !== undefined && force.etagen !== 2 && force.etagen !== 3) {
+      throw new Error('PM4: etagen');
+    }
+    if (force.dachFehlt !== undefined && typeof force.dachFehlt !== 'boolean') {
+      throw new Error('PM4: dachFehlt');
+    }
+    const u = unit(cfg);
+    const max = cfg.numbers.max;
+    const floors = force.etagen ?? (cfg.id === 1 ? 2 : 3);
+    const dach = rand(rng, cfg, (floors + 2) * u, max);
+    const usedLeft = new Set<number>();
+    const pairs: [number, number][] = [];
+    for (let tries = 0; tries < 60 && pairs.length < floors; tries++) {
+      const left = rand(rng, cfg, u, dach - u);
+      if (usedLeft.has(left)) continue;
+      usedLeft.add(left);
+      pairs.push([left, dach - left]);
+    }
+    if (pairs.length < floors) return 'unsupported';
+
+    const roofOpen = force.dachFehlt === true;
+    const cells = [
+      { id: 'dach', value: dach, given: !roofOpen },
+      ...pairs.flatMap(([l, r], row) => {
+        if (roofOpen && row === 0) {
+          return [
+            { id: `r${String(row)}l`, value: l, given: true },
+            { id: `r${String(row)}r`, value: r, given: true },
+          ];
+        }
+        const hideLeft = row % 2 === 1;
+        return [
+          { id: `r${String(row)}l`, value: l, given: !hideLeft },
+          { id: `r${String(row)}r`, value: r, given: hideLeft },
+        ];
+      }),
+    ];
+    const firstPair = pairs[roofOpen ? 0 : 0] ?? [u, dach - u];
+    const knownRoom = roofOpen ? firstPair[0] : firstPair[0];
+    return makeTask(
+      cfg,
+      `Zahlenhaus ${String(dach)}`,
+      { kind: 'none' },
+      'Zwei Zimmer nebeneinander ergeben zusammen die Zahl im Dach.',
+      [
+        {
+          question: 'Fülle die leeren Felder im Zahlenhaus aus.',
+          answer: { type: 'grid', shape: 'house', unit: 'number', cells },
+          hints: [
+            'Beide Zimmer einer Etage ergeben zusammen die Dachzahl.',
+            roofOpen
+              ? `Rechne zuerst oben das Dach aus: ${String(firstPair[0])} + ${String(firstPair[1])}.`
+              : `Im ersten Zimmer steht ${String(knownRoom)}. Wie viel fehlt bis ${String(dach)}?`,
+          ],
+          explanation: pairs
+            .map(([l, r]) => `${String(l)} + ${String(r)} = ${String(dach)}.`)
+            .join(' '),
+        },
+      ],
+      3,
+    );
+  },
+};
+
+// ---------- PM5: Zahlenmauer ohne Geld ----------
+
+const PM5: Generator = {
+  id: 'PM5',
+  topic: 'plus-minus',
+  stufen: [1, 2, 3, 4],
+  generate(cfg, rng, opts) {
+    const force = readForce(opts, ['unten']);
+    readBind(opts, []);
+    if (force.unten !== undefined && typeof force.unten !== 'boolean') {
+      throw new Error('PM5: unten');
+    }
+    const u = unit(cfg);
+    const max = cfg.numbers.max;
+    const bottomGap = force.unten === true;
+    if (cfg.id === 1) {
+      const a = rand(rng, cfg, u, Math.floor(max / 2));
+      const b = rand(rng, cfg, u, max - a);
+      const top = a + b;
+      const cells = [
+        { id: 'r1c0', value: top, given: bottomGap },
+        { id: 'r0c0', value: a, given: true },
+        { id: 'r0c1', value: b, given: !bottomGap },
+      ];
+      return makeTask(
+        cfg,
+        'Die Zahlenmauer',
+        { kind: 'none' },
+        'Auf dem Planeten steht eine Zahlenmauer.',
+        [
+          {
+            question: 'Welche Zahl gehört auf den leeren Stein?',
+            answer: { type: 'grid', shape: 'wall', unit: 'number', cells },
+            hints: [
+              'Zwei Steine nebeneinander ergeben zusammen den Stein darüber.',
+              bottomGap
+                ? `Rechne ${String(top)} − ${String(a)}.`
+                : `Rechne ${String(a)} + ${String(b)}.`,
+            ],
+            explanation: `${String(a)} + ${String(b)} = ${String(top)}.`,
+          },
+        ],
+        3,
+      );
+    }
+    const third = Math.floor(max / 4 / u) * u;
+    if (third < u) return 'unsupported';
+    const b0 = rand(rng, cfg, u, third);
+    const b1 = rand(rng, cfg, u, third);
+    const b2 = rand(rng, cfg, u, third);
+    const m0 = b0 + b1;
+    const m1 = b1 + b2;
+    const top = m0 + m1;
+    if (top > max) return 'unsupported';
+    // DOM-Reihenfolge von oben (Reihe 2) nach unten (Reihe 0)
+    const cells = [
+      { id: 'r2c0', value: top, given: false },
+      { id: 'r1c0', value: m0, given: true },
+      { id: 'r1c1', value: m1, given: bottomGap },
+      { id: 'r0c0', value: b0, given: true },
+      { id: 'r0c1', value: b1, given: !bottomGap },
+      { id: 'r0c2', value: b2, given: true },
+    ];
+    return makeTask(
+      cfg,
+      'Die Zahlenmauer',
+      { kind: 'none' },
+      'Zwei Steine nebeneinander ergeben zusammen den Stein darüber.',
+      [
+        {
+          question: 'Fülle die leeren Steine der Zahlenmauer aus.',
+          answer: { type: 'grid', shape: 'wall', unit: 'number', cells },
+          hints: [
+            'Zwei Steine nebeneinander ergeben zusammen den Stein darüber.',
+            bottomGap
+              ? `Unten fehlt ein Stein: Rechne ${String(m0)} − ${String(b0)}.`
+              : `Rechne zuerst ${String(b1)} + ${String(b2)}.`,
+          ],
+          explanation: `${String(b0)} + ${String(b1)} = ${String(m0)}. ${String(b1)} + ${String(b2)} = ${String(m1)}. ${String(m0)} + ${String(m1)} = ${String(top)}.`,
+        },
+      ],
+      3,
+    );
+  },
+};
+
+// ---------- PM6: Rechendreieck ohne Geld ----------
+
+const PM6: Generator = {
+  id: 'PM6',
+  topic: 'plus-minus',
+  stufen: [1, 2, 3, 4],
+  generate(cfg, rng, opts) {
+    readForce(opts, []);
+    readBind(opts, []);
+    const u = unit(cfg);
+    const max = cfg.numbers.max;
+    const half = Math.floor(max / 2 / u) * u;
+    if (half < 2 * u) return 'unsupported';
+    const a = rand(rng, cfg, u, half);
+    const b = rand(rng, cfg, u, half);
+    const c = rand(rng, cfg, u, half);
+    const ab = a + b;
+    const bc = b + c;
+    const ca = c + a;
+    if (ab > max || bc > max || ca > max) return 'unsupported';
+    const cells = [
+      { id: 'a', value: a, given: true },
+      { id: 'b', value: b, given: true },
+      { id: 'c', value: c, given: cfg.id <= 2 },
+      { id: 'ab', value: ab, given: false },
+      { id: 'bc', value: bc, given: false },
+      { id: 'ca', value: ca, given: cfg.id !== 2 },
+    ];
+    return makeTask(
+      cfg,
+      'Das Rechendreieck',
+      { kind: 'none' },
+      'Zwei Zahlen innen ergeben zusammen die Zahl außen.',
+      [
+        {
+          question: 'Fülle die leeren Felder im Rechendreieck aus.',
+          answer: { type: 'grid', shape: 'triangle', unit: 'number', cells },
+          hints: [
+            'Jede Zahl außen ist so groß wie die zwei Zahlen innen daneben zusammen.',
+            cfg.id >= 3
+              ? `Rechne zuerst ${String(ca)} − ${String(a)} für das leere Innenfeld.`
+              : `Rechne ${String(a)} + ${String(b)}.`,
+          ],
+          explanation: `${String(a)} + ${String(b)} = ${String(ab)}. ${String(b)} + ${String(c)} = ${String(bc)}. ${String(c)} + ${String(a)} = ${String(ca)}.`,
+        },
+      ],
+      4,
+    );
+  },
+};
+
+// ---------- PM7: Kettenaufgabe ----------
+
+const PM7: Generator = {
+  id: 'PM7',
+  topic: 'plus-minus',
+  stufen: [1, 2, 3, 4],
+  generate(cfg, rng, opts) {
+    readForce(opts, []);
+    readBind(opts, []);
+    const u = unit(cfg);
+    const max = cfg.numbers.max;
+    for (let tries = 0; tries < 50; tries++) {
+      const a = rand(rng, cfg, 2 * u, max - 2 * u);
+      const b = rand(rng, cfg, u, max - a);
+      const mid = a + b;
+      const c = rand(rng, cfg, u, mid - u);
+      const r = mid - c;
+      if (!cfg.carry && (!noCarry(a, b, true) || !noCarry(mid, c, false))) continue;
+      return makeTask(
+        cfg,
+        `${String(a)} + ${String(b)} − ${String(c)}`,
+        { kind: 'none' },
+        'Kikos Rakete fliegt in zwei Schritten.',
+        [
+          {
+            question: `Rechne Schritt für Schritt: ${String(a)} + ${String(b)} − ${String(c)} = ?`,
+            answer: { type: 'number', correct: r },
+            mistakes: numberMistakes(
+              r,
+              [
+                {
+                  value: mid,
+                  feedback: `${String(mid)} ist der erste Schritt. Ziehe jetzt noch ${String(c)} ab.`,
+                },
+                {
+                  value: mid + c,
+                  feedback: `Beim zweiten Schritt steht Minus: Ziehe ${String(c)} ab.`,
+                },
+                { value: r + u, feedback: 'Fast! Rechne noch einmal genau nach.' },
+              ],
+              max,
+            ),
+            hints: [
+              `Rechne zuerst ${String(a)} + ${String(b)}.`,
+              `${String(a)} + ${String(b)} = ${String(mid)}. Jetzt noch Minus ${String(c)}.`,
+            ],
+            explanation: `Erst ${String(a)} + ${String(b)} = ${String(mid)}, dann ${String(mid)} − ${String(c)} = ${String(r)}.`,
+          },
+        ],
+        4,
+      );
+    }
+    return 'unsupported';
+  },
+};
+
+export const PLUS_MINUS_GENERATORS: readonly Generator[] = [PM1, PM2, PM3, PM4, PM5, PM6, PM7];

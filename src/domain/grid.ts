@@ -50,6 +50,27 @@ function triangleRelations(ids: readonly string[]): Relation[] {
   ];
 }
 
+/** Zahlenhaus: Jede Etage ergibt zusammen die Dachzahl (r{row}l + r{row}r = dach). */
+function houseRelations(ids: readonly string[]): Relation[] {
+  const floors = (ids.length - 1) / 2;
+  const expected = new Set<string>(['dach']);
+  const relations: Relation[] = [];
+  for (let row = 0; row < floors; row++) {
+    const left = `r${String(row)}l`;
+    const right = `r${String(row)}r`;
+    expected.add(left);
+    expected.add(right);
+    relations.push({ sum: 'dach', left, right });
+  }
+  const complete =
+    floors >= 1 &&
+    Number.isInteger(floors) &&
+    ids.length === expected.size &&
+    ids.every((id) => expected.has(id));
+  if (!complete) throw new Error(`Kein vollständiges Zahlenhaus: ${ids.join(', ')}`);
+  return relations;
+}
+
 /** Rechendreieck: innen aus den drei Außenzahlen, z. B. a = (ab + ca − bc) / 2. */
 function solveTriangleInside(values: Map<string, number>): boolean | null {
   const ab = values.get('ab');
@@ -78,7 +99,12 @@ export function solveGrid(
   cells: readonly { id: string; value?: number }[],
 ): Record<string, number> | null {
   const ids = cells.map((cell) => cell.id);
-  const relations = shape === 'wall' ? wallRelations(ids) : triangleRelations(ids);
+  const relations =
+    shape === 'wall'
+      ? wallRelations(ids)
+      : shape === 'house'
+        ? houseRelations(ids)
+        : triangleRelations(ids);
   const values = new Map<string, number>();
   for (const cell of cells) {
     if (cell.value !== undefined) values.set(cell.id, cell.value);

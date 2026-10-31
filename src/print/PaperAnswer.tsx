@@ -82,6 +82,22 @@ function PaperGrid({ answer }: { answer: GridAnswer }) {
       </div>
     );
   }
+  if (answer.shape === 'house') {
+    const roof = answer.cells.find((cell) => cell.id === 'dach');
+    const floors = (answer.cells.length - 1) / 2;
+    return (
+      <div className={styles.wall}>
+        {roof && <div className={styles.wallRow}>{brick(roof)}</div>}
+        {Array.from({ length: floors }, (_, row) => (
+          <div key={row} className={styles.wallRow}>
+            {answer.cells
+              .filter((cell) => cell.id === `r${String(row)}l` || cell.id === `r${String(row)}r`)
+              .map(brick)}
+          </div>
+        ))}
+      </div>
+    );
+  }
   const width = answer.cells.filter((cell) => cell.id.startsWith('r0c')).length;
   return (
     <div className={styles.wall}>

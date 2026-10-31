@@ -10,7 +10,7 @@ const SYMBOL_DATIVE: Record<ClueSymbol, string> = {
   krebs: 'dem Krebs',
 };
 
-// Zahlenmauer: Steine; Rechendreieck: Felder.
+// Zahlenmauer: Steine; Rechendreieck: Felder; Zahlenhaus: Zimmer.
 const GRID_WORDS: Record<
   GridAnswer['shape'],
   { one: string; many: string; last: string; all: string }
@@ -21,6 +21,12 @@ const GRID_WORDS: Record<
     many: 'Felder stimmen',
     last: 'das letzte',
     all: 'die Felder',
+  },
+  house: {
+    one: 'Ein Zimmer stimmt',
+    many: 'Zimmer stimmen',
+    last: 'das letzte',
+    all: 'die Zimmer',
   },
 };
 

@@ -54,6 +54,7 @@ export function Game({
   tasks,
   progressStyle,
   start,
+  mapHref = '/',
   onAdvance,
   onFinish,
 }: {
@@ -61,6 +62,7 @@ export function Game({
   tasks: Task[];
   progressStyle: 'shells' | 'locks';
   start?: { taskIndex: number; partIndex: number };
+  mapHref?: string;
   onAdvance?: (taskIndex: number, partIndex: number) => void;
   onFinish: () => void;
 }) {
@@ -264,7 +266,7 @@ export function Game({
               variant="secondary"
               block
               onClick={() => {
-                navigate('/');
+                navigate(mapHref);
               }}
             >
               {UI.play.toMap}

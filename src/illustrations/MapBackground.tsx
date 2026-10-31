@@ -110,8 +110,73 @@ function KleineBucht() {
   );
 }
 
+function Kosmos() {
+  return (
+    <>
+      <rect x={0} y={0} width={400} height={1400} fill="var(--ink-900)" stroke="none" />
+      <ellipse
+        cx={110}
+        cy={260}
+        rx={130}
+        ry={75}
+        fill="var(--kiko-blue)"
+        stroke="none"
+        opacity={0.35}
+      />
+      <ellipse
+        cx={300}
+        cy={660}
+        rx={120}
+        ry={85}
+        fill="var(--sea-700)"
+        stroke="none"
+        opacity={0.3}
+      />
+      <ellipse
+        cx={120}
+        cy={1040}
+        rx={140}
+        ry={80}
+        fill="var(--kiko-blue)"
+        stroke="none"
+        opacity={0.28}
+      />
+      {[
+        [52, 90, 4],
+        [330, 80, 5],
+        [190, 150, 3.5],
+        [70, 240, 5],
+        [290, 210, 4],
+        [350, 360, 4.5],
+        [45, 440, 4],
+        [220, 420, 3.5],
+        [135, 560, 5],
+        [345, 540, 4],
+        [65, 720, 4.5],
+        [260, 780, 5],
+        [350, 880, 3.5],
+        [85, 960, 4],
+        [210, 1080, 5],
+        [330, 1180, 4.5],
+        [60, 1240, 4],
+      ].map(([cx, cy, r], i) => (
+        <circle
+          key={i}
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill={i % 3 === 0 ? 'var(--ill-sun)' : 'var(--ill-white)'}
+          stroke="none"
+        />
+      ))}
+      <circle cx={200} cy={1440} r={90} fill="var(--ill-sun)" />
+    </>
+  );
+}
+
 export function MapBackground({ world, className }: { world: WorldId; className?: string }) {
-  const viewBox = world === 'schatzinsel' ? '0 0 400 1600' : '0 0 400 600';
+  const viewBox =
+    world === 'schatzinsel' ? '0 0 400 1600' : world === 'kosmos' ? '0 0 400 1400' : '0 0 400 600';
   return (
     <svg
       aria-hidden="true"
@@ -124,7 +189,13 @@ export function MapBackground({ world, className }: { world: WorldId; className?
       data-world={world}
     >
       <g stroke="var(--stroke)" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
-        {world === 'schatzinsel' ? <Schatzinsel /> : <KleineBucht />}
+        {world === 'schatzinsel' ? (
+          <Schatzinsel />
+        ) : world === 'kosmos' ? (
+          <Kosmos />
+        ) : (
+          <KleineBucht />
+        )}
       </g>
     </svg>
   );

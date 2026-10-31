@@ -22,6 +22,7 @@ import { Treasures } from '@/screens/Treasures';
 import { JokeBook } from '@/screens/JokeBook';
 import { KnowledgeBook } from '@/screens/ChoiceRiddles';
 import { CertificatePreview } from '@/screens/CertificatePreview';
+import { KosmosMap, KosmosPlanetView } from '@/screens/KosmosMap';
 import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
 import { AppStateProvider } from '@/state/app-state';
@@ -55,6 +56,18 @@ function JokeBookPage() {
 function TreasuresPage() {
   return <ChildLayout>{(profile) => <Treasures key={profile.id} profile={profile} />}</ChildLayout>;
 }
+function KosmosPage() {
+  return <ChildLayout>{(profile) => <KosmosMap key={profile.id} profile={profile} />}</ChildLayout>;
+}
+function KosmosPlanetPage({ planetId }: { planetId: string }) {
+  return (
+    <ChildLayout>
+      {(profile) => (
+        <KosmosPlanetView key={`${profile.id}-${planetId}`} profile={profile} planetId={planetId} />
+      )}
+    </ChildLayout>
+  );
+}
 
 /** Kiko trägt überall das Outfit des aktiven Kindes (docs/12 4.1). */
 function OutfitProvider({ children }: { children: ReactNode }) {
@@ -74,6 +87,10 @@ export function Routes() {
     <OutfitProvider>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/kosmos/:planetId">
+          {(params) => <KosmosPlanetPage planetId={params.planetId} />}
+        </Route>
+        <Route path="/kosmos" component={KosmosPage} />
         <Route path="/wer-spielt" component={WhoPlays} />
         <Route path="/station/:stationId/geschafft">
           {(params) => <StationComplete stationId={params.stationId} />}

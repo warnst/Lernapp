@@ -6,6 +6,7 @@ import { SpeechBubble } from '@/components/SpeechBubble';
 import { StarPill } from '@/components/StarPill';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
+import { KOSMOS_STATIONS, planetOfStation } from '@/content/worlds/kosmos/planets';
 import type { Profile, Station } from '@/domain/types';
 import { Chest } from '@/illustrations/Chest';
 import { FindlingIcon } from '@/illustrations/FindlingIcon';
@@ -61,6 +62,7 @@ function Finale({ profile, stations }: { profile: Profile; stations: Station[] }
   const last = stations.at(-1);
   if (!last) return null;
   const world = last.world;
+  const mapHref = world === 'kosmos' ? '/kosmos' : '/';
   return (
     <main className={styles.page}>
       <Confetti />
@@ -83,7 +85,7 @@ function Finale({ profile, stations }: { profile: Profile; stations: Station[] }
         <LinkButton href="/schaetze" block>
           {UI.complete.myTreasures}
         </LinkButton>
-        <LinkButton href="/" variant="secondary" block>
+        <LinkButton href={mapHref} variant="secondary" block>
           {UI.complete.finaleMap}
         </LinkButton>
       </div>
@@ -105,6 +107,8 @@ function Complete({
   if (!station) return null;
   if (index === stations.length - 1) return <Finale profile={profile} stations={stations} />;
   const next = stations[index + 1];
+  const planet = station.world === 'kosmos' ? planetOfStation(station.id) : undefined;
+  const mapHref = planet ? `/kosmos/${planet.id}` : '/';
   return (
     <main className={styles.page}>
       <Confetti />
@@ -120,7 +124,7 @@ function Complete({
       </span>
       <p className={styles.recap}>{station.recap}</p>
       <div className={styles.actions}>
-        <LinkButton href="/" block>
+        <LinkButton href={mapHref} block>
           {UI.complete.toMap}
         </LinkButton>
         {next && (
@@ -140,6 +144,11 @@ export function StationComplete({ stationId }: { stationId: string }) {
   const { state } = useAppState();
   const profile = activeProfile(state);
   if (!profile) return <Redirect to="/" />;
+  const kosmosIndex = KOSMOS_STATIONS.findIndex((s) => s.id === stationId);
+  if (kosmosIndex !== -1) {
+    if (!isCompleted(profile, 'kosmos', stationId)) return <Redirect to="/kosmos" />;
+    return <Complete profile={profile} stations={KOSMOS_STATIONS} index={kosmosIndex} />;
+  }
   const world = worldOf(profile);
   const stations = WORLDS[world].stations;
   const index = stations.findIndex((s) => s.id === stationId);

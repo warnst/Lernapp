@@ -4,6 +4,7 @@ import type { TowerType, PracticeTopicId, Stufe, WorldId } from '@/domain/types'
 
 export const UI = {
   nav: {
+    kosmos: 'Kosmos',
     adventure: 'Abenteuer',
     practice: 'Üben',
     riddles: 'Rätsel',
@@ -20,6 +21,8 @@ export const UI = {
     firstVisit: {
       schatzinsel: 'Hallo! Ich bin Kiko. Ich kenne eine geheime Schatzinsel. Kommst du mit?',
       'kleine-bucht': 'Hallo! Ich bin Kiko. Komm mit in die kleine Bucht!',
+      kosmos:
+        'Hallo! Ich bin Astronaut Kiko. Komm mit in mein Raumschiff, wir fliegen von Planet zu Planet und entdecken spannende Zahlen-Geheimnisse!',
     } satisfies Record<WorldId, string>,
     greeting: (who: string) => `Hallo ${who}! Wohin geht's heute?`,
     greetingAnimal: (small: string) => `Hallo, ${small}! Wohin geht's heute?`,
@@ -148,6 +151,7 @@ export const UI = {
     finale: {
       schatzinsel: 'Du hast die geheime Schatzinsel erkundet! Ich bin so stolz auf dich.',
       'kleine-bucht': 'Du hast die kleine Bucht erkundet! Ich bin so stolz auf dich.',
+      kosmos: 'Du hast den ganzen Kosmos bis zum Neptun erkundet! Ich bin so stolz auf dich.',
     } satisfies Record<WorldId, string>,
     myTreasures: 'Meine Schätze ansehen',
     finaleMap: 'Zur Karte',
@@ -587,10 +591,11 @@ export const UI = {
   /** Schätze (docs/01 5.8) */
   treasures: {
     title: 'Schätze',
-    worldTabs: { 'kleine-bucht': 'Kleine Bucht', schatzinsel: 'Schatzinsel' } satisfies Record<
-      WorldId,
-      string
-    >,
+    worldTabs: {
+      'kleine-bucht': 'Kleine Bucht',
+      schatzinsel: 'Schatzinsel',
+      kosmos: 'Kosmos',
+    } satisfies Record<WorldId, string>,
     stars: 'Sterne',
     findlings: 'Fundstücke',
     unknown: 'Noch nicht gefunden',
@@ -663,8 +668,10 @@ export const UI = {
     cellLocked: (value: string) => `Feld: ${value}, stimmt`,
     cellTitle: 'Was gehört in dieses Feld?',
     cellDone: 'Fertig',
+    cellRead: 'Erklärung vorlesen',
     wall: 'Zahlenmauer',
     triangle: 'Rechendreieck',
+    house: 'Zahlenhaus',
     lock: 'Zahlenschloss',
     wheel: (symbol: string, digit: number) => `Rad mit ${symbol}: ${String(digit)}`,
     up: (symbol: string) => `Rad mit ${symbol} höher`,

@@ -133,3 +133,33 @@ describe('solveGrid: Rechendreieck', () => {
     expect(() => solveGrid('triangle', cells({ a: 1, b: 2, c: 3, ab: 3, bc: 5, cx: 4 }))).toThrow();
   });
 });
+
+describe('solveGrid: Zahlenhaus', () => {
+  it('löst fehlende Zimmer aus der Dachzahl', () => {
+    const solved = solveGrid(
+      'house',
+      cells({ dach: 10, r0l: 7, r0r: undefined, r1l: undefined, r1r: 4 }),
+    );
+    expect(solved).toEqual({ dach: 10, r0l: 7, r0r: 3, r1l: 6, r1r: 4 });
+  });
+
+  it('bestimmt erst die Dachzahl aus einer vollen Etage und löst dann den Rest', () => {
+    const solved = solveGrid(
+      'house',
+      cells({ dach: undefined, r0l: 6, r0r: 4, r1l: 2, r1r: undefined }),
+    );
+    expect(solved).toEqual({ dach: 10, r0l: 6, r0r: 4, r1l: 2, r1r: 8 });
+  });
+
+  it('liefert null bei nicht eindeutigem oder widersprüchlichem Zahlenhaus', () => {
+    expect(solveGrid('house', cells({ dach: 10, r0l: undefined, r0r: undefined }))).toBeNull();
+    expect(solveGrid('house', cells({ dach: 10, r0l: 12, r0r: undefined }))).toBeNull();
+  });
+
+  it('wirft bei einem unvollständigen Zahlenhaus', () => {
+    expect(() => solveGrid('house', cells({ dach: 10 }))).toThrow();
+    expect(() => solveGrid('house', cells({ dach: 10, r0l: 4 }))).toThrow();
+    expect(() => solveGrid('house', cells({ r0l: 4, r0r: 6, r1l: 2 }))).toThrow();
+    expect(() => solveGrid('house', cells({ dach: 10, r0l: 4, x: 6 }))).toThrow();
+  });
+});

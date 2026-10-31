@@ -16,6 +16,12 @@ export function BottomNav({ world }: { world: WorldId }) {
   const [path] = useLocation();
   const tabs: Tab[] = [
     {
+      href: '/kosmos',
+      label: UI.nav.kosmos,
+      icon: 'planet',
+      active: (p) => p.startsWith('/kosmos'),
+    },
+    {
       href: '/',
       label: UI.nav.adventure,
       icon: world === 'kleine-bucht' ? 'muschel' : 'palme',

@@ -1,18 +1,22 @@
 import { useId, useState } from 'react';
 import { BottomSheet } from '@/components/BottomSheet';
-import { LinkButton } from '@/components/Button';
+import { Button, LinkButton } from '@/components/Button';
 import { cx } from '@/components/cx';
 import { Screen } from '@/components/Screen';
 import { STUFEN } from '@/config/levels';
 import { TOWER_ICON, TOWER_ORDER } from '@/content/tower';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
+import { KOSMOS_PLANETS } from '@/content/worlds/kosmos/planets';
 import type { Profile, Station, WorldId } from '@/domain/types';
 import { FindlingIcon } from '@/illustrations/FindlingIcon';
 import { Gem } from '@/illustrations/Gem';
 import { ItemIcon } from '@/illustrations/ItemIcon';
 import { Pearl } from '@/illustrations/Pearl';
 import { Star } from '@/illustrations/Star';
+import { StationIcon } from '@/illustrations/StationIcon';
+import { UiIcon } from '@/illustrations/UiIcon';
+import { canSpeak, toggleSpeak } from '@/speech/speak';
 import { isCompleted, worldOf } from '@/state/progress';
 import { GOLDEN_STAMP, towerOf } from '@/state/reducer';
 import styles from './Treasures.module.css';
@@ -100,11 +104,39 @@ export function Treasures({ profile }: { profile: Profile }) {
           })}
         </div>
         {done.length === stations.length && (
-          <LinkButton href="/schaetze/urkunde" block>
+          <LinkButton
+            href={world === 'kosmos' ? '/schaetze/urkunde?welt=kosmos' : '/schaetze/urkunde'}
+            block
+          >
             {UI.treasures.certificate}
           </LinkButton>
         )}
       </section>
+
+      {world === 'kosmos' && (
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Planeten-Wissenskarten</h2>
+          {KOSMOS_PLANETS.filter((p) =>
+            p.stations.every((s) => isCompleted(profile, 'kosmos', s.id)),
+          ).map((planet) => (
+            <div key={planet.id} className={styles.detail}>
+              <StationIcon icon={planet.icon} size={56} />
+              <strong>{planet.factCard.title}</strong>
+              <p>{planet.factCard.fact}</p>
+              {canSpeak() && (
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    toggleSpeak(`${planet.factCard.title}. ${planet.factCard.fact}`);
+                  }}
+                >
+                  <UiIcon name="lautsprecher" /> {UI.sheet.read}
+                </Button>
+              )}
+            </div>
+          ))}
+        </section>
+      )}
 
       <section className={styles.section}>
         <h2 className={styles.heading}>{UI.treasures.pearls}</h2>

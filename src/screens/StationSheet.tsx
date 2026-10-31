@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useEffect, useId } from 'react';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button, LinkButton } from '@/components/Button';
 import { SpeechBubble } from '@/components/SpeechBubble';
@@ -7,6 +7,8 @@ import type { Station } from '@/domain/types';
 import { StationIcon } from '@/illustrations/StationIcon';
 import { UiIcon } from '@/illustrations/UiIcon';
 import { canSpeak, toggleSpeak } from '@/speech/speak';
+import { useAppState } from '@/state/context';
+import { activeProfile, autoReadOf } from '@/state/progress';
 import styles from './StationSheet.module.css';
 
 /** Stationskarte als Bottom Sheet (docs/01, 5.3). */
@@ -24,8 +26,16 @@ export function StationSheet({
   bonusOpen: boolean;
   onClose: () => void;
 }) {
+  const { state } = useAppState();
+  const profile = activeProfile(state);
   const titleId = useId();
   const href = `/station/${station.id}`;
+
+  useEffect(() => {
+    if (station.world === 'kosmos' && profile && autoReadOf(profile)) {
+      toggleSpeak(`${station.title}. ${station.intro.join(' ')}`);
+    }
+  }, [profile, station]);
   return (
     <BottomSheet labelledBy={titleId} onClose={onClose}>
       <div className={styles.body}>
