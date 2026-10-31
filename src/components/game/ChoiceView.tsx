@@ -116,37 +116,51 @@ export function ChoiceView({
         const isTried = tried.includes(option.id);
         const isCorrect = solved && option.correct === true;
         const textOnly = answer.layout === 'bags' && !option.pieces && !option.objects;
+        const hasVisibleText =
+          answer.layout !== 'coins' && option.clock === undefined && option.shape === undefined;
         return (
-          <button
-            key={option.id}
-            type="button"
-            className={cx(
-              styles.card,
-              isTried && styles.tried,
-              isCorrect && styles.correct,
-              (textOnly || sentences || answer.layout === 'yesno' || answer.layout === 'bags') &&
-                styles.textCard,
-              textOnly && styles.wide,
+          <div key={option.id} className={cx(styles.cardRow, textOnly && styles.wide)}>
+            <button
+              type="button"
+              className={cx(
+                styles.card,
+                isTried && styles.tried,
+                isCorrect && styles.correct,
+                (textOnly || sentences || answer.layout === 'yesno' || answer.layout === 'bags') &&
+                  styles.textCard,
+              )}
+              disabled={isTried || solved}
+              aria-label={pictorial ? renderText(option.label) : undefined}
+              onClick={() => {
+                if (readOnTap) toggleSpeak(speakText(option.label));
+                onPick(option.id);
+              }}
+            >
+              <OptionBody option={option} layout={answer.layout} />
+              {isTried && (
+                <span className={styles.mark}>
+                  <UiIcon name="zurueck" size={16} /> {UI.play.tried}
+                </span>
+              )}
+              {isCorrect && (
+                <span className={styles.mark}>
+                  <UiIcon name="haken" size={18} />
+                </span>
+              )}
+            </button>
+            {hasVisibleText && (
+              <button
+                type="button"
+                className={styles.speakOption}
+                aria-label="Antwort vorlesen"
+                onClick={() => {
+                  toggleSpeak(speakText(option.label));
+                }}
+              >
+                <UiIcon name="lautsprecher" size={24} />
+              </button>
             )}
-            disabled={isTried || solved}
-            aria-label={pictorial ? renderText(option.label) : undefined}
-            onClick={() => {
-              if (readOnTap) toggleSpeak(speakText(option.label));
-              onPick(option.id);
-            }}
-          >
-            <OptionBody option={option} layout={answer.layout} />
-            {isTried && (
-              <span className={styles.mark}>
-                <UiIcon name="zurueck" size={16} /> {UI.play.tried}
-              </span>
-            )}
-            {isCorrect && (
-              <span className={styles.mark}>
-                <UiIcon name="haken" size={18} />
-              </span>
-            )}
-          </button>
+          </div>
         );
       })}
     </div>

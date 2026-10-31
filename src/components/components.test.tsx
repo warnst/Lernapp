@@ -6,6 +6,7 @@ import { memoryLocation } from 'wouter/memory-location';
 import { BottomNav } from './BottomNav';
 import { BottomSheet } from './BottomSheet';
 import { cx } from './cx';
+import { ChoiceView } from './game/ChoiceView';
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -71,5 +72,63 @@ describe('BottomNav', () => {
 describe('cx', () => {
   it('lässt leere Klassen weg', () => {
     expect(cx('a', false, undefined, 'b')).toBe('a b');
+  });
+});
+
+describe('ChoiceView Vorlese-Buttons', () => {
+  it('liest Text-Antwortmöglichkeiten vor, ohne die Antwort auszuwählen', async () => {
+    const onPick = vi.fn();
+    render(
+      <ChoiceView
+        answer={{
+          type: 'choice',
+          layout: 'cards',
+          shuffle: false,
+          options: [
+            { id: '1', label: 'Rechteck', correct: true },
+            { id: '2', label: 'Kreis' },
+            { id: '3', label: 'Quadrat' },
+          ],
+        }}
+        seedId="test"
+        tried={[]}
+        solved={false}
+        readOnTap={false}
+        onPick={onPick}
+      />,
+    );
+
+    const speakButtons = screen.getAllByRole('button', { name: 'Antwort vorlesen' });
+    expect(speakButtons).toHaveLength(3);
+    const firstSpeak = speakButtons[0];
+    if (!firstSpeak) throw new Error('Vorlese-Button fehlt');
+    await userEvent.click(firstSpeak);
+    expect(onPick).not.toHaveBeenCalled();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Rechteck' }));
+    expect(onPick).toHaveBeenCalledWith('1');
+  });
+
+  it('zeigt keinen Vorlese-Button bei reinen Formen-Bildkarten', () => {
+    render(
+      <ChoiceView
+        answer={{
+          type: 'choice',
+          layout: 'cards',
+          shuffle: false,
+          options: [
+            { id: '1', label: 'Rechteck', shape: 'rechteck', correct: true },
+            { id: '2', label: 'Kreis', shape: 'kreis' },
+          ],
+        }}
+        seedId="test"
+        tried={[]}
+        solved={false}
+        readOnTap={false}
+        onPick={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryAllByRole('button', { name: 'Antwort vorlesen' })).toHaveLength(0);
   });
 });
