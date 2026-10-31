@@ -32,7 +32,7 @@ export default defineConfig(
     ],
   },
   {
-    files: ['*.{js,ts}', 'tests/**/*.ts'],
+    files: ['*.{js,ts}', 'api/**/*.ts', 'tests/**/*.ts'],
     languageOptions: { globals: globals.node },
   },
   // Projektregeln: setzen die goldenen Regeln aus CLAUDE.md technisch durch (docs/08, 2.1)
@@ -67,9 +67,9 @@ export default defineConfig(
       ],
     },
   },
-  // Konfigurationsdateien und E2E-Tests dürfen localhost-URLs enthalten
+  // Konfigurationsdateien, API-Routen und E2E-Tests dürfen externe/localhost-URLs enthalten
   {
-    files: ['*.{js,ts}', 'tests/**/*.ts'],
+    files: ['*.{js,ts}', 'api/**/*.ts', 'tests/**/*.ts'],
     rules: { 'no-restricted-syntax': 'off' },
   },
   // Architekturgrenzen: screens → components → state → practice / content → domain

@@ -1,8 +1,27 @@
 import { execSync } from 'node:child_process';
 import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
+import type { Plugin } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
+import speakHandler from './api/speak.ts';
+
+/** Bindet die Vercel-Route /api/speak auch lokal in `npm run dev` und `npm run preview` ein. */
+function speakApiPlugin(): Plugin {
+  return {
+    name: 'schatzinsel-speak-api',
+    configureServer(server) {
+      server.middlewares.use('/api/speak', (req, res) => {
+        void speakHandler(req, res);
+      });
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use('/api/speak', (req, res) => {
+        void speakHandler(req, res);
+      });
+    },
+  };
+}
 
 /** Kurzer Stand für den Erwachsenen-Bereich, damit man sieht, ob das Gerät aktuell ist. */
 function appVersion(): string {
@@ -24,6 +43,7 @@ export default defineConfig({
   define: { __APP_VERSION__: JSON.stringify(appVersion()) },
   plugins: [
     react(),
+    speakApiPlugin(),
     // docs/03 Abschnitt 11: offline, Updates erst beim nächsten Start (nie mitten in einer Station)
     VitePWA({
       registerType: 'prompt',

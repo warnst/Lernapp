@@ -1,5 +1,15 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { canSpeak, stopSpeaking, toggleSpeak, unlockSpeechOnFirstTap } from './speak';
+import {
+  canSpeak,
+  getVoicePreference,
+  listGermanVoices,
+  setVoicePreference,
+  stopSpeaking,
+  toggleSpeak,
+  unlockSpeechOnFirstTap,
+  VOICE_AUTO,
+  VOICE_CLOUD,
+} from './speak';
 
 class FakeUtterance {
   lang = '';
@@ -13,7 +23,13 @@ class FakeUtterance {
   }
 }
 
-function installSpeech(voices: { lang: string; localService: boolean }[]) {
+interface FakeVoice {
+  name?: string;
+  lang: string;
+  localService: boolean;
+}
+
+function installSpeech(voices: FakeVoice[]) {
   const speech = { speaking: false, speak: vi.fn(), cancel: vi.fn(), getVoices: () => voices };
   vi.stubGlobal('speechSynthesis', speech);
   vi.stubGlobal('SpeechSynthesisUtterance', FakeUtterance);
@@ -21,12 +37,14 @@ function installSpeech(voices: { lang: string; localService: boolean }[]) {
 }
 
 afterEach(() => {
+  window.localStorage.clear();
   vi.unstubAllGlobals();
 });
 
 describe('speak', () => {
   it('ohne Sprachausgabe passiert nichts', () => {
     expect(canSpeak()).toBe(false);
+    expect(listGermanVoices()).toEqual([]);
     toggleSpeak('Hallo');
     stopSpeaking();
   });
@@ -44,6 +62,34 @@ describe('speak', () => {
     expect(utterance).toMatchObject({ text: 'Hallo Kiko', lang: 'de-DE', rate: 0.9, voice: local });
   });
 
+  it('bevorzugt natürliche Frauenstimmen und filtert Roboterstimmen heraus', () => {
+    const eddy = { name: 'Eddy (Deutsch)', lang: 'de-DE', localService: true };
+    const markus = { name: 'Markus', lang: 'de-DE', localService: true };
+    const anna = { name: 'Anna', lang: 'de-DE', localService: true };
+    const amala = {
+      name: 'Microsoft Amala Online (Natural)',
+      lang: 'de-DE',
+      localService: false,
+    };
+    const speech = installSpeech([eddy, markus, anna, amala]);
+
+    const listed = listGermanVoices();
+    expect(listed.map((v) => v.name)).toEqual([
+      'Microsoft Amala Online (Natural)',
+      'Anna',
+      'Markus',
+    ]);
+
+    toggleSpeak('Hallo');
+    expect((speech.speak.mock.calls[0]?.[0] as FakeUtterance).voice).toBe(amala);
+
+    // Spezifische Stimme wählen
+    setVoicePreference('Anna');
+    expect(getVoicePreference()).toBe('Anna');
+    toggleSpeak('Hallo');
+    expect((speech.speak.mock.calls[1]?.[0] as FakeUtterance).voice).toBe(anna);
+  });
+
   it('nimmt sonst irgendeine deutsche Stimme oder gar keine', () => {
     const remote = { lang: 'de-DE', localService: false };
     const speech = installSpeech([remote]);
@@ -52,6 +98,59 @@ describe('speak', () => {
     const none = installSpeech([]);
     toggleSpeak('b');
     expect((none.speak.mock.calls[0]?.[0] as FakeUtterance).voice).toBeNull();
+  });
+
+  it('nutzt im echten Browser die Online-Frauenstimme (/api/speak) und fällt bei Fehlern auf Browser-Stimme zurück', async () => {
+    const anna = { name: 'Anna', lang: 'de-DE', localService: true };
+    const speech = installSpeech([anna]);
+    vi.stubGlobal('navigator', { onLine: true, userAgent: 'Mozilla/5.0 Safari' });
+
+    const pause = vi.fn();
+    const audioUrls: string[] = [];
+    const endCallbacks: (() => void)[] = [];
+    let rejectPlay = false;
+
+    class FakeAudio {
+      src: string;
+      onended: (() => void) | null = null;
+      onerror: (() => void) | null = null;
+      play = vi.fn(() => {
+        if (this.onended) endCallbacks.push(this.onended);
+        if (rejectPlay) return Promise.reject(new Error('network error'));
+        return Promise.resolve();
+      });
+      pause = pause;
+      constructor(src: string) {
+        this.src = src;
+        audioUrls.push(src);
+      }
+    }
+    vi.stubGlobal('Audio', FakeAudio);
+    setVoicePreference(VOICE_CLOUD);
+
+    toggleSpeak('Hallo Kiko');
+    expect(audioUrls[0]).toBe('/api/speak?text=Hallo%20Kiko');
+    expect(speech.speak).not.toHaveBeenCalled();
+
+    // Zweiter Aufruf während Cloud-Audio läuft stoppt die Wiedergabe
+    toggleSpeak('Hallo Kiko');
+    expect(pause).toHaveBeenCalledOnce();
+
+    // Wenn die Wiedergabe regulär endet, wird activeAudio zurückgesetzt
+    toggleSpeak('Zweiter Satz');
+    endCallbacks.at(-1)?.();
+
+    // Bei Netzwerkfehler fällt toggleSpeak automatisch auf die Browser-Frauenstimme zurück
+    rejectPlay = true;
+    toggleSpeak('Fallback Satz');
+    await Promise.resolve();
+    expect(speech.speak).toHaveBeenCalledOnce();
+    expect((speech.speak.mock.calls[0]?.[0] as FakeUtterance).text).toBe('Fallback Satz');
+
+    // Mit VOICE_AUTO wird direkt die Browser-Stimme genutzt
+    setVoicePreference(VOICE_AUTO);
+    toggleSpeak('Direkt Browser');
+    expect(speech.speak).toHaveBeenCalledTimes(2);
   });
 
   it('ein zweiter Aufruf stoppt die laufende Ausgabe', () => {

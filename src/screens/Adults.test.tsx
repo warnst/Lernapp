@@ -86,6 +86,36 @@ describe('Erwachsenen-Bereich', () => {
     expect(screen.getByRole('link', { name: /Flamingo/ })).toBeInTheDocument();
   });
 
+  it('wählt die Stimme zum Vorlesen und hört sie probe', async () => {
+    const speak = vi.fn();
+    vi.stubGlobal('speechSynthesis', {
+      speaking: false,
+      speak,
+      cancel: vi.fn(),
+      getVoices: () => [{ name: 'Petra', lang: 'de-DE', localService: true }],
+    });
+    vi.stubGlobal(
+      'SpeechSynthesisUtterance',
+      class {
+        text: string;
+        lang = '';
+        rate = 1;
+        voice: unknown = null;
+        constructor(text: string) {
+          this.text = text;
+        }
+      },
+    );
+    const { user } = renderApp('/erwachsene', state);
+    await openGate(user);
+    const select = screen.getByLabelText('Stimme zum Vorlesen');
+    await user.selectOptions(select, 'Petra');
+    expect(select).toHaveValue('Petra');
+    await user.click(screen.getByRole('button', { name: 'Stimme probehören' }));
+    expect(speak).toHaveBeenCalledOnce();
+    vi.unstubAllGlobals();
+  });
+
   it('lädt eine Sicherung herunter', async () => {
     const createObjectURL = vi.fn(() => 'blob:x');
     const revokeObjectURL = vi.fn();

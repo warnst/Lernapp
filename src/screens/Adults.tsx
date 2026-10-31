@@ -8,6 +8,15 @@ import { avatarInfo } from '@/content/avatars';
 import { UI } from '@/content/ui';
 import { AvatarIllustration } from '@/illustrations/AvatarIllustration';
 import { UiIcon } from '@/illustrations/UiIcon';
+import {
+  getVoicePreference,
+  listGermanVoices,
+  setVoicePreference,
+  stopSpeaking,
+  toggleSpeak,
+  VOICE_AUTO,
+  VOICE_CLOUD,
+} from '@/speech/speak';
 import { useAppState } from '@/state/context';
 import {
   BROKEN_KEY,
@@ -44,6 +53,8 @@ export function Adults() {
   const [adding, setAdding] = useState(false);
   const [message, setMessage] = useState('');
   const [persisted, setPersisted] = useState<boolean | null>(null);
+  const [voicePref, setVoicePref] = useState(getVoicePreference);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(listGermanVoices);
   const [storage] = useState(browserStorage);
   const storable = canStore(storage);
   const broken = readBroken(storage);
@@ -51,6 +62,19 @@ export function Adults() {
   useEffect(() => {
     if (!('storage' in navigator) || !('persisted' in navigator.storage)) return;
     navigator.storage.persisted().then(setPersisted, () => undefined);
+  }, []);
+
+  useEffect(() => {
+    if (!('speechSynthesis' in window)) return;
+    const speech = window.speechSynthesis;
+    const update = () => {
+      setVoices(listGermanVoices());
+    };
+    update();
+    speech.onvoiceschanged = update;
+    return () => {
+      speech.onvoiceschanged = null;
+    };
   }, []);
 
   const add = (child: NewChild) => {
@@ -123,6 +147,41 @@ export function Adults() {
         <LinkButton href="/erwachsene/drucken" variant="secondary">
           {UI.adults.printLink}
         </LinkButton>
+      </section>
+
+      <section className={styles.section}>
+        <label htmlFor={`${fileId}-voice`} className={styles.heading}>
+          {UI.adults.voice}
+        </label>
+        <select
+          id={`${fileId}-voice`}
+          className={styles.select}
+          value={voicePref}
+          onChange={(event) => {
+            const next = event.target.value;
+            setVoicePref(next);
+            setVoicePreference(next);
+            stopSpeaking();
+          }}
+        >
+          <option value={VOICE_CLOUD}>{UI.adults.voiceCloud}</option>
+          <option value={VOICE_AUTO}>{UI.adults.voiceAuto}</option>
+          {voices.map((v) => (
+            <option key={v.name} value={v.name}>
+              {v.name} ({v.lang})
+            </option>
+          ))}
+        </select>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            stopSpeaking();
+            toggleSpeak(UI.adults.voiceSample);
+          }}
+        >
+          <UiIcon name="lautsprecher" /> {UI.adults.voicePreview}
+        </Button>
+        <p className={styles.muted}>{UI.adults.voiceHint}</p>
       </section>
 
       <section className={styles.section} aria-labelledby={`${fileId}-speicher`}>

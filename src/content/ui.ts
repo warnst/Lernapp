@@ -112,6 +112,13 @@ export const UI = {
     readAloudOff: 'Aus',
     readAloudHint: (stufeDefault: boolean) =>
       `Liest Geschichten, Fragen und Kikos Antworten automatisch vor. Ohne Einstellung ist es auf dieser Stufe ${stufeDefault ? 'an' : 'aus'}. Die Lautsprecher-Taste oben bei jeder Aufgabe geht immer.`,
+    voice: 'Stimme zum Vorlesen',
+    voiceCloud: 'Kiko (Online-Frauenstimme, empfohlen)',
+    voiceAuto: 'Geräte-Stimme (automatisch beste Frauenstimme)',
+    voicePreview: 'Stimme probehören',
+    voiceSample: 'Hallo! Ich bin Kiko. Eine Kokosnuss kostet 1 Euro 20. Rechnest du mit mir?',
+    voiceHint:
+      'Die Online-Frauenstimme klingt auf jedem Gerät (auch iPhone und iPad) natürlich und wechselt im Flugmodus automatisch auf die beste deutsche Frauenstimme des Geräts.',
     back: 'Zurück zum Spiel',
     stufe: 'Stufe',
     name: 'Name',
