@@ -32,7 +32,11 @@ export function StationSheet({
   const href = `/station/${station.id}`;
 
   useEffect(() => {
-    if (station.world === 'kosmos' && profile && autoReadOf(profile)) {
+    if (
+      (station.world === 'kosmos' || station.world === 'zahlenbloecke') &&
+      profile &&
+      autoReadOf(profile)
+    ) {
       toggleSpeak(`${station.title}. ${station.intro.join(' ')}`);
     }
   }, [profile, station]);

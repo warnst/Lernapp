@@ -88,8 +88,8 @@ export function AnswerArea({
     case 'number':
       return (
         <NumberEntry
-          mode={config.numberInput}
-          max={config.numbers.max}
+          mode={answer.correct > 10 ? 'keypad' : config.numberInput}
+          max={Math.max(config.numbers.max, answer.correct)}
           readOnTap={readOnTap}
           onChange={(value) => {
             onPending(value === null ? null : { type: 'number', value });

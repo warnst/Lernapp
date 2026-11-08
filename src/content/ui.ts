@@ -5,6 +5,7 @@ import type { TowerType, PracticeTopicId, Stufe, WorldId } from '@/domain/types'
 export const UI = {
   nav: {
     kosmos: 'Kosmos',
+    zahlenbloecke: 'Blöcke',
     adventure: 'Abenteuer',
     practice: 'Üben',
     riddles: 'Rätsel',
@@ -23,6 +24,8 @@ export const UI = {
       'kleine-bucht': 'Hallo! Ich bin Kiko. Komm mit in die kleine Bucht!',
       kosmos:
         'Hallo! Ich bin Astronaut Kiko. Komm mit in mein Raumschiff, wir fliegen von Planet zu Planet und entdecken spannende Zahlen-Geheimnisse!',
+      zahlenbloecke:
+        'Hallo! Willkommen im Zahlenland! Hier wohnen die bunten Zahlenblöcke von 1 bis 10 und die großen Zehner bis 100. Klatsch mit ihnen zusammen!',
     } satisfies Record<WorldId, string>,
     greeting: (who: string) => `Hallo ${who}! Wohin geht's heute?`,
     greetingAnimal: (small: string) => `Hallo, ${small}! Wohin geht's heute?`,
@@ -152,6 +155,8 @@ export const UI = {
       schatzinsel: 'Du hast die geheime Schatzinsel erkundet! Ich bin so stolz auf dich.',
       'kleine-bucht': 'Du hast die kleine Bucht erkundet! Ich bin so stolz auf dich.',
       kosmos: 'Du hast den ganzen Kosmos bis zum Neptun erkundet! Ich bin so stolz auf dich.',
+      zahlenbloecke:
+        'Du hast alle Zahlenblöcke von 1 bis zur großen 100 kennengelernt! Ich bin so stolz auf dich.',
     } satisfies Record<WorldId, string>,
     myTreasures: 'Meine Schätze ansehen',
     finaleMap: 'Zur Karte',
@@ -595,6 +600,7 @@ export const UI = {
       'kleine-bucht': 'Kleine Bucht',
       schatzinsel: 'Schatzinsel',
       kosmos: 'Kosmos',
+      zahlenbloecke: 'Zahlenblöcke',
     } satisfies Record<WorldId, string>,
     stars: 'Sterne',
     findlings: 'Fundstücke',

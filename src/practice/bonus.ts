@@ -21,7 +21,7 @@ const KOSMOS_BONUS_TEMPLATES = ['PM4', 'PM5', 'PM6', 'PM7'] as const;
 /** Das Bonus-Rätsel einer Station; der Seed kommt aus Profil und Station. */
 export function bonusTask(station: Station, profile: Profile): Task | null {
   const templateId =
-    station.world === 'kosmos'
+    station.world === 'kosmos' || station.world === 'zahlenbloecke'
       ? (KOSMOS_BONUS_TEMPLATES[(station.number - 1) % KOSMOS_BONUS_TEMPLATES.length] ?? 'PM4')
       : bonusType(station, profile);
   const generator = generatorById(templateId);

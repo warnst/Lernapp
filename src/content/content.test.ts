@@ -227,13 +227,15 @@ function describeAnswer(answer: Answer): string {
 }
 
 describe('Welten und Stationen', () => {
-  it('die Insel hat 9 Stationen mit 45 Aufgaben, die Bucht 5 mit 25, der Kosmos 24 mit 120', () => {
+  it('die Insel hat 9 Stationen mit 45 Aufgaben, die Bucht 5 mit 25, der Kosmos 24 mit 120, Zahlenblöcke 30 mit 150', () => {
     expect(WORLDS.schatzinsel.stations).toHaveLength(9);
     expect(WORLDS['kleine-bucht'].stations).toHaveLength(5);
     expect(WORLDS.kosmos.stations).toHaveLength(24);
+    expect(WORLDS.zahlenbloecke.stations).toHaveLength(30);
     expect(WORLDS.schatzinsel.stations.flatMap((s) => s.tasks)).toHaveLength(45);
     expect(WORLDS['kleine-bucht'].stations.flatMap((s) => s.tasks)).toHaveLength(25);
     expect(WORLDS.kosmos.stations.flatMap((s) => s.tasks)).toHaveLength(120);
+    expect(WORLDS.zahlenbloecke.stations.flatMap((s) => s.tasks)).toHaveLength(150);
   });
 
   it.each(worlds)('$id: Stationen sind fortlaufend nummeriert und gehören zur Welt', (world) => {
@@ -257,11 +259,15 @@ describe('Welten und Stationen', () => {
   it.each(stations)('$id: ID-Schema, Stufe und Teile', (station) => {
     for (const task of station.tasks) {
       const stationPrefix =
-        station.world === 'kosmos'
+        station.world === 'kosmos' || station.world === 'zahlenbloecke'
           ? station.id
           : `${station.world === 'schatzinsel' ? 's' : 'b'}${String(station.number)}`;
       expect(task.id).toBe(`${stationPrefix}-t${String(station.tasks.indexOf(task) + 1)}`);
-      expect(task.authoredFor).toBe(station.world === 'schatzinsel' ? 3 : 1);
+      if (station.world === 'zahlenbloecke') {
+        expect([1, 2, 3]).toContain(task.authoredFor);
+      } else {
+        expect(task.authoredFor).toBe(station.world === 'schatzinsel' ? 3 : 1);
+      }
       expect(task.parts.length).toBeGreaterThanOrEqual(1);
       expect(task.parts.length).toBeLessThanOrEqual(STUFEN[task.authoredFor].maxSteps);
       task.parts.forEach((part, i) => {

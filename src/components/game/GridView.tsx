@@ -298,12 +298,17 @@ export function GridView({
                 }}
               />
             ) : (
-              <NumberEntry
-                mode={config.numberInput}
-                max={config.numbers.max}
-                readOnTap={readOnTap}
-                onChange={setDraft}
-              />
+              (() => {
+                const maxCell = Math.max(config.numbers.max, ...answer.cells.map((c) => c.value));
+                return (
+                  <NumberEntry
+                    mode={maxCell > 10 ? 'keypad' : config.numberInput}
+                    max={maxCell}
+                    readOnTap={readOnTap}
+                    onChange={setDraft}
+                  />
+                );
+              })()
             )}
             <Button block disabled={draft === null} onClick={commit}>
               {UI.riddle.cellDone}

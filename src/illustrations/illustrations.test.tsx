@@ -6,6 +6,7 @@ import { AvatarIllustration } from './AvatarIllustration';
 import { Fog } from './Fog';
 import { Kiko } from './Kiko';
 import { MapBackground } from './MapBackground';
+import { NumberBlock } from './NumberBlock';
 import { StationIcon } from './StationIcon';
 import { StufeIcon } from './StufeIcon';
 import { UiIcon, type UiIconName } from './UiIcon';
@@ -59,7 +60,7 @@ const UI_ICONS: UiIconName[] = [
   'leuchtturm',
   'herz',
 ];
-const WORLDS: WorldId[] = ['schatzinsel', 'kleine-bucht'];
+const WORLDS: WorldId[] = ['schatzinsel', 'kleine-bucht', 'kosmos', 'zahlenbloecke'];
 
 function decorativeSvg(container: HTMLElement): SVGSVGElement {
   const svg = container.querySelector('svg');
@@ -141,6 +142,10 @@ describe('Illustrationen', () => {
         {WORLDS.map((w) => (
           <MapBackground key={w} world={w} />
         ))}
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 50, 100].map((n) => (
+          <NumberBlock key={n} value={n} />
+        ))}
+        <NumberBlock value={4} mystery />
       </>,
     );
     expect(container.innerHTML).not.toMatch(/#[0-9a-fA-F]{3,6}\b/);

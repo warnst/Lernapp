@@ -18,7 +18,11 @@ export function ChildLayout({ children }: { children: (profile: Profile) => Reac
   const profile = activeProfile(state);
   if (!profile) return <Redirect to="/wer-spielt" />;
   const baseWorld = WORLDS[worldOf(profile)];
-  const activeWorld = path.startsWith('/kosmos') ? WORLDS.kosmos : baseWorld;
+  const activeWorld = path.startsWith('/kosmos')
+    ? WORLDS.kosmos
+    : path.startsWith('/zahlenbloecke')
+      ? WORLDS.zahlenbloecke
+      : baseWorld;
   return (
     <>
       <AppHeader

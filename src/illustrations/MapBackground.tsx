@@ -174,9 +174,69 @@ function Kosmos() {
   );
 }
 
+function Zahlenbloecke() {
+  return (
+    <>
+      <rect x={0} y={0} width={400} height={1600} fill="var(--ill-sky)" stroke="none" />
+      {/* Regenbogen im Zahlenland */}
+      <path
+        d="M-20 460 A220 220 0 0 1 420 460"
+        fill="none"
+        stroke="var(--nb-1-red)"
+        strokeWidth={14}
+        opacity={0.35}
+      />
+      <path
+        d="M-5 460 A205 205 0 0 1 405 460"
+        fill="none"
+        stroke="var(--nb-3-yellow)"
+        strokeWidth={14}
+        opacity={0.35}
+      />
+      <path
+        d="M10 460 A190 190 0 0 1 390 460"
+        fill="none"
+        stroke="var(--nb-5-blue)"
+        strokeWidth={14}
+        opacity={0.35}
+      />
+      {/* Grüne Zahlenland-Hügel */}
+      <ellipse cx={90} cy={380} rx={160} ry={90} fill="var(--ill-grass)" stroke="none" />
+      <ellipse cx={310} cy={780} rx={170} ry={95} fill="var(--ill-hill)" stroke="none" />
+      <ellipse cx={100} cy={1180} rx={165} ry={90} fill="var(--ill-grass)" stroke="none" />
+      <ellipse cx={280} cy={1500} rx={190} ry={100} fill="var(--ill-hill)" stroke="none" />
+      {/* Bunte Deko-Würfel am Wegesrand */}
+      {[
+        [36, 1460, 'var(--nb-1-red)'],
+        [342, 1310, 'var(--nb-2-orange)'],
+        [42, 1120, 'var(--nb-3-yellow)'],
+        [338, 940, 'var(--nb-4-green)'],
+        [44, 760, 'var(--nb-5-blue)'],
+        [340, 580, 'var(--nb-6-purple)'],
+        [40, 380, 'var(--nb-8-magenta)'],
+        [336, 200, 'var(--ill-white)'],
+      ].map(([x, y, fill], i) => (
+        <rect
+          key={i}
+          x={Number(x)}
+          y={Number(y)}
+          width={28}
+          height={28}
+          rx={5}
+          fill={String(fill)}
+        />
+      ))}
+    </>
+  );
+}
+
 export function MapBackground({ world, className }: { world: WorldId; className?: string }) {
   const viewBox =
-    world === 'schatzinsel' ? '0 0 400 1600' : world === 'kosmos' ? '0 0 400 1400' : '0 0 400 600';
+    world === 'schatzinsel' || world === 'zahlenbloecke'
+      ? '0 0 400 1600'
+      : world === 'kosmos'
+        ? '0 0 400 1400'
+        : '0 0 400 600';
   return (
     <svg
       aria-hidden="true"
@@ -193,6 +253,8 @@ export function MapBackground({ world, className }: { world: WorldId; className?
           <Schatzinsel />
         ) : world === 'kosmos' ? (
           <Kosmos />
+        ) : world === 'zahlenbloecke' ? (
+          <Zahlenbloecke />
         ) : (
           <KleineBucht />
         )}

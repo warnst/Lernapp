@@ -317,6 +317,128 @@ const ICONS = new Map<string, ReactNode>([
       <rect x={24} y={16} width={16} height={12} rx={2} fill="var(--ill-sun)" />
     </g>,
   ],
+  [
+    'nb-1',
+    <g key="nb-1">
+      <rect x={16} y={18} width={32} height={32} rx={6} fill="var(--nb-1-red)" />
+      <circle cx={32} cy={32} r={8} fill="var(--ill-white)" />
+      <circle cx={32} cy={32} r={3.5} fill="var(--stroke)" />
+    </g>,
+  ],
+  [
+    'nb-2',
+    <g key="nb-2">
+      <rect x={18} y={32} width={28} height={22} rx={4} fill="var(--nb-2-orange)" />
+      <rect x={18} y={10} width={28} height={22} rx={4} fill="var(--nb-2-orange)" />
+      <circle cx={26} cy={20} r={4.5} fill="var(--ill-white)" stroke="var(--ill-sun)" />
+      <circle cx={38} cy={20} r={4.5} fill="var(--ill-white)" stroke="var(--ill-sun)" />
+    </g>,
+  ],
+  [
+    'nb-3',
+    <g key="nb-3">
+      <rect x={20} y={38} width={24} height={16} rx={3} fill="var(--nb-3-yellow)" />
+      <rect x={20} y={22} width={24} height={16} rx={3} fill="var(--nb-3-yellow)" />
+      <rect x={20} y={6} width={24} height={16} rx={3} fill="var(--nb-3-yellow)" />
+      <circle cx={32} cy={30} r={2.5} fill="var(--nb-1-red)" />
+      <circle cx={32} cy={46} r={2.5} fill="var(--nb-1-red)" />
+    </g>,
+  ],
+  [
+    'nb-4',
+    <g key="nb-4">
+      <rect x={12} y={12} width={20} height={20} rx={3} fill="var(--nb-4-green)" />
+      <rect x={32} y={12} width={20} height={20} rx={3} fill="var(--nb-4-green)" />
+      <rect x={12} y={32} width={20} height={20} rx={3} fill="var(--nb-4-green)" />
+      <rect x={32} y={32} width={20} height={20} rx={3} fill="var(--nb-4-green)" />
+      <rect x={18} y={18} width={8} height={8} fill="var(--ill-white)" />
+      <rect x={38} y={18} width={8} height={8} fill="var(--ill-white)" />
+    </g>,
+  ],
+  [
+    'nb-5',
+    <g key="nb-5">
+      <rect x={20} y={8} width={24} height={48} rx={4} fill="var(--nb-5-blue)" />
+      <circle cx={27} cy={18} r={5} fill="var(--ill-sun)" />
+      <circle cx={37} cy={18} r={4} fill="var(--ill-white)" />
+    </g>,
+  ],
+  [
+    'nb-6',
+    <g key="nb-6">
+      <rect x={14} y={10} width={36} height={44} rx={4} fill="var(--nb-6-purple)" />
+      <line x1={32} y1={10} x2={32} y2={54} />
+      <circle cx={23} cy={20} r={3} fill="var(--ill-white)" />
+      <circle cx={41} cy={20} r={3} fill="var(--ill-white)" />
+      <circle cx={23} cy={34} r={2.5} fill="var(--ill-white)" />
+      <circle cx={41} cy={34} r={2.5} fill="var(--ill-white)" />
+      <circle cx={23} cy={46} r={2.5} fill="var(--ill-white)" />
+      <circle cx={41} cy={46} r={2.5} fill="var(--ill-white)" />
+    </g>,
+  ],
+  [
+    'nb-7',
+    <g key="nb-7">
+      <rect x={20} y={48} width={24} height={8} fill="var(--nb-1-red)" />
+      <rect x={20} y={40} width={24} height={8} fill="var(--nb-2-orange)" />
+      <rect x={20} y={32} width={24} height={8} fill="var(--nb-3-yellow)" />
+      <rect x={20} y={24} width={24} height={8} fill="var(--nb-4-green)" />
+      <rect x={20} y={16} width={24} height={8} fill="var(--nb-5-blue)" />
+      <rect x={20} y={8} width={24} height={8} fill="var(--nb-7-violet)" />
+    </g>,
+  ],
+  [
+    'nb-8',
+    <g key="nb-8">
+      <rect x={14} y={8} width={36} height={48} rx={4} fill="var(--nb-8-magenta)" />
+      <line x1={32} y1={8} x2={32} y2={56} />
+      <circle cx={24} cy={18} r={4.5} fill="var(--ill-white)" />
+      <circle cx={40} cy={18} r={4.5} fill="var(--ill-white)" />
+    </g>,
+  ],
+  [
+    'nb-9',
+    <g key="nb-9">
+      <rect x={11} y={11} width={42} height={14} fill="var(--nb-9-grey-3)" />
+      <rect x={11} y={25} width={42} height={14} fill="var(--nb-9-grey-2)" />
+      <rect x={11} y={39} width={42} height={14} fill="var(--nb-9-grey-1)" />
+      <rect x={18} y={15} width={7} height={7} fill="var(--ill-white)" />
+      <rect x={39} y={15} width={7} height={7} fill="var(--ill-white)" />
+    </g>,
+  ],
+  [
+    'nb-10',
+    <g key="nb-10">
+      <rect
+        x={14}
+        y={8}
+        width={36}
+        height={48}
+        rx={4}
+        fill="var(--ill-white)"
+        stroke="var(--nb-1-red)"
+      />
+      <line x1={32} y1={8} x2={32} y2={56} stroke="var(--nb-1-red)" />
+      <circle cx={24} cy={18} r={4.5} fill="var(--ill-sun)" stroke="var(--nb-1-red)" />
+      <circle cx={40} cy={18} r={4.5} fill="var(--ill-sun)" stroke="var(--nb-1-red)" />
+    </g>,
+  ],
+  [
+    'station-blockzauber',
+    <g key="station-blockzauber">
+      <rect x={10} y={28} width={18} height={18} rx={3} fill="var(--nb-1-red)" />
+      <rect x={36} y={20} width={18} height={26} rx={3} fill="var(--nb-2-orange)" />
+      <circle cx={32} cy={14} r={5} fill="var(--ill-sun)" />
+    </g>,
+  ],
+  [
+    'station-blocktreppe',
+    <g key="station-blocktreppe">
+      <rect x={8} y={40} width={14} height={14} rx={2} fill="var(--nb-1-red)" />
+      <rect x={24} y={26} width={14} height={28} rx={2} fill="var(--nb-2-orange)" />
+      <rect x={40} y={12} width={14} height={42} rx={2} fill="var(--nb-3-yellow)" />
+    </g>,
+  ],
 ]);
 
 export function StationIcon({

@@ -16,7 +16,13 @@ export function CertificatePreview() {
   const profile = activeProfile(state);
   if (!profile) return <Redirect to="/" />;
   const params = new URLSearchParams(search);
-  const world = params.get('welt') === 'kosmos' ? 'kosmos' : worldOf(profile);
+  const wParam = params.get('welt');
+  const world =
+    wParam === 'kosmos'
+      ? 'kosmos'
+      : wParam === 'zahlenbloecke'
+        ? 'zahlenbloecke'
+        : worldOf(profile);
   const options = parsePrintOptions(`stufe=${String(profile.stufe)}&loesungen=0`, []);
   return (
     <Screen title={UI.treasures.certificate}>

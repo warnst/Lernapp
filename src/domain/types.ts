@@ -37,7 +37,7 @@ export interface ClockTime {
 // ---------- Stufen (docs/09, Abschnitt 2) ----------
 
 export type Stufe = 1 | 2 | 3 | 4;
-export type WorldId = 'kleine-bucht' | 'schatzinsel' | 'kosmos';
+export type WorldId = 'kleine-bucht' | 'schatzinsel' | 'kosmos' | 'zahlenbloecke';
 
 export interface StufeConfig {
   id: Stufe;
@@ -324,7 +324,13 @@ export type Scene =
   | { kind: 'clues'; clues: Clue[] } // docs/10 (Zahlenschloss)
   | { kind: 'clock'; time: ClockTime } // docs/13
   | { kind: 'shapes'; shapes: { shape: ShapeKind; color: number }[] } // docs/13
-  | { kind: 'numberline'; from: number; step: number; labels: (number | null)[] }; // docs/13
+  | { kind: 'numberline'; from: number; step: number; labels: (number | null)[] } // docs/13
+  | {
+      kind: 'blocks';
+      mode: 'combine' | 'split' | 'mirror' | 'stairs';
+      blocks: number[];
+      result?: number | '?';
+    };
 
 export interface SceneItem {
   itemId: string;

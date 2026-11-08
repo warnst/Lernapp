@@ -141,6 +141,20 @@
   --ill-lemon: #ffe45c; /* Zitrone, Mond */
   --ill-metal: #c9d1d8; /* Werkzeug-Metall */
   --ill-jeans: #5b7fb8; /* Hose */
+
+  /* Zahlenblöcke (Numberblocks 1–10) */
+  --nb-1-red: #e53935;
+  --nb-2-orange: #fb8c00;
+  --nb-3-yellow: #fdd835;
+  --nb-4-green: #43a047;
+  --nb-5-blue: #29b6f6;
+  --nb-6-purple: #7e57c2;
+  --nb-7-indigo: #5c6bc0;
+  --nb-7-violet: #ab47bc;
+  --nb-8-magenta: #ec407a;
+  --nb-9-grey-1: #78909c;
+  --nb-9-grey-2: #b0bec5;
+  --nb-9-grey-3: #cfd8dc;
 }
 
 /* Arbeitsblätter (Druck und Vorschau) nur mit Konturen: alle Illustrationsflächen werden weiß (docs/06) */
@@ -215,6 +229,18 @@
   --ill-lemon: var(--fill-main);
   --ill-metal: var(--fill-main);
   --ill-jeans: var(--fill-main);
+  --nb-1-red: var(--fill-main);
+  --nb-2-orange: var(--fill-main);
+  --nb-3-yellow: var(--fill-main);
+  --nb-4-green: var(--fill-main);
+  --nb-5-blue: var(--fill-main);
+  --nb-6-purple: var(--fill-main);
+  --nb-7-indigo: var(--fill-main);
+  --nb-7-violet: var(--fill-main);
+  --nb-8-magenta: var(--fill-main);
+  --nb-9-grey-1: var(--fill-main);
+  --nb-9-grey-2: var(--fill-main);
+  --nb-9-grey-3: var(--fill-main);
 
   /* Münzen auf Arbeitsblättern nur als Kontur (docs/06) */
   --coin-copper: var(--fill-main);

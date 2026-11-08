@@ -13,6 +13,7 @@ import { ItemCard } from './ItemCard';
 import { MoneyPieceView } from './MoneyPieceView';
 import { ObjectScene } from './ObjectScene';
 import { BalanceScene, CluesScene, SequenceScene } from './RiddleScenes';
+import { BlockScene } from './BlockScene';
 
 function isAvatar(id: string): id is AvatarId {
   return AVATARS.some((info) => info.id === id);
@@ -159,5 +160,11 @@ export function SceneView({ scene }: { scene: Scene }) {
       );
     case 'numberline':
       return <NumberLineScene from={scene.from} step={scene.step} labels={scene.labels} />;
+    case 'blocks':
+      return (
+        <div className={styles.scene}>
+          <BlockScene mode={scene.mode} blocks={scene.blocks} result={scene.result} />
+        </div>
+      );
   }
 }

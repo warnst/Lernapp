@@ -8,10 +8,12 @@ import { TOWER_ICON, TOWER_ORDER } from '@/content/tower';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_PLANETS } from '@/content/worlds/kosmos/planets';
+import { ZAHLENBLOCK_HEROES } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station, WorldId } from '@/domain/types';
 import { FindlingIcon } from '@/illustrations/FindlingIcon';
 import { Gem } from '@/illustrations/Gem';
 import { ItemIcon } from '@/illustrations/ItemIcon';
+import { NumberBlock } from '@/illustrations/NumberBlock';
 import { Pearl } from '@/illustrations/Pearl';
 import { Star } from '@/illustrations/Star';
 import { StationIcon } from '@/illustrations/StationIcon';
@@ -105,7 +107,13 @@ export function Treasures({ profile }: { profile: Profile }) {
         </div>
         {done.length === stations.length && (
           <LinkButton
-            href={world === 'kosmos' ? '/schaetze/urkunde?welt=kosmos' : '/schaetze/urkunde'}
+            href={
+              world === 'kosmos'
+                ? '/schaetze/urkunde?welt=kosmos'
+                : world === 'zahlenbloecke'
+                  ? '/schaetze/urkunde?welt=zahlenbloecke'
+                  : '/schaetze/urkunde'
+            }
             block
           >
             {UI.treasures.certificate}
@@ -128,6 +136,31 @@ export function Treasures({ profile }: { profile: Profile }) {
                   variant="ghost"
                   onClick={() => {
                     toggleSpeak(`${planet.factCard.title}. ${planet.factCard.fact}`);
+                  }}
+                >
+                  <UiIcon name="lautsprecher" /> {UI.sheet.read}
+                </Button>
+              )}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {world === 'zahlenbloecke' && (
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Zahlenblock-Freundeskarten</h2>
+          {ZAHLENBLOCK_HEROES.filter((h) =>
+            h.stations.every((s) => isCompleted(profile, 'zahlenbloecke', s.id)),
+          ).map((hero) => (
+            <div key={hero.id} className={styles.detail}>
+              <NumberBlock value={hero.number} size={72} />
+              <strong>{hero.friendCard.title}</strong>
+              <p>{hero.friendCard.fact}</p>
+              {canSpeak() && (
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    toggleSpeak(`${hero.friendCard.title}. ${hero.friendCard.fact}`);
                   }}
                 >
                   <UiIcon name="lautsprecher" /> {UI.sheet.read}

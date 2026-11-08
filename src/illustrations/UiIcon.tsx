@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 
 export type UiIconName =
   | 'planet'
+  | 'bloecke'
   | 'zahnrad'
   | 'schliessen'
   | 'lautsprecher'
@@ -59,6 +60,15 @@ const ICONS: Record<UiIconName, ReactNode> = {
     <>
       <circle cx={12} cy={12} r={6} />
       <ellipse cx={12} cy={12} rx={10.5} ry={3.8} transform="rotate(-24 12 12)" />
+    </>
+  ),
+  bloecke: (
+    <>
+      <rect x={4} y={13} width={7.5} height={7.5} rx={1.5} />
+      <rect x={12.5} y={13} width={7.5} height={7.5} rx={1.5} />
+      <rect x={8.2} y={4.5} width={7.5} height={7.5} rx={1.5} />
+      <circle cx={10.5} cy={8.2} r={0.8} fill="currentColor" />
+      <circle cx={13.5} cy={8.2} r={0.8} fill="currentColor" />
     </>
   ),
   zahnrad: (

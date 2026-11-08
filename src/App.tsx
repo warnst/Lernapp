@@ -23,6 +23,7 @@ import { JokeBook } from '@/screens/JokeBook';
 import { KnowledgeBook } from '@/screens/ChoiceRiddles';
 import { CertificatePreview } from '@/screens/CertificatePreview';
 import { KosmosMap, KosmosPlanetView } from '@/screens/KosmosMap';
+import { ZahlenbloeckeMap, ZahlenblockView } from '@/screens/ZahlenbloeckeMap';
 import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
 import { AppStateProvider } from '@/state/app-state';
@@ -68,6 +69,22 @@ function KosmosPlanetPage({ planetId }: { planetId: string }) {
     </ChildLayout>
   );
 }
+function ZahlenbloeckePage() {
+  return (
+    <ChildLayout>
+      {(profile) => <ZahlenbloeckeMap key={profile.id} profile={profile} />}
+    </ChildLayout>
+  );
+}
+function ZahlenblockPage({ blockId }: { blockId: string }) {
+  return (
+    <ChildLayout>
+      {(profile) => (
+        <ZahlenblockView key={`${profile.id}-${blockId}`} profile={profile} blockId={blockId} />
+      )}
+    </ChildLayout>
+  );
+}
 
 /** Kiko trägt überall das Outfit des aktiven Kindes (docs/12 4.1). */
 function OutfitProvider({ children }: { children: ReactNode }) {
@@ -91,6 +108,10 @@ export function Routes() {
           {(params) => <KosmosPlanetPage planetId={params.planetId} />}
         </Route>
         <Route path="/kosmos" component={KosmosPage} />
+        <Route path="/zahlenbloecke/:blockId">
+          {(params) => <ZahlenblockPage blockId={params.blockId} />}
+        </Route>
+        <Route path="/zahlenbloecke" component={ZahlenbloeckePage} />
         <Route path="/wer-spielt" component={WhoPlays} />
         <Route path="/station/:stationId/geschafft">
           {(params) => <StationComplete stationId={params.stationId} />}

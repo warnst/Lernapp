@@ -34,7 +34,7 @@ const TOPIC_IDS: readonly PracticeTopicId[] = [
   'kalender',
   'formen',
 ];
-const WORLD_IDS: readonly string[] = ['kleine-bucht', 'schatzinsel', 'kosmos'];
+const WORLD_IDS: readonly string[] = ['kleine-bucht', 'schatzinsel', 'kosmos', 'zahlenbloecke'];
 
 export function createInitialState(): AppStateV2 {
   return { version: 2, profiles: [], setupDone: false };

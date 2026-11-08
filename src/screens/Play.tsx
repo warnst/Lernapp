@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { Redirect, useLocation } from 'wouter';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_STATIONS, planetOfStation } from '@/content/worlds/kosmos/planets';
+import { ZAHLENBLOECKE_STATIONS, heroOfStation } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station } from '@/domain/types';
 import { stationTasks } from '@/practice/variants';
 import { useAppState } from '@/state/context';
@@ -13,6 +14,11 @@ function isKosmosUnlocked(profile: Profile, stationIndex: number): boolean {
   return isUnlocked(profile, KOSMOS_STATIONS, stationIndex);
 }
 
+function isZahlenbloeckeUnlocked(profile: Profile, stationIndex: number): boolean {
+  if (profile.worlds[worldOf(profile)]?.unlockAll === true) return true;
+  return isUnlocked(profile, ZAHLENBLOECKE_STATIONS, stationIndex);
+}
+
 function StationGame({ profile, station }: { profile: Profile; station: Station }) {
   const { dispatch } = useAppState();
   const [, navigate] = useLocation();
@@ -20,7 +26,8 @@ function StationGame({ profile, station }: { profile: Profile; station: Station 
   const [tasks] = useState(() => stationTasks(station, profile.stufe, plays, profile.id));
   const resume = profile.resume?.stationId === station.id ? profile.resume : undefined;
   const planet = station.world === 'kosmos' ? planetOfStation(station.id) : undefined;
-  const mapHref = planet ? `/kosmos/${planet.id}` : '/';
+  const hero = station.world === 'zahlenbloecke' ? heroOfStation(station.id) : undefined;
+  const mapHref = planet ? `/kosmos/${planet.id}` : hero ? `/zahlenbloecke/${hero.id}` : '/';
 
   const onAdvance = useCallback(
     (taskIndex: number, partIndex: number) => {
@@ -66,6 +73,13 @@ export function Play({ stationId }: { stationId: string }) {
   if (kosmosIndex !== -1) {
     const station = KOSMOS_STATIONS[kosmosIndex];
     if (!station || !isKosmosUnlocked(profile, kosmosIndex)) return <Redirect to="/kosmos" />;
+    return <StationGame key={`${profile.id}-${station.id}`} profile={profile} station={station} />;
+  }
+  const blockIndex = ZAHLENBLOECKE_STATIONS.findIndex((s) => s.id === stationId);
+  if (blockIndex !== -1) {
+    const station = ZAHLENBLOECKE_STATIONS[blockIndex];
+    if (!station || !isZahlenbloeckeUnlocked(profile, blockIndex))
+      return <Redirect to="/zahlenbloecke" />;
     return <StationGame key={`${profile.id}-${station.id}`} profile={profile} station={station} />;
   }
   const stations = WORLDS[worldOf(profile)].stations;

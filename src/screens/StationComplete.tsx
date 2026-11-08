@@ -7,6 +7,7 @@ import { StarPill } from '@/components/StarPill';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_STATIONS, planetOfStation } from '@/content/worlds/kosmos/planets';
+import { ZAHLENBLOECKE_STATIONS, heroOfStation } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station } from '@/domain/types';
 import { Chest } from '@/illustrations/Chest';
 import { FindlingIcon } from '@/illustrations/FindlingIcon';
@@ -62,7 +63,8 @@ function Finale({ profile, stations }: { profile: Profile; stations: Station[] }
   const last = stations.at(-1);
   if (!last) return null;
   const world = last.world;
-  const mapHref = world === 'kosmos' ? '/kosmos' : '/';
+  const mapHref =
+    world === 'kosmos' ? '/kosmos' : world === 'zahlenbloecke' ? '/zahlenbloecke' : '/';
   return (
     <main className={styles.page}>
       <Confetti />
@@ -108,7 +110,8 @@ function Complete({
   if (index === stations.length - 1) return <Finale profile={profile} stations={stations} />;
   const next = stations[index + 1];
   const planet = station.world === 'kosmos' ? planetOfStation(station.id) : undefined;
-  const mapHref = planet ? `/kosmos/${planet.id}` : '/';
+  const hero = station.world === 'zahlenbloecke' ? heroOfStation(station.id) : undefined;
+  const mapHref = planet ? `/kosmos/${planet.id}` : hero ? `/zahlenbloecke/${hero.id}` : '/';
   return (
     <main className={styles.page}>
       <Confetti />
@@ -148,6 +151,11 @@ export function StationComplete({ stationId }: { stationId: string }) {
   if (kosmosIndex !== -1) {
     if (!isCompleted(profile, 'kosmos', stationId)) return <Redirect to="/kosmos" />;
     return <Complete profile={profile} stations={KOSMOS_STATIONS} index={kosmosIndex} />;
+  }
+  const blockIndex = ZAHLENBLOECKE_STATIONS.findIndex((s) => s.id === stationId);
+  if (blockIndex !== -1) {
+    if (!isCompleted(profile, 'zahlenbloecke', stationId)) return <Redirect to="/zahlenbloecke" />;
+    return <Complete profile={profile} stations={ZAHLENBLOECKE_STATIONS} index={blockIndex} />;
   }
   const world = worldOf(profile);
   const stations = WORLDS[world].stations;

@@ -36,6 +36,7 @@ const LAYOUT: Record<WorldId, [number, number][]> = {
     [24, 34],
   ],
   kosmos: [],
+  zahlenbloecke: [],
 };
 
 const GREETING_MS = 4000;

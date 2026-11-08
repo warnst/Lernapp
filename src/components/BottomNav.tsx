@@ -22,6 +22,12 @@ export function BottomNav({ world }: { world: WorldId }) {
       active: (p) => p.startsWith('/kosmos'),
     },
     {
+      href: '/zahlenbloecke',
+      label: UI.nav.zahlenbloecke,
+      icon: 'bloecke',
+      active: (p) => p.startsWith('/zahlenbloecke'),
+    },
+    {
       href: '/',
       label: UI.nav.adventure,
       icon: world === 'kleine-bucht' ? 'muschel' : 'palme',

@@ -5,6 +5,7 @@ import { SpeechBubble } from '@/components/SpeechBubble';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_STATIONS, planetOfStation } from '@/content/worlds/kosmos/planets';
+import { ZAHLENBLOECKE_STATIONS, heroOfStation } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station, Task } from '@/domain/types';
 import { Gem } from '@/illustrations/Gem';
 import { bonusTask } from '@/practice/bonus';
@@ -38,7 +39,8 @@ function BonusGame({ profile, station, task }: { profile: Profile; station: Stat
   const { dispatch } = useAppState();
   const [solved, setSolved] = useState(false);
   const planet = station.world === 'kosmos' ? planetOfStation(station.id) : undefined;
-  const mapHref = planet ? `/kosmos/${planet.id}` : '/';
+  const hero = station.world === 'zahlenbloecke' ? heroOfStation(station.id) : undefined;
+  const mapHref = planet ? `/kosmos/${planet.id}` : hero ? `/zahlenbloecke/${hero.id}` : '/';
   const onFinish = useCallback(() => {
     dispatch({ type: 'solve-bonus', id: profile.id, world: station.world, stationId: station.id });
     setSolved(true);
@@ -58,6 +60,7 @@ function BonusGame({ profile, station, task }: { profile: Profile; station: Stat
 function findStation(profile: Profile, stationId: string): Station | undefined {
   return (
     KOSMOS_STATIONS.find((s) => s.id === stationId) ??
+    ZAHLENBLOECKE_STATIONS.find((s) => s.id === stationId) ??
     WORLDS[worldOf(profile)].stations.find((s) => s.id === stationId)
   );
 }
@@ -73,7 +76,17 @@ export function BonusPlay({ stationId }: { stationId: string }) {
   if (!profile) return <Redirect to="/" />;
   const station = findStation(profile, stationId);
   if (!station || !task || !isCompleted(profile, station.world, station.id)) {
-    return <Redirect to={station?.world === 'kosmos' ? '/kosmos' : '/'} />;
+    return (
+      <Redirect
+        to={
+          station?.world === 'kosmos'
+            ? '/kosmos'
+            : station?.world === 'zahlenbloecke'
+              ? '/zahlenbloecke'
+              : '/'
+        }
+      />
+    );
   }
   return <BonusGame key={profile.id} profile={profile} station={station} task={task} />;
 }
