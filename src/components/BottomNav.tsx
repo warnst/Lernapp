@@ -11,10 +11,16 @@ interface Tab {
   active: (path: string) => boolean;
 }
 
-/** Untere Navigation mit 4 Tabs (docs/01 Abschnitt 4, docs/12 Abschnitt 2). */
+/** Untere Navigation (iPad Air & Handy) bzw. linke Seitenleiste im Querformat. */
 export function BottomNav({ world }: { world: WorldId }) {
   const [path] = useLocation();
   const tabs: Tab[] = [
+    {
+      href: '/lesen',
+      label: UI.nav.lesen,
+      icon: 'buch',
+      active: (p) => p.startsWith('/lesen'),
+    },
     {
       href: '/kosmos',
       label: UI.nav.kosmos,

@@ -7,7 +7,13 @@ import { generateValid, withId } from './round';
 // Original oder Variante für Stationsaufgaben (docs/09 Abschnitt 5.1).
 
 function worldStufen(station: Station): Stufe[] {
-  if (station.world === 'kosmos' || station.world === 'zahlenbloecke') return [1, 2, 3, 4];
+  if (
+    station.world === 'kosmos' ||
+    station.world === 'zahlenbloecke' ||
+    station.world === 'lesen'
+  ) {
+    return [1, 2, 3, 4];
+  }
   return Object.values(STUFEN)
     .filter((cfg) => cfg.world === station.world)
     .map((cfg) => cfg.id);
@@ -40,7 +46,8 @@ export function stationTasks(
   profileId: string,
 ): Task[] {
   return station.tasks.flatMap((task) => {
-    const original = stufe === task.authoredFor || station.world === 'zahlenbloecke';
+    const original =
+      stufe === task.authoredFor || station.world === 'zahlenbloecke' || station.world === 'lesen';
     if (original && plays === 0) return [task];
     const variant = variantOf(
       task,

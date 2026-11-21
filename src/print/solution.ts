@@ -47,5 +47,7 @@ export function solutionText(answer: Answer): string {
       return answer.digits.join(', ');
     case 'clock':
       return timeWords(answer.correct);
+    case 'syllable-build':
+      return answer.target.join(answer.mode === 'word' ? '·' : '');
   }
 }

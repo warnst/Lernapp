@@ -37,7 +37,7 @@ export interface ClockTime {
 // ---------- Stufen (docs/09, Abschnitt 2) ----------
 
 export type Stufe = 1 | 2 | 3 | 4;
-export type WorldId = 'kleine-bucht' | 'schatzinsel' | 'kosmos' | 'zahlenbloecke';
+export type WorldId = 'kleine-bucht' | 'schatzinsel' | 'kosmos' | 'zahlenbloecke' | 'lesen';
 
 export interface StufeConfig {
   id: Stufe;
@@ -277,6 +277,8 @@ export interface Task {
   variant?: TaskVariant;
   scene: Scene;
   story: string; // mit Geld-Tokens
+  /** Optionaler eigener Vorlesetext (z. B. mit gedehnter Silben-Aussprache beim Lesen). */
+  speak?: string;
   parts: TaskPart[]; // mindestens 1; mehrere = Teil a), b)
 }
 
@@ -330,7 +332,47 @@ export type Scene =
       mode: 'combine' | 'split' | 'mirror' | 'stairs';
       blocks: number[];
       result?: number | '?';
-    };
+    }
+  | SyllableScene;
+
+export interface SyllableWord {
+  syllables: string[];
+  speak?: string;
+  speakSyllables?: string[];
+}
+
+export interface SyllableScene {
+  kind: 'syllables';
+  mode: 'letter-pair' | 'word' | 'listen' | 'story';
+  /** Groß-/Klein-Buchstabenpaar mit Anlautbild */
+  letter?: {
+    upper: string;
+    lower?: string;
+    anchorWord?: string;
+    itemId?: string;
+    speak: string;
+  };
+  /** Zweifarbiges Silbenwort mit Bögen und optionalem Bild */
+  word?: {
+    syllables: string[];
+    itemId?: string;
+    speak: string;
+    speakSyllables?: string[];
+    uppercase?: boolean;
+  };
+  /** Reine Hör-Aufgabe mit großem Kiko-Hörknopf */
+  listen?: {
+    speak: string;
+    buttonLabel?: string;
+    itemId?: string;
+  };
+  /** Mini-Silbengeschichte (Conni-Stil): Sätze aus zweifarbigen Silbenwörtern */
+  story?: {
+    sentences: SyllableWord[][];
+    itemId?: string;
+    speak?: string;
+  };
+}
 
 export interface SceneItem {
   itemId: string;
@@ -379,7 +421,27 @@ export type Answer =
   | SelectAnswer
   | GridAnswer
   | CodeAnswer
-  | ClockAnswer;
+  | ClockAnswer
+  | SyllableBuildAnswer;
+
+export interface SyllableTile {
+  id: string;
+  text: string;
+  speak?: string;
+}
+
+/** Silben- und Laut-Baukasten: Bausteine in der richtigen Reihenfolge zusammensetzen. */
+export interface SyllableBuildAnswer {
+  type: 'syllable-build';
+  /** Gesuchte Bausteine in richtiger Reihenfolge, z. B. ['So', 'fa'] oder ['M', 'A'] */
+  target: string[];
+  /** Alle antippbaren Bausteine (inkl. Ablenker) */
+  bank: SyllableTile[];
+  /** 'word' = Silben in Blau/Rot mit Bögen, 'blend' = Einzellaute zu einer Silbe */
+  mode: 'word' | 'blend';
+  /** Vorlesetext, wenn ein Baustein angetippt wird oder beim Prüfen */
+  speakResult?: string;
+}
 
 /** Zeiger stellen (docs/13); die Minuten springen in `step`-Schritten */
 export interface ClockAnswer {
@@ -393,6 +455,8 @@ export interface ChoiceAnswer {
   layout: 'cards' | 'yesno' | 'coins' | 'bags';
   shuffle: boolean; // true: gemischt mit Seed aus task.id
   options: ChoiceOption[]; // 2–4, genau eine mit correct: true
+  /** Versteckt den Vorlese-Knopf neben den Karten (für Hör-/Leseaufgaben, damit nichts verraten wird). */
+  hideOptionSpeaker?: boolean;
 }
 
 export interface ChoiceOption {
@@ -408,6 +472,14 @@ export interface ChoiceOption {
   clock?: ClockTime;
   shape?: ShapeKind;
   objects?: ObjectGroup; // Eimer/Häufchen mit Dingen statt Geld (docs/11)
+  /** Zweifarbige Silbendarstellung auf der Antwortkarte */
+  syllables?: string[];
+  /** Extra große Fibelschrift für einzelne Buchstaben oder Silben */
+  largeGlyph?: boolean;
+  /** Zeigt nur das Bild groß auf der Karte (für Wort-Bild-Zuordnung beim Lesen) */
+  iconOnly?: boolean;
+  /** Eigener Vorlesetext beim Antippen (z. B. gedehnter Laut statt Buchstabenname) */
+  speakLabel?: string;
 }
 
 export interface MoneyAnswer {

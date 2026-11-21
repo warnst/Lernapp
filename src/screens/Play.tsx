@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react';
 import { Redirect, useLocation } from 'wouter';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_STATIONS, planetOfStation } from '@/content/worlds/kosmos/planets';
+import { LESEN_STATIONS, chapterOfStation } from '@/content/worlds/lesen/chapters';
+import { isLesenStationUnlocked } from '@/state/lesen-progress';
 import { ZAHLENBLOECKE_STATIONS, heroOfStation } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station } from '@/domain/types';
 import { stationTasks } from '@/practice/variants';
@@ -27,7 +29,14 @@ function StationGame({ profile, station }: { profile: Profile; station: Station 
   const resume = profile.resume?.stationId === station.id ? profile.resume : undefined;
   const planet = station.world === 'kosmos' ? planetOfStation(station.id) : undefined;
   const hero = station.world === 'zahlenbloecke' ? heroOfStation(station.id) : undefined;
-  const mapHref = planet ? `/kosmos/${planet.id}` : hero ? `/zahlenbloecke/${hero.id}` : '/';
+  const chapter = station.world === 'lesen' ? chapterOfStation(station.id) : undefined;
+  const mapHref = planet
+    ? `/kosmos/${planet.id}`
+    : hero
+      ? `/zahlenbloecke/${hero.id}`
+      : chapter
+        ? `/lesen/${chapter.id}`
+        : '/';
 
   const onAdvance = useCallback(
     (taskIndex: number, partIndex: number) => {
@@ -57,6 +66,7 @@ function StationGame({ profile, station }: { profile: Profile; station: Station 
       tasks={tasks}
       progressStyle={station.progressStyle ?? 'shells'}
       mapHref={mapHref}
+      alwaysAutoRead={station.world === 'lesen'}
       {...(resume ? { start: resume } : {})}
       onAdvance={onAdvance}
       onFinish={onFinish}
@@ -80,6 +90,12 @@ export function Play({ stationId }: { stationId: string }) {
     const station = ZAHLENBLOECKE_STATIONS[blockIndex];
     if (!station || !isZahlenbloeckeUnlocked(profile, blockIndex))
       return <Redirect to="/zahlenbloecke" />;
+    return <StationGame key={`${profile.id}-${station.id}`} profile={profile} station={station} />;
+  }
+  const lesenIndex = LESEN_STATIONS.findIndex((s) => s.id === stationId);
+  if (lesenIndex !== -1) {
+    const station = LESEN_STATIONS[lesenIndex];
+    if (!station || !isLesenStationUnlocked(profile, lesenIndex)) return <Redirect to="/lesen" />;
     return <StationGame key={`${profile.id}-${station.id}`} profile={profile} station={station} />;
   }
   const stations = WORLDS[worldOf(profile)].stations;

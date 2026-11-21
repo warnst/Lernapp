@@ -1,0 +1,494 @@
+.page {
+  position: relative;
+  min-height: 100dvh;
+  padding: calc(64px + env(safe-area-inset-top)) 0 calc(196px + env(safe-area-inset-bottom));
+}
+
+.greeting {
+  position: sticky;
+  top: calc(64px + env(safe-area-inset-top));
+  z-index: 4;
+  max-width: 680px;
+  margin: var(--space-2) auto 0;
+  padding: 0 var(--space-4);
+}
+
+.map {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  height: 1280px;
+  margin: 0 auto;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.path polyline {
+  fill: none;
+  stroke: var(--white);
+  stroke-width: 8;
+  stroke-dasharray: 12 14;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+
+.spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.kiko {
+  position: absolute;
+  top: -12px;
+  right: -64px;
+  pointer-events: none;
+}
+
+.notice {
+  position: fixed;
+  right: 0;
+  bottom: calc(156px + env(safe-area-inset-bottom));
+  left: 0;
+  z-index: 8;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.nextBar {
+  position: fixed;
+  right: 0;
+  bottom: calc(68px + env(safe-area-inset-bottom));
+  left: 0;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+}
+
+.quickRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+/* Kapitel-Detailseite (iPad Air freundlich) */
+.chapterPage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 820px;
+  margin: 0 auto;
+  padding: calc(72px + env(safe-area-inset-top)) var(--space-4)
+    calc(112px + env(safe-area-inset-bottom));
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.chapterStars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-full);
+  background: var(--white);
+}
+
+.chapterHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+}
+
+.chapterIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border: 3px solid var(--syllable-a);
+  border-radius: var(--radius-l);
+  background: var(--syllable-a-bg);
+  cursor: pointer;
+}
+
+.chapterNumber {
+  margin: 0;
+  color: var(--sea-700);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.chapterTitle {
+  margin: 2px 0;
+  font-family: var(--font-heading);
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.chapterSubtitle {
+  margin: 0 0 var(--space-1);
+  color: var(--ink-600);
+  font-size: 17px;
+}
+
+.catchphrase {
+  margin: 0;
+  color: var(--syllable-a);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.sectionTitle {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: 22px;
+}
+
+.letterSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.letterHint {
+  margin: 0;
+  color: var(--ink-600);
+  font-size: 16px;
+}
+
+.letterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.letterTile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 84px;
+  padding: var(--space-3) var(--space-4);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  text-align: left;
+}
+
+.letterTile:hover,
+.letterTile:focus-visible {
+  border-color: var(--sea-500);
+  background: var(--lagoon-100);
+}
+
+.letterPair {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.letterUpper {
+  color: var(--syllable-a);
+  font-size: 40px;
+}
+
+.letterLower {
+  color: var(--syllable-b);
+  font-size: 36px;
+}
+
+.letterAnchor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--ink-600);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.reviewRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.reviewLabel {
+  color: var(--ink-600);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.reviewChip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  min-height: 44px;
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-full);
+  background: var(--sand-100);
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reviewChip:hover,
+.reviewChip:focus-visible {
+  border-color: var(--sea-500);
+  background: var(--lagoon-100);
+}
+
+.storyCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--sand-100);
+}
+
+.stationList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stationCards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stationCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 88px;
+  padding: var(--space-3) var(--space-4);
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--white);
+  color: var(--ink-900);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+}
+
+.stationCurrent {
+  border-color: var(--sea-500);
+  background: var(--lagoon-100);
+}
+
+.stationDone {
+  border-color: var(--palm-600);
+}
+
+.stationLocked {
+  opacity: 0.65;
+  background: var(--sand-100);
+}
+
+.stationInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stationStep {
+  color: var(--ink-600);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.stationName {
+  font-family: var(--font-heading);
+  font-size: 20px;
+}
+
+.stationSkill {
+  color: var(--ink-600);
+  font-size: 15px;
+}
+
+.stationStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sea-700);
+}
+
+/* Freigeschaltete Silbenbuch-Seite im Kapitel */
+.bookBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 3px solid var(--sun-400);
+  border-radius: var(--radius-l);
+  background: var(--white);
+  box-shadow: var(--shadow-2);
+}
+
+.bookHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.bookBadge {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--sun-400);
+  color: var(--ink-900);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bookTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 24px;
+}
+
+.bookSentences {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-m);
+  background: var(--sand-50);
+}
+
+.bookSentence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+}
+
+.wordBtn {
+  padding: 2px 4px;
+  border: 0;
+  border-radius: var(--radius-s);
+  background: transparent;
+  cursor: pointer;
+}
+
+.wordBtn:hover,
+.wordBtn:focus-visible {
+  background: var(--lagoon-100);
+}
+
+.bookActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Wiederholungs-Abschluss */
+.reviewDone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 560px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+  justify-content: center;
+  text-align: center;
+}
+
+.reviewActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+/* iPad Air Hochformat (768px+) & Querformat / Desktop (900px+) */
+@media (width >= 768px) {
+  .letterGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .nextBar {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .nextPrimary {
+    flex: 1.4;
+  }
+
+  .quickRow {
+    flex: 1;
+  }
+}
+
+@media (width >= 900px) {
+  .page {
+    padding-bottom: var(--space-7);
+    padding-left: 116px;
+  }
+
+  .nextBar {
+    bottom: var(--space-4);
+    left: 116px;
+  }
+
+  .notice {
+    bottom: 92px;
+    left: 116px;
+  }
+
+  .chapterPage {
+    padding-left: calc(116px + var(--space-5));
+    padding-right: var(--space-5);
+    padding-bottom: var(--space-7);
+  }
+}

@@ -230,11 +230,47 @@ function Zahlenbloecke() {
   );
 }
 
+function LesenInsel() {
+  return (
+    <>
+      {/* Sanftes Meer & Sonnenhimmel für die Silben-Insel */}
+      <rect x={0} y={0} width={400} height={1400} fill="var(--ill-sky)" stroke="none" />
+      <path
+        d="M0 1120 Q100 1090 200 1120 T400 1120 V1400 H0 Z"
+        fill="var(--ill-sea)"
+        stroke="none"
+      />
+      <path
+        d="M40 1340 C15 1100 28 840 50 560 C72 280 120 70 205 55 C295 40 365 260 362 560 C360 880 375 1120 355 1340 Z"
+        fill="var(--ill-sand)"
+      />
+      <path
+        d="M78 1180 C62 940 86 680 96 420 C110 210 155 100 205 95 C265 90 315 240 318 460 C320 740 330 980 310 1180 Z"
+        fill="var(--ill-grass)"
+      />
+      {/* Sanfte Hügel und schwebende Silben-Bögen als Deko */}
+      <circle cx={68} cy={140} r={28} fill="var(--ill-sun)" />
+      <path
+        d="M270 140 Q310 110 350 140 M35 440 Q70 415 105 440 M290 760 Q328 732 366 760 M32 1040 Q72 1012 112 1040"
+        fill="none"
+        stroke="var(--ill-white)"
+        strokeWidth={6}
+      />
+      <path
+        d="M55 1290 Q95 1278 135 1290 M240 1320 Q285 1308 330 1320"
+        fill="none"
+        stroke="var(--ill-wave)"
+        strokeWidth={4}
+      />
+    </>
+  );
+}
+
 export function MapBackground({ world, className }: { world: WorldId; className?: string }) {
   const viewBox =
     world === 'schatzinsel' || world === 'zahlenbloecke'
       ? '0 0 400 1600'
-      : world === 'kosmos'
+      : world === 'kosmos' || world === 'lesen'
         ? '0 0 400 1400'
         : '0 0 400 600';
   return (
@@ -255,6 +291,8 @@ export function MapBackground({ world, className }: { world: WorldId; className?
           <Kosmos />
         ) : world === 'zahlenbloecke' ? (
           <Zahlenbloecke />
+        ) : world === 'lesen' ? (
+          <LesenInsel />
         ) : (
           <KleineBucht />
         )}

@@ -189,6 +189,8 @@ function correctInputs(task: Task, part: TaskPart): AnswerInput[] {
     }
     case 'clock':
       return [{ type: 'clock', time: answer.correct }];
+    case 'syllable-build':
+      return [{ type: 'syllable-build', parts: answer.target }];
   }
 }
 
@@ -223,19 +225,23 @@ function describeAnswer(answer: Answer): string {
       return answer.digits.join(' ');
     case 'clock':
       return `${String(answer.correct.hour)}:${String(answer.correct.minute)}`;
+    case 'syllable-build':
+      return answer.target.join('·');
   }
 }
 
 describe('Welten und Stationen', () => {
-  it('die Insel hat 9 Stationen mit 45 Aufgaben, die Bucht 5 mit 25, der Kosmos 24 mit 120, Zahlenblöcke 30 mit 150', () => {
+  it('die Insel hat 9 Stationen mit 45 Aufgaben, die Bucht 5 mit 25, der Kosmos 24 mit 120, Zahlenblöcke 30 mit 150, Lesen 24 mit 120', () => {
     expect(WORLDS.schatzinsel.stations).toHaveLength(9);
     expect(WORLDS['kleine-bucht'].stations).toHaveLength(5);
     expect(WORLDS.kosmos.stations).toHaveLength(24);
     expect(WORLDS.zahlenbloecke.stations).toHaveLength(30);
+    expect(WORLDS.lesen.stations).toHaveLength(24);
     expect(WORLDS.schatzinsel.stations.flatMap((s) => s.tasks)).toHaveLength(45);
     expect(WORLDS['kleine-bucht'].stations.flatMap((s) => s.tasks)).toHaveLength(25);
     expect(WORLDS.kosmos.stations.flatMap((s) => s.tasks)).toHaveLength(120);
     expect(WORLDS.zahlenbloecke.stations.flatMap((s) => s.tasks)).toHaveLength(150);
+    expect(WORLDS.lesen.stations.flatMap((s) => s.tasks)).toHaveLength(120);
   });
 
   it.each(worlds)('$id: Stationen sind fortlaufend nummeriert und gehören zur Welt', (world) => {
@@ -259,7 +265,7 @@ describe('Welten und Stationen', () => {
   it.each(stations)('$id: ID-Schema, Stufe und Teile', (station) => {
     for (const task of station.tasks) {
       const stationPrefix =
-        station.world === 'kosmos' || station.world === 'zahlenbloecke'
+        station.world === 'kosmos' || station.world === 'zahlenbloecke' || station.world === 'lesen'
           ? station.id
           : `${station.world === 'schatzinsel' ? 's' : 'b'}${String(station.number)}`;
       expect(task.id).toBe(`${stationPrefix}-t${String(station.tasks.indexOf(task) + 1)}`);
@@ -431,9 +437,9 @@ describe('Varianten (docs/09, 5.1)', () => {
     },
   );
 
-  it('nur 8.5 hat keine Variante', () => {
+  it('nur 8.5 hat keine Variante (Mathe-Welten)', () => {
     const without = tasks
-      .filter(({ task }) => task.variant === undefined)
+      .filter(({ station, task }) => station.world !== 'lesen' && task.variant === undefined)
       .map(({ task }) => task.id);
     expect(without).toEqual(['s8-t5']);
   });

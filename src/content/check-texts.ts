@@ -61,4 +61,12 @@ export const CHECK_TEXTS: CheckTexts = {
     `Das Schloss klemmt noch. Das Rad mit ${SYMBOL_DATIVE[symbol]} stimmt noch nicht.`,
   clockMinute: 'Schau auf den großen Zeiger. Er zeigt die Minuten.',
   clockHour: 'Der große Zeiger stimmt! Schau jetzt auf den kleinen Zeiger. Er zeigt die Stunde.',
+  syllableFirstRight: (mode) =>
+    mode === 'blend'
+      ? 'Der erste Buchstabe stimmt schon! Hör noch einmal genau, welcher Laut danach kommt.'
+      : 'Die erste Silbe stimmt schon! Schau noch einmal auf die nächste Silbe.',
+  syllableStartAgain: (mode) =>
+    mode === 'blend'
+      ? 'Hör dir den Anfang noch einmal genau an. Welcher Buchstabe klingt zuerst?'
+      : 'Hör dir den Anfang des Wortes noch einmal genau an. Welche Silbe kommt zuerst?',
 };

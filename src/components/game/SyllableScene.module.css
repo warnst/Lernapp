@@ -1,0 +1,152 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.letterCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-6);
+  border: 3px solid var(--syllable-a);
+  border-radius: var(--radius-l);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+  cursor: pointer;
+}
+
+.letterCard:hover,
+.letterCard:focus-visible {
+  background: var(--syllable-a-bg);
+}
+
+.bigLetter {
+  color: var(--syllable-a);
+  font-family: var(--font-body);
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.smallLetter {
+  color: var(--syllable-b);
+  font-family: var(--font-body);
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.anchor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--ink-600);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.wordBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+}
+
+.tapHint {
+  margin: 0;
+  color: var(--ink-600);
+  font-size: 15px;
+}
+
+.listenWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pictureBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 108px;
+  border: 3px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+}
+
+.listenBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 60px;
+  padding: var(--space-3) var(--space-5);
+  border: 3px solid var(--sea-500);
+  border-radius: var(--radius-full);
+  background: var(--lagoon-100);
+  color: var(--sea-700);
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+}
+
+.listenBtn:hover,
+.listenBtn:focus-visible {
+  background: var(--white);
+}
+
+.storyCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4);
+  border: 2px solid var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+}
+
+.sentences {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.sentence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+}
+
+.storyWordBtn {
+  padding: 2px 4px;
+  border: 0;
+  border-radius: var(--radius-s);
+  background: transparent;
+  cursor: pointer;
+}
+
+.storyWordBtn:hover,
+.storyWordBtn:focus-visible {
+  background: var(--lagoon-100);
+}

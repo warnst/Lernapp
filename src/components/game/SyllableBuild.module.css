@@ -1,0 +1,139 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4);
+  border: 2px dashed var(--sand-300);
+  border-radius: var(--radius-l);
+  background: var(--white);
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  min-height: 80px;
+  padding: var(--space-2) var(--space-4);
+  border: 3px dashed var(--sand-300);
+  border-radius: var(--radius-m);
+  background: var(--sand-50);
+  font-family: var(--font-body);
+  font-size: 36px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.slotA {
+  border-color: var(--syllable-a);
+  color: var(--syllable-a);
+}
+
+.slotB {
+  border-color: var(--syllable-b);
+  color: var(--syllable-b);
+}
+
+.filledA {
+  border-style: solid;
+  border-color: var(--syllable-a);
+  background: var(--syllable-a-bg);
+  color: var(--syllable-a);
+  box-shadow: var(--shadow-1);
+}
+
+.filledB {
+  border-style: solid;
+  border-color: var(--syllable-b);
+  background: var(--syllable-b-bg);
+  color: var(--syllable-b);
+  box-shadow: var(--shadow-1);
+}
+
+.placeholder {
+  opacity: 0.45;
+  font-size: 28px;
+}
+
+.arc {
+  width: 56px;
+  height: 10px;
+  margin-top: 2px;
+}
+
+.bank {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.tile {
+  min-width: 88px;
+  min-height: 68px;
+  padding: var(--space-2) var(--space-4);
+  border: 3px solid var(--sea-500);
+  border-radius: var(--radius-m);
+  background: var(--white);
+  color: var(--ink-900);
+  font-family: var(--font-body);
+  font-size: 32px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  transition: transform 120ms ease;
+}
+
+.tile:disabled {
+  opacity: 0.3;
+  cursor: default;
+  box-shadow: none;
+}
+
+.tile:hover:not(:disabled),
+.tile:focus-visible:not(:disabled) {
+  background: var(--lagoon-100);
+}
+
+.tile:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.hint {
+  margin: 0;
+  color: var(--ink-600);
+  font-size: 15px;
+  text-align: center;
+}
+
+@media (width >= 768px) {
+  .slot {
+    min-width: 108px;
+    min-height: 92px;
+    font-size: 42px;
+  }
+
+  .tile {
+    min-width: 104px;
+    min-height: 76px;
+    font-size: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: none;
+  }
+}

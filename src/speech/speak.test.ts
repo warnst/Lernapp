@@ -4,6 +4,7 @@ import {
   getVoicePreference,
   listGermanVoices,
   setVoicePreference,
+  speakNow,
   stopSpeaking,
   toggleSpeak,
   unlockSpeechOnFirstTap,
@@ -190,5 +191,17 @@ describe('speak', () => {
     unlockSpeechOnFirstTap();
     document.body.dispatchEvent(new Event('touchend', { bubbles: true }));
     expect(speech.speak).not.toHaveBeenCalled();
+  });
+
+  it('speakNow bricht eine laufende Ausgabe ab und spricht sofort den neuen Text', () => {
+    const speech = installSpeech([]);
+    setVoicePreference(VOICE_AUTO);
+    speech.speaking = true;
+    speakNow('Maa!');
+    expect(speech.cancel).toHaveBeenCalled();
+    expect(speech.speak).toHaveBeenCalledOnce();
+    expect((speech.speak.mock.calls[0]?.[0] as { text: string }).text).toBe('Maa!');
+    speakNow('   ');
+    expect(speech.speak).toHaveBeenCalledOnce();
   });
 });

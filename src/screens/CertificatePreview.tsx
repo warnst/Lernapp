@@ -22,7 +22,9 @@ export function CertificatePreview() {
       ? 'kosmos'
       : wParam === 'zahlenbloecke'
         ? 'zahlenbloecke'
-        : worldOf(profile);
+        : wParam === 'lesen'
+          ? 'lesen'
+          : worldOf(profile);
   const options = parsePrintOptions(`stufe=${String(profile.stufe)}&loesungen=0`, []);
   return (
     <Screen title={UI.treasures.certificate}>

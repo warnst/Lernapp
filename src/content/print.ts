@@ -104,6 +104,7 @@ export const PRINT = {
     'kleine-bucht': 'hat die kleine Bucht erkundet!',
     kosmos: 'hat den ganzen Kosmos von Mond bis Neptun erkundet!',
     zahlenbloecke: 'hat das ganze Zahlenland mit den Zahlenblöcken 1 bis 100 erkundet!',
+    lesen: 'hat die ganze Silben-Insel erkundet und kann jetzt Silben und Wörter lesen!',
   } satisfies Record<WorldId, string>,
   certSkills: {
     schatzinsel:
@@ -114,6 +115,8 @@ export const PRINT = {
       'Du kannst jetzt: Plus und Minus rechnen · Zahlenhäuser bauen · Zahlenmauern und Rechendreiecke lösen · Weltraum-Rätsel knacken',
     zahlenbloecke:
       'Du kannst jetzt: Zahlenblöcke zusammenklatschen und teilen · im Zauberspiegel verdoppeln · Block-Häuser und Stufen-Treppen bauen · in Zehner-Schritten bis 100 rechnen',
+    lesen:
+      'Du kannst jetzt: Große und kleine Buchstaben erkennen · Silben hören, klatschen und zusammenbauen · zweifarbige Silbenwörter lesen · kleine Silbengeschichten verstehen',
   } satisfies Record<WorldId, string>,
   certSignature: 'Kiko',
 } as const;

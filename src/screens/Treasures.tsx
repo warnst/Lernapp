@@ -8,6 +8,8 @@ import { TOWER_ICON, TOWER_ORDER } from '@/content/tower';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_PLANETS } from '@/content/worlds/kosmos/planets';
+import { LESEN_CHAPTERS } from '@/content/worlds/lesen/chapters';
+import { chapterStars } from '@/state/lesen-progress';
 import { ZAHLENBLOCK_HEROES } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station, WorldId } from '@/domain/types';
 import { FindlingIcon } from '@/illustrations/FindlingIcon';
@@ -112,7 +114,9 @@ export function Treasures({ profile }: { profile: Profile }) {
                 ? '/schaetze/urkunde?welt=kosmos'
                 : world === 'zahlenbloecke'
                   ? '/schaetze/urkunde?welt=zahlenbloecke'
-                  : '/schaetze/urkunde'
+                  : world === 'lesen'
+                    ? '/schaetze/urkunde?welt=lesen'
+                    : '/schaetze/urkunde'
             }
             block
           >
@@ -168,6 +172,19 @@ export function Treasures({ profile }: { profile: Profile }) {
               )}
             </div>
           ))}
+        </section>
+      )}
+
+      {world === 'lesen' && (
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Mein Silbenbuch</h2>
+          <p className={styles.muted}>
+            {String(LESEN_CHAPTERS.filter((c) => chapterStars(profile, c) === 3).length)} von 8
+            Silbengeschichten freigeschaltet
+          </p>
+          <LinkButton href="/schaetze/silbenbuch" variant="secondary" block>
+            <UiIcon name="buch" /> Mein Silbenbuch öffnen
+          </LinkButton>
         </section>
       )}
 

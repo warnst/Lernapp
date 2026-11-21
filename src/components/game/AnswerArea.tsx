@@ -11,6 +11,7 @@ import { MoneyEntry } from './MoneyEntry';
 import { NumberEntry } from './NumberEntry';
 import { OrderView } from './OrderView';
 import { SelectView } from './SelectView';
+import { SyllableBuild } from './SyllableBuild';
 
 export type PendingInput = AnswerInput;
 
@@ -162,5 +163,15 @@ export function AnswerArea({
         />
       );
     }
+    case 'syllable-build':
+      return (
+        <SyllableBuild
+          answer={answer}
+          seedId={task.id}
+          onChange={(parts) => {
+            onPending(parts ? { type: 'syllable-build', parts } : null);
+          }}
+        />
+      );
   }
 }

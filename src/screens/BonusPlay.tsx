@@ -5,6 +5,7 @@ import { SpeechBubble } from '@/components/SpeechBubble';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_STATIONS, planetOfStation } from '@/content/worlds/kosmos/planets';
+import { LESEN_STATIONS, chapterOfStation } from '@/content/worlds/lesen/chapters';
 import { ZAHLENBLOECKE_STATIONS, heroOfStation } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station, Task } from '@/domain/types';
 import { Gem } from '@/illustrations/Gem';
@@ -40,7 +41,14 @@ function BonusGame({ profile, station, task }: { profile: Profile; station: Stat
   const [solved, setSolved] = useState(false);
   const planet = station.world === 'kosmos' ? planetOfStation(station.id) : undefined;
   const hero = station.world === 'zahlenbloecke' ? heroOfStation(station.id) : undefined;
-  const mapHref = planet ? `/kosmos/${planet.id}` : hero ? `/zahlenbloecke/${hero.id}` : '/';
+  const chapter = station.world === 'lesen' ? chapterOfStation(station.id) : undefined;
+  const mapHref = planet
+    ? `/kosmos/${planet.id}`
+    : hero
+      ? `/zahlenbloecke/${hero.id}`
+      : chapter
+        ? `/lesen/${chapter.id}`
+        : '/';
   const onFinish = useCallback(() => {
     dispatch({ type: 'solve-bonus', id: profile.id, world: station.world, stationId: station.id });
     setSolved(true);
@@ -61,6 +69,7 @@ function findStation(profile: Profile, stationId: string): Station | undefined {
   return (
     KOSMOS_STATIONS.find((s) => s.id === stationId) ??
     ZAHLENBLOECKE_STATIONS.find((s) => s.id === stationId) ??
+    LESEN_STATIONS.find((s) => s.id === stationId) ??
     WORLDS[worldOf(profile)].stations.find((s) => s.id === stationId)
   );
 }
@@ -83,7 +92,9 @@ export function BonusPlay({ stationId }: { stationId: string }) {
             ? '/kosmos'
             : station?.world === 'zahlenbloecke'
               ? '/zahlenbloecke'
-              : '/'
+              : station?.world === 'lesen'
+                ? '/lesen'
+                : '/'
         }
       />
     );

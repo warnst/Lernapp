@@ -28,6 +28,8 @@ const T: CheckTexts = {
   codeStuck: (symbol) => `stuck(${symbol})`,
   clockHour: 'hour',
   clockMinute: 'minute',
+  syllableFirstRight: (mode) => `firstRight(${mode})`,
+  syllableStartAgain: (mode) => `startAgain(${mode})`,
 };
 
 const NB = ' ';
@@ -433,6 +435,40 @@ describe('Uhr stellen', () => {
       feedback: 'hour',
     });
     expect(() => check(answer, { type: 'number', value: 3 })).toThrow();
+  });
+});
+
+describe('syllable-build', () => {
+  const answer: Answer = {
+    type: 'syllable-build',
+    mode: 'word',
+    target: ['So', 'fa'],
+    bank: [
+      { id: '1', text: 'So' },
+      { id: '2', text: 'fa' },
+      { id: '3', text: 'Ma' },
+    ],
+  };
+
+  it('erkennt richtig zusammengesetzte Silben (Groß-/Kleinschreibung tolerant)', () => {
+    expect(check(answer, { type: 'syllable-build', parts: ['So', 'fa'] })).toEqual({
+      status: 'correct',
+    });
+    expect(check(answer, { type: 'syllable-build', parts: ['so', 'FA'] })).toEqual({
+      status: 'correct',
+    });
+  });
+
+  it('lobt die erste richtige Silbe und gibt sonst einen Anfangs-Hinweis', () => {
+    expect(check(answer, { type: 'syllable-build', parts: ['So', 'Ma'] })).toEqual({
+      status: 'wrong',
+      feedback: 'firstRight(word)',
+    });
+    expect(check(answer, { type: 'syllable-build', parts: ['Ma', 'fa'] })).toEqual({
+      status: 'wrong',
+      feedback: 'startAgain(word)',
+    });
+    expect(() => check(answer, { type: 'number', value: 1 })).toThrow(/passt nicht/);
   });
 });
 

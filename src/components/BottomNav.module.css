@@ -5,7 +5,7 @@
   left: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   padding-bottom: env(safe-area-inset-bottom);
   border-top: 2px solid var(--sand-300);
   background: var(--sand-100);
@@ -19,8 +19,14 @@
   gap: 2px;
   min-height: 64px;
   color: var(--ink-600);
-  font-size: 16px;
+  font-size: 15px;
   text-decoration: none;
+}
+
+@media (width < 520px) {
+  .tab {
+    font-size: 11px;
+  }
 }
 
 .tab[aria-current='page'] {
@@ -29,12 +35,12 @@
 }
 
 .tab[aria-current='page'] .icon {
-  padding: 2px 16px;
+  padding: 2px 14px;
   border-radius: var(--radius-full);
   background: var(--lagoon-100);
 }
 
-/* ab 900 px: linke Seitenleiste (docs/01, Abschnitt 8) */
+/* iPad Air Querformat & Desktop ab 900 px: linke Seitenleiste (docs/01, Abschnitt 8) */
 @media (width >= 900px) {
   .nav {
     top: 0;
@@ -42,9 +48,14 @@
     grid-template-columns: none;
     grid-auto-rows: min-content;
     align-content: center;
-    gap: var(--space-4);
-    width: 112px;
+    gap: var(--space-3);
+    width: 116px;
     border-top: 0;
     border-right: 2px solid var(--sand-300);
+  }
+
+  .tab {
+    min-height: 58px;
+    font-size: 15px;
   }
 }

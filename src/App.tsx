@@ -23,6 +23,8 @@ import { JokeBook } from '@/screens/JokeBook';
 import { KnowledgeBook } from '@/screens/ChoiceRiddles';
 import { CertificatePreview } from '@/screens/CertificatePreview';
 import { KosmosMap, KosmosPlanetView } from '@/screens/KosmosMap';
+import { LesenChapterView, LesenMap, LesenReviewPlay } from '@/screens/LesenMap';
+import { SyllableBook } from '@/screens/SyllableBook';
 import { ZahlenbloeckeMap, ZahlenblockView } from '@/screens/ZahlenbloeckeMap';
 import { WhoPlays } from '@/screens/WhoPlays';
 import { WorldMap } from '@/screens/WorldMap';
@@ -85,6 +87,27 @@ function ZahlenblockPage({ blockId }: { blockId: string }) {
     </ChildLayout>
   );
 }
+function LesenPage() {
+  return <ChildLayout>{(profile) => <LesenMap key={profile.id} profile={profile} />}</ChildLayout>;
+}
+function LesenChapterPage({ chapterId }: { chapterId: string }) {
+  return (
+    <ChildLayout>
+      {(profile) => (
+        <LesenChapterView
+          key={`${profile.id}-${chapterId}`}
+          profile={profile}
+          chapterId={chapterId}
+        />
+      )}
+    </ChildLayout>
+  );
+}
+function SyllableBookPage() {
+  return (
+    <ChildLayout>{(profile) => <SyllableBook key={profile.id} profile={profile} />}</ChildLayout>
+  );
+}
 
 /** Kiko trägt überall das Outfit des aktiven Kindes (docs/12 4.1). */
 function OutfitProvider({ children }: { children: ReactNode }) {
@@ -104,6 +127,11 @@ export function Routes() {
     <OutfitProvider>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/lesen/ueben" component={LesenReviewPlay} />
+        <Route path="/lesen/:chapterId">
+          {(params) => <LesenChapterPage chapterId={params.chapterId} />}
+        </Route>
+        <Route path="/lesen" component={LesenPage} />
         <Route path="/kosmos/:planetId">
           {(params) => <KosmosPlanetPage planetId={params.planetId} />}
         </Route>
@@ -128,6 +156,7 @@ export function Routes() {
         <Route path="/raetsel/:slug">{(params) => <TowerPlay slug={params.slug} />}</Route>
         <Route path="/raetsel" component={TowerPage} />
         <Route path="/schaetze/urkunde" component={CertificatePreview} />
+        <Route path="/schaetze/silbenbuch" component={SyllableBookPage} />
         <Route path="/schaetze/witze" component={JokeBookPage} />
         <Route path="/schaetze/wissen" component={KnowledgeBookPage} />
         <Route path="/schaetze" component={TreasuresPage} />

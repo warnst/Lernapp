@@ -220,20 +220,7 @@ function shouldUseCloudVoice(): boolean {
   return true;
 }
 
-/** Liest den Text vor. Läuft schon eine Ausgabe, stoppt ein zweiter Aufruf sie nur. */
-export function toggleSpeak(text: string): void {
-  const speech = synth();
-  if (!speech) return;
-  if (cloudPlaying) {
-    stopCloudAudio();
-    return;
-  }
-  if (speech.speaking) {
-    speech.cancel();
-    if (!silent) return;
-    silent = false;
-  }
-
+function playText(speech: SpeechSynthesis, text: string): void {
   if (shouldUseCloudVoice()) {
     const audio = new Audio(`/api/speak?text=${encodeURIComponent(text)}`);
     activeAudio = audio;
@@ -255,4 +242,32 @@ export function toggleSpeak(text: string): void {
   }
 
   speakWithBrowser(speech, text);
+}
+
+/**
+ * Stoppt eine laufende Ausgabe sofort und liest den neuen Text direkt vor.
+ * Ideal für interaktive Silben-Kacheln, automatisches Vorlesen und Rückmeldungen.
+ */
+export function speakNow(text: string): void {
+  const speech = synth();
+  if (!speech || text.trim() === '') return;
+  stopSpeaking();
+  playText(speech, text);
+}
+
+/** Liest den Text vor. Läuft schon eine Ausgabe, stoppt ein zweiter Aufruf sie nur. */
+export function toggleSpeak(text: string): void {
+  const speech = synth();
+  if (!speech) return;
+  if (cloudPlaying) {
+    stopCloudAudio();
+    return;
+  }
+  if (speech.speaking) {
+    speech.cancel();
+    if (!silent) return;
+    silent = false;
+  }
+
+  playText(speech, text);
 }

@@ -59,8 +59,9 @@ const UI_ICONS: UiIconName[] = [
   'hand-zahl',
   'leuchtturm',
   'herz',
+  'buch',
 ];
-const WORLDS: WorldId[] = ['schatzinsel', 'kleine-bucht', 'kosmos', 'zahlenbloecke'];
+const WORLDS: WorldId[] = ['schatzinsel', 'kleine-bucht', 'kosmos', 'zahlenbloecke', 'lesen'];
 
 function decorativeSvg(container: HTMLElement): SVGSVGElement {
   const svg = container.querySelector('svg');

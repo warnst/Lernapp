@@ -15,6 +15,7 @@ import type {
   PayVariantsAnswer,
   SceneItem,
   SelectAnswer,
+  SyllableBuildAnswer,
 } from './types';
 
 // Antwortprüfung aller Typen (docs/03, Abschnitt 6). Die Sätze kommen aus src/content/check-texts.ts.
@@ -48,7 +49,8 @@ export type AnswerInput =
   | { type: 'grid'; values: Partial<Record<string, number>> }
   /** symbols: Symbol je Rad, aus den Rätselkarten der Szene */
   | { type: 'code'; digits: number[]; symbols: ClueSymbol[] }
-  | { type: 'clock'; time: ClockTime };
+  | { type: 'clock'; time: ClockTime }
+  | { type: 'syllable-build'; parts: string[] };
 
 /** Satzbausteine für Rückmeldungen. Beträge kommen schon formatiert an. */
 export interface CheckTexts {
@@ -69,6 +71,9 @@ export interface CheckTexts {
   /** Uhr stellen: kleiner bzw. großer Zeiger stimmt noch nicht */
   clockHour: string;
   clockMinute: string;
+  /** Silben-Baukasten */
+  syllableFirstRight: (mode: SyllableBuildAnswer['mode']) => string;
+  syllableStartAgain: (mode: SyllableBuildAnswer['mode']) => string;
 }
 
 function direction(value: number, correct: number): Direction {
@@ -264,6 +269,21 @@ export function checkAnswer(
       return input.time.minute !== answer.correct.minute
         ? { status: 'wrong', feedback: texts.clockMinute }
         : { status: 'wrong', feedback: texts.clockHour };
+    }
+    case 'syllable-build': {
+      if (input.type !== 'syllable-build') return mismatch(answer, input);
+      const normalized = input.parts.map((p) => p.toLowerCase());
+      const target = answer.target.map((t) => t.toLowerCase());
+      if (
+        normalized.length === target.length &&
+        normalized.every((part, i) => part === target[i])
+      ) {
+        return { status: 'correct' };
+      }
+      if (normalized[0] === target[0]) {
+        return { status: 'wrong', feedback: texts.syllableFirstRight(answer.mode) };
+      }
+      return { status: 'wrong', feedback: texts.syllableStartAgain(answer.mode) };
     }
     default:
       return assertNever(answer);

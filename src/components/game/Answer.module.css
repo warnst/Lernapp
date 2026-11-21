@@ -190,6 +190,13 @@
   text-align: center;
 }
 
+.glyphText {
+  font-family: var(--font-body);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
 /* Münzen legen */
 .tray {
   display: flex;

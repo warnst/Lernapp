@@ -17,7 +17,7 @@ import { formatMoney } from '@/domain/money';
 import { renderText, speakText } from '@/domain/text';
 import type { Answer, Profile, Task } from '@/domain/types';
 import { UiIcon } from '@/illustrations/UiIcon';
-import { canSpeak, stopSpeaking, toggleSpeak } from '@/speech/speak';
+import { canSpeak, speakNow, stopSpeaking, toggleSpeak } from '@/speech/speak';
 import { useAppState } from '@/state/context';
 import { currentHintLevel, playReducer, startPlay } from '@/state/play';
 import { autoReadOf } from '@/state/progress';
@@ -55,6 +55,7 @@ export function Game({
   progressStyle,
   start,
   mapHref = '/',
+  alwaysAutoRead = false,
   onAdvance,
   onFinish,
 }: {
@@ -63,13 +64,16 @@ export function Game({
   progressStyle: 'shells' | 'locks';
   start?: { taskIndex: number; partIndex: number };
   mapHref?: string;
+  /** Liest Aufgaben und Rückmeldungen immer automatisch vor (z. B. beim Lesenlernen), außer Erwachsene schalten es explizit aus. */
+  alwaysAutoRead?: boolean;
   onAdvance?: (taskIndex: number, partIndex: number) => void;
   onFinish: () => void;
 }) {
   const { dispatch } = useAppState();
   const [, navigate] = useLocation();
   const pauseTitle = useId();
-  const config = { ...STUFEN[profile.stufe], autoRead: autoReadOf(profile) };
+  const autoRead = alwaysAutoRead ? profile.readAloud !== false : autoReadOf(profile);
+  const config = { ...STUFEN[profile.stufe], autoRead };
   const [play, playDispatch] = useReducer(playReducer, undefined, () =>
     startPlay(tasks, start?.taskIndex, start?.partIndex),
   );
@@ -105,10 +109,12 @@ export function Game({
 
   const spokenTask =
     task && part
-      ? [task.story, part.lead ?? '', part.question].filter(Boolean).map(speakText).join(' ')
+      ? task.speak !== undefined && play.partIndex === 0
+        ? speakText(task.speak)
+        : [task.story, part.lead ?? '', part.question].filter(Boolean).map(speakText).join(' ')
       : '';
   useEffect(() => {
-    if (config.autoRead && spokenTask !== '') toggleSpeak(spokenTask);
+    if (config.autoRead && spokenTask !== '') speakNow(spokenTask);
   }, [config.autoRead, spokenTask]);
 
   const close = useCallback(() => {

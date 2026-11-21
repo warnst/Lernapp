@@ -277,5 +277,15 @@ export function PaperAnswer({
           <span>{PRINT.drawHands}</span>
         </div>
       );
+    case 'syllable-build':
+      return (
+        <div className={styles.cards}>
+          {answer.bank.map((tile) => (
+            <span key={tile.id} className={styles.card}>
+              <span>{tile.text}</span>
+            </span>
+          ))}
+        </div>
+      );
   }
 }

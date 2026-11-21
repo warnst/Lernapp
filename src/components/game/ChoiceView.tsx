@@ -12,6 +12,7 @@ import { toggleSpeak } from '@/speech/speak';
 import { cx } from '../cx';
 import styles from './Answer.module.css';
 import { MoneyPieceView } from './MoneyPieceView';
+import { SyllableText } from './SyllableText';
 
 function OptionBody({ option, layout }: { option: ChoiceOption; layout: ChoiceAnswer['layout'] }) {
   if (layout === 'coins' && option.pieces) {
@@ -71,6 +72,17 @@ function OptionBody({ option, layout }: { option: ChoiceOption; layout: ChoiceAn
       </>
     );
   }
+  if (option.syllables) {
+    return <SyllableText syllables={option.syllables} size="lg" />;
+  }
+  if (option.icon && option.iconOnly) {
+    return (
+      <>
+        <ItemIcon itemId={option.icon} size={76} />
+        <span className={styles.visuallyHidden}>{option.label}</span>
+      </>
+    );
+  }
   if (option.icon) {
     return (
       <>
@@ -78,6 +90,9 @@ function OptionBody({ option, layout }: { option: ChoiceOption; layout: ChoiceAn
         <span>{option.label}</span>
       </>
     );
+  }
+  if (option.largeGlyph) {
+    return <span className={styles.glyphText}>{renderText(option.label)}</span>;
   }
   return <span>{renderText(option.label)}</span>;
 }
@@ -117,7 +132,11 @@ export function ChoiceView({
         const isCorrect = solved && option.correct === true;
         const textOnly = answer.layout === 'bags' && !option.pieces && !option.objects;
         const hasVisibleText =
-          answer.layout !== 'coins' && option.clock === undefined && option.shape === undefined;
+          answer.hideOptionSpeaker !== true &&
+          option.iconOnly !== true &&
+          answer.layout !== 'coins' &&
+          option.clock === undefined &&
+          option.shape === undefined;
         return (
           <div key={option.id} className={cx(styles.cardRow, textOnly && styles.wide)}>
             <button
@@ -130,9 +149,11 @@ export function ChoiceView({
                   styles.textCard,
               )}
               disabled={isTried || solved}
-              aria-label={pictorial ? renderText(option.label) : undefined}
+              aria-label={pictorial || option.iconOnly ? renderText(option.label) : undefined}
               onClick={() => {
-                if (readOnTap) toggleSpeak(speakText(option.label));
+                if (readOnTap && answer.hideOptionSpeaker !== true) {
+                  toggleSpeak(option.speakLabel ?? speakText(option.label));
+                }
                 onPick(option.id);
               }}
             >

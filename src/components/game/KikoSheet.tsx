@@ -6,7 +6,7 @@ import { renderText, speakText } from '@/domain/text';
 import type { TaskPart } from '@/domain/types';
 import { Kiko } from '@/illustrations/Kiko';
 import { UiIcon } from '@/illustrations/UiIcon';
-import { toggleSpeak } from '@/speech/speak';
+import { speakNow } from '@/speech/speak';
 import type { SheetContent } from '@/state/play';
 import { Button } from '../Button';
 import { cx } from '../cx';
@@ -71,7 +71,7 @@ export function KikoSheet({
 
   useEffect(() => {
     buttonRef.current?.focus();
-    if (autoRead) toggleSpeak(spoken);
+    if (autoRead) speakNow(spoken);
   }, [autoRead, spoken]);
 
   return (

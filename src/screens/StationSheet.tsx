@@ -6,7 +6,7 @@ import { UI } from '@/content/ui';
 import type { Station } from '@/domain/types';
 import { StationIcon } from '@/illustrations/StationIcon';
 import { UiIcon } from '@/illustrations/UiIcon';
-import { canSpeak, toggleSpeak } from '@/speech/speak';
+import { canSpeak, speakNow, toggleSpeak } from '@/speech/speak';
 import { useAppState } from '@/state/context';
 import { activeProfile, autoReadOf } from '@/state/progress';
 import styles from './StationSheet.module.css';
@@ -32,6 +32,10 @@ export function StationSheet({
   const href = `/station/${station.id}`;
 
   useEffect(() => {
+    if (station.world === 'lesen' && profile && profile.readAloud !== false) {
+      speakNow(`${station.title}. ${station.intro.join(' ')}`);
+      return;
+    }
     if (
       (station.world === 'kosmos' || station.world === 'zahlenbloecke') &&
       profile &&
@@ -80,7 +84,13 @@ export function StationSheet({
             </LinkButton>
           )}
           {completed && (
-            <LinkButton href={`/ueben?thema=${station.practiceTopic}`} variant="secondary" block>
+            <LinkButton
+              href={
+                station.world === 'lesen' ? '/lesen/ueben' : `/ueben?thema=${station.practiceTopic}`
+              }
+              variant="secondary"
+              block
+            >
               {UI.sheet.morePractice}
             </LinkButton>
           )}

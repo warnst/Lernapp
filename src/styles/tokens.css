@@ -155,6 +155,12 @@
   --nb-9-grey-1: #78909c;
   --nb-9-grey-2: #b0bec5;
   --nb-9-grey-3: #cfd8dc;
+
+  /* Zweifarbige Silbenschrift (Schul-Blau & Warm-Rot + Bögen, nie für Fehler) */
+  --syllable-a: #1a5fa4;
+  --syllable-b: #c43b33;
+  --syllable-a-bg: #e7f1fb;
+  --syllable-b-bg: #fcebe9;
 }
 
 /* Arbeitsblätter (Druck und Vorschau) nur mit Konturen: alle Illustrationsflächen werden weiß (docs/06) */
@@ -249,4 +255,10 @@
   --coin-gold-rim: var(--ink-900);
   --coin-silver: var(--fill-main);
   --coin-silver-rim: var(--ink-900);
+
+  /* Silben auf Arbeitsblättern schwarz/grau mit Bögen */
+  --syllable-a: #000;
+  --syllable-b: #444;
+  --syllable-a-bg: #fff;
+  --syllable-b-bg: #fff;
 }

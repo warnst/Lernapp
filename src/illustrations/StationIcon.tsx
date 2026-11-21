@@ -439,6 +439,38 @@ const ICONS = new Map<string, ReactNode>([
       <rect x={40} y={12} width={14} height={42} rx={2} fill="var(--nb-3-yellow)" />
     </g>,
   ],
+  // Silben-Insel (Lesen) Kapitel-Icons 1–8
+  ...(
+    [
+      ['lesen-1', 'M', 'var(--syllable-a)', 'var(--ill-sun)'],
+      ['lesen-2', 'L', 'var(--ill-leaf)', 'var(--ill-sand)'],
+      ['lesen-3', 'R', 'var(--syllable-b)', 'var(--ill-bg-pink)'],
+      ['lesen-4', 'T', 'var(--coral-400)', 'var(--ill-bg-sun)'],
+      ['lesen-5', 'B', 'var(--ill-sun)', 'var(--ill-grass)'],
+      ['lesen-6', 'Au', 'var(--sea-500)', 'var(--ill-sky)'],
+      ['lesen-7', 'Sch', 'var(--ill-octopus)', 'var(--ill-bg-sea)'],
+      ['lesen-8', '★', 'var(--ill-gold)', 'var(--ill-bg-sand)'],
+    ] as const
+  ).map(([key, glyph, accent, bg]): [string, ReactNode] => [
+    key,
+    <g key={key}>
+      <rect x={8} y={10} width={48} height={44} rx={10} fill={bg} />
+      <path d="M14 48 Q23 55 32 48" fill="none" stroke="var(--syllable-a)" strokeWidth={3.5} />
+      <path d="M32 48 Q41 55 50 48" fill="none" stroke="var(--syllable-b)" strokeWidth={3.5} />
+      <text
+        x={32}
+        y={38}
+        textAnchor="middle"
+        fontSize={glyph.length > 2 ? 18 : glyph.length > 1 ? 22 : 26}
+        fontWeight={800}
+        fill={accent}
+        stroke="none"
+        fontFamily="var(--font-body)"
+      >
+        {glyph}
+      </text>
+    </g>,
+  ]),
 ]);
 
 export function StationIcon({

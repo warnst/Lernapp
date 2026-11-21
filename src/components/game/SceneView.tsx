@@ -14,6 +14,7 @@ import { MoneyPieceView } from './MoneyPieceView';
 import { ObjectScene } from './ObjectScene';
 import { BalanceScene, CluesScene, SequenceScene } from './RiddleScenes';
 import { BlockScene } from './BlockScene';
+import { SyllableScene } from './SyllableScene';
 
 function isAvatar(id: string): id is AvatarId {
   return AVATARS.some((info) => info.id === id);
@@ -164,6 +165,12 @@ export function SceneView({ scene }: { scene: Scene }) {
       return (
         <div className={styles.scene}>
           <BlockScene mode={scene.mode} blocks={scene.blocks} result={scene.result} />
+        </div>
+      );
+    case 'syllables':
+      return (
+        <div className={styles.scene}>
+          <SyllableScene scene={scene} />
         </div>
       );
   }

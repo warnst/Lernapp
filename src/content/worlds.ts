@@ -14,6 +14,7 @@ import { pollysLaden } from './worlds/schatzinsel/s5-pollys-laden';
 import { raetselbruecke } from './worlds/schatzinsel/s6-raetselbruecke';
 import { schatztruhe } from './worlds/schatzinsel/s9-schatztruhe';
 import { KOSMOS_STATIONS } from './worlds/kosmos/planets';
+import { LESEN_STATIONS } from './worlds/lesen/chapters';
 import { ZAHLENBLOECKE_STATIONS } from './worlds/zahlenbloecke/blocks';
 
 export interface World {
@@ -52,5 +53,10 @@ export const WORLDS: Record<WorldId, World> = {
     id: 'zahlenbloecke',
     title: 'Zahlenblöcke im Zahlenland',
     stations: ZAHLENBLOECKE_STATIONS,
+  },
+  lesen: {
+    id: 'lesen',
+    title: 'Die Silben-Insel',
+    stations: LESEN_STATIONS,
   },
 };

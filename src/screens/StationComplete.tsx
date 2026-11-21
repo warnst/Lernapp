@@ -7,6 +7,7 @@ import { StarPill } from '@/components/StarPill';
 import { UI } from '@/content/ui';
 import { WORLDS } from '@/content/worlds';
 import { KOSMOS_STATIONS, planetOfStation } from '@/content/worlds/kosmos/planets';
+import { LESEN_STATIONS, chapterOfStation } from '@/content/worlds/lesen/chapters';
 import { ZAHLENBLOECKE_STATIONS, heroOfStation } from '@/content/worlds/zahlenbloecke/blocks';
 import type { Profile, Station } from '@/domain/types';
 import { Chest } from '@/illustrations/Chest';
@@ -64,7 +65,13 @@ function Finale({ profile, stations }: { profile: Profile; stations: Station[] }
   if (!last) return null;
   const world = last.world;
   const mapHref =
-    world === 'kosmos' ? '/kosmos' : world === 'zahlenbloecke' ? '/zahlenbloecke' : '/';
+    world === 'kosmos'
+      ? '/kosmos'
+      : world === 'zahlenbloecke'
+        ? '/zahlenbloecke'
+        : world === 'lesen'
+          ? '/lesen'
+          : '/';
   return (
     <main className={styles.page}>
       <Confetti />
@@ -111,7 +118,14 @@ function Complete({
   const next = stations[index + 1];
   const planet = station.world === 'kosmos' ? planetOfStation(station.id) : undefined;
   const hero = station.world === 'zahlenbloecke' ? heroOfStation(station.id) : undefined;
-  const mapHref = planet ? `/kosmos/${planet.id}` : hero ? `/zahlenbloecke/${hero.id}` : '/';
+  const chapter = station.world === 'lesen' ? chapterOfStation(station.id) : undefined;
+  const mapHref = planet
+    ? `/kosmos/${planet.id}`
+    : hero
+      ? `/zahlenbloecke/${hero.id}`
+      : chapter
+        ? `/lesen/${chapter.id}`
+        : '/';
   return (
     <main className={styles.page}>
       <Confetti />
@@ -156,6 +170,11 @@ export function StationComplete({ stationId }: { stationId: string }) {
   if (blockIndex !== -1) {
     if (!isCompleted(profile, 'zahlenbloecke', stationId)) return <Redirect to="/zahlenbloecke" />;
     return <Complete profile={profile} stations={ZAHLENBLOECKE_STATIONS} index={blockIndex} />;
+  }
+  const lesenIndex = LESEN_STATIONS.findIndex((s) => s.id === stationId);
+  if (lesenIndex !== -1) {
+    if (!isCompleted(profile, 'lesen', stationId)) return <Redirect to="/lesen" />;
+    return <Complete profile={profile} stations={LESEN_STATIONS} index={lesenIndex} />;
   }
   const world = worldOf(profile);
   const stations = WORLDS[world].stations;
